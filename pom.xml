@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.uoutec</groupId>
@@ -26,16 +27,37 @@
 	</build>
 
 	<dependencies>
+		<!-- java -->
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- plugin -->
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>system-ediacaran-core-plugin</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		<!-- ediacaran -->
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>application-cdi</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>i18n</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>entity-registry</artifactId>
+			<version>1.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
