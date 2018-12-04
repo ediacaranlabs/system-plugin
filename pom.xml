@@ -43,21 +43,33 @@
 		<!-- ediacaran -->
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
+			<artifactId>entity-resource-bundle</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.brandao</groupId>
+			<artifactId>brutos-web</artifactId>
+			<version>2.0-rc3</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
 			<artifactId>application-cdi</artifactId>
 			<version>1.0.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>i18n</artifactId>
 			<version>1.0.0</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>entity-registry</artifactId>
 			<version>1.0.0</version>
-			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>pub-bean</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>
