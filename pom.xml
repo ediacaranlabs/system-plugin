@@ -44,6 +44,7 @@
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>ediacaran</artifactId>
 			<version>1.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
