@@ -80,7 +80,7 @@ public class SecurityInterceptor extends AbstractInterceptor{
 	}
 
 	public boolean accept(InterceptorHandler handler) {
-		return true;
+		return false;
 	}
 	
 }

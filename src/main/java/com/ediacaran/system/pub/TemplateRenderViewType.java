@@ -17,7 +17,7 @@ public class TemplateRenderViewType extends JSPRenderView{
 			super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
 		}
 		else{
-	        view = view.replace("{template}", "/default_template");
+	        view = view.replace("{template}", "default_template");
 			super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
 		}
 	}
