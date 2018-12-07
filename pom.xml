@@ -35,11 +35,13 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- plugin -->
+		<!-- dependencies -->
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>system-ediacaran-core-plugin</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<!-- ediacaran -->
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>ediacaran</artifactId>
