@@ -1,4 +1,4 @@
-package com.ediacaran.system.pub;
+package br.com.uoutec.community.ediacaran.system.pub;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -7,7 +7,7 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import com.ediacaran.system.Constants;
+import br.com.uoutec.community.ediacaran.system.Constants;
 
 public class ContextInitializer implements ServletContextListener,
 	HttpSessionListener, ServletRequestListener{

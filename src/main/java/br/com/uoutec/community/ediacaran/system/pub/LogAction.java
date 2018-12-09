@@ -1,16 +1,12 @@
-package com.ediacaran.system.pub.annotation;
+package br.com.uoutec.community.ediacaran.system.pub;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.ediacaran.system.security.Privilege;
-
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GuaranteedAccessTo {
+public @interface LogAction {
 
-	Class<? extends Privilege> value() default Privilege.class;
-	
 }

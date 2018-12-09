@@ -1,4 +1,4 @@
-package com.ediacaran.system.pub.type;
+package br.com.uoutec.community.ediacaran.system.pub.type;
 
 import java.util.Date;
 

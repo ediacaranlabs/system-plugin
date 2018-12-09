@@ -1,4 +1,4 @@
-package com.ediacaran.system.pub;
+package br.com.uoutec.community.ediacaran.system.pub;
 
 import java.io.Serializable;
 import java.util.ArrayList;

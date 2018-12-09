@@ -1,4 +1,4 @@
-package com.ediacaran.system.pub;
+package br.com.uoutec.community.ediacaran.system.pub;
 
 import org.brandao.brutos.DispatcherType;
 import org.brandao.brutos.web.WebDispatcherType;

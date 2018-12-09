@@ -1,4 +1,4 @@
-package com.ediacaran.system;
+package br.com.uoutec.community.ediacaran.system;
 
 public interface Constants {
 
