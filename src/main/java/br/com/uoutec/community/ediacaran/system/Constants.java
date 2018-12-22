@@ -12,4 +12,6 @@ public interface Constants {
 	
 	public static final String APP_CONFIGURATION                = br.com.uoutec.application.ApplicationContext.CONFIGURATION_VARNAME;//"app_config";
 	
+	public static final String USER_ADDRESS                     = "user_address";
+	
 }
