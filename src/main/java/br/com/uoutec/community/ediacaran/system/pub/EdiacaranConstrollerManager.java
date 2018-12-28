@@ -8,7 +8,6 @@ import org.brandao.brutos.mapping.MappingException;
 import org.brandao.brutos.mapping.StringUtil;
 import org.brandao.brutos.web.ConfigurableWebApplicationContext;
 import org.brandao.brutos.web.RequestMethodType;
-import org.brandao.brutos.web.WebControllerBuilder;
 import org.brandao.brutos.web.WebControllerManager;
 import org.brandao.brutos.web.mapping.WebController;
 import org.brandao.brutos.web.mapping.WebControllerID;
