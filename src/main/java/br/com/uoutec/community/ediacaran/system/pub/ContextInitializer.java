@@ -18,6 +18,7 @@ public class ContextInitializer implements ServletContextListener,
 	private NamedLockThreadContext namedLockThreadContext;
 	
 	public ContextInitializer(){
+		this.namedLockThreadContext = new NamedLockThreadContext();
 	}
 	
 	public void requestDestroyed(ServletRequestEvent arg0) {
