@@ -31,7 +31,7 @@ public class MenuBarManagerImp implements MenuBarManager{
 		MenuBar menubar = this.map.get(name);
 		
 		if(menubar == null){
-			throw new MenuBarManagerException("menu bar not found: " + name);
+			throw new MenuBarManagerException("menubar not found: " + name);
 		}
 		
 		return menubar;
