@@ -14,19 +14,18 @@ import org.brandao.brutos.logger.Logger;
 import org.brandao.brutos.mapping.Controller;
 import org.brandao.brutos.mapping.ControllerID;
 import org.brandao.brutos.web.RequestMethodType;
-import org.brandao.brutos.web.WebControllerBuilder;
 import org.brandao.brutos.web.WebControllerManager;
 
 import br.com.uoutec.application.Configuration;
 import br.com.uoutec.application.se.ApplicationBootstrapProvider;
 import br.com.uoutec.community.ediacaran.ServerBootstrap;
 
-public class EdiacaranConstrollerManager 
+public class EdiacaranControllerManager 
 	extends WebControllerManager{
 
 	private Configuration config;
 	
-	public EdiacaranConstrollerManager() {
+	public EdiacaranControllerManager() {
 		super();
 		ServerBootstrap sb = 
 				(ServerBootstrap) ApplicationBootstrapProvider.getBootstrap();
@@ -44,7 +43,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, view, resolvedView, dispatcherType, name, classType, actionId),
+				super.addController(id, view, resolvedView, dispatcherType, name, classType, actionId),
+				this,
 				this
 		);
 	}
@@ -56,7 +56,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, view, dispatcherType, resolvedView, name, classType, actionId, actionType),
+				super.addController(id, view, dispatcherType, resolvedView, name, classType, actionId, actionType),
+				this,
 				this
 		);
 	}
@@ -69,8 +70,9 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, requestMethodType, view, dispatcherType, resolvedView, name, classType, actionId,
+				super.addController(id, requestMethodType, view, dispatcherType, resolvedView, name, classType, actionId,
 						actionType),
+				this,
 				this
 		);
 	}
@@ -79,7 +81,8 @@ public class EdiacaranConstrollerManager
 	public ControllerBuilder addController(Class<?> classtype) {
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(classtype),
+				super.addController(classtype),
+				this,
 				this
 		);
 	}
@@ -89,7 +92,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, classType),
+				super.addController(id, classType),
+				this,
 				this
 		);
 	}
@@ -99,7 +103,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, view, resolvedView, classType),
+				super.addController(id, view, resolvedView, classType),
+				this,
 				this
 		);
 	}
@@ -110,7 +115,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, view, resolvedView, name, classType, actionId),
+				super.addController(id, view, resolvedView, name, classType, actionId),
+				this,
 				this
 		);
 	}
@@ -121,7 +127,8 @@ public class EdiacaranConstrollerManager
 		id = config.getValue(id);
 		return new EdiacaranControllerBuilder(
 				config, 
-				(WebControllerBuilder)super.addController(id, view, resolvedView, dispatcherType, name, classType, actionId, actionType),
+				super.addController(id, view, resolvedView, dispatcherType, name, classType, actionId, actionType),
+				this,
 				this
 		);
 	}
