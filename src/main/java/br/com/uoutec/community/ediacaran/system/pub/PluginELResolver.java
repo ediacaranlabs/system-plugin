@@ -10,6 +10,7 @@ import javax.el.ELResolver;
 import br.com.uoutec.application.se.ApplicationBootstrapProvider;
 import br.com.uoutec.community.ediacaran.EdiacaranBootstrap;
 import br.com.uoutec.community.ediacaran.PluginManager;
+import br.com.uoutec.community.ediacaran.plugins.PluginException;
 import br.com.uoutec.community.ediacaran.plugins.PluginMetadata;
 import br.com.uoutec.community.ediacaran.plugins.PluginPropertyValue;
 
@@ -27,6 +28,15 @@ public class PluginELResolver extends ELResolver{
 	
 	@Override
 	public Object getValue(ELContext context, Object base, Object property) {
+		try {
+			return getVal(context, base, property);
+		}
+		catch (Throwable e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	
+	public Object getVal(ELContext context, Object base, Object property) throws PluginException {
 		if(base == null && PLUGINS.equals(property)) {
 			context.setPropertyResolved(true);
 			return pluginManager;
@@ -36,6 +46,11 @@ public class PluginELResolver extends ELResolver{
 			PluginMetadata pm = pluginManager.findById(String.valueOf(property));
 			context.setPropertyResolved(true);
 			return pm;
+		}
+		else
+		if(base instanceof PluginMetadata) {
+			context.setPropertyResolved(true);
+			return ((PluginMetadata)base).getValue(String.valueOf(property));
 		}
 		else
 		if(base instanceof PluginPropertyValue) {
