@@ -3,6 +3,9 @@ package br.com.uoutec.community.ediacaran.system.pub;
 import java.io.Serializable;
 import java.util.Locale;
 
+import br.com.uoutec.application.ApplicationContext;
+import br.com.uoutec.application.Configuration;
+import br.com.uoutec.application.EntityContext;
 import br.com.uoutec.i18n.MessageBundleUtils;
 import br.com.uoutec.i18n.MessageLocale;
 
@@ -73,8 +76,19 @@ public class MenuItem implements Serializable{
 		this.template = template;
 	}
 
-	public String getResource() {
+	public String getRawResource() {
 		return resource;
+	}
+	
+	public String getResource() {
+		
+		Configuration config = 
+				EntityContext.getEntity(
+						ApplicationContext.CONFIGURATION_VARNAME, 
+						Configuration.class
+				);
+		
+		return config.getValue(resource);
 	}
 
 	public void setResource(String resource) {
