@@ -10,7 +10,7 @@ import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
 import br.com.uoutec.community.ediacaran.system.Constants;
-import br.com.uoutec.community.ediacaran.system.tx.lock.NamedLockThreadContext;
+import br.com.uoutec.community.ediacaran.core.system.tx.lock.NamedLockThreadContext;
 
 public class ContextInitializer implements ServletContextListener,
 	HttpSessionListener, ServletRequestListener{
