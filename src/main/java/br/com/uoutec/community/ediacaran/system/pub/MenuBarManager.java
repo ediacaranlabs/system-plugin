@@ -1,6 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
-public interface MenuBarManager {
+import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+
+public interface MenuBarManager extends PublicBean{
 
 	void registerMenuBar(String name, MenuBar menuBar) throws MenuBarManagerException;
 	
