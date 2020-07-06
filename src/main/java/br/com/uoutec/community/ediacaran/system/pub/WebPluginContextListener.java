@@ -12,6 +12,7 @@ import br.com.uoutec.community.ediacaran.plugins.PluginContextListener;
 import br.com.uoutec.community.ediacaran.plugins.PluginException;
 import br.com.uoutec.community.ediacaran.plugins.PluginInfo;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
+import br.com.uoutec.community.ediacaran.plugins.PluginNode;
 import br.com.uoutec.community.ediacaran.system.WebPlugin;
 
 public class WebPluginContextListener implements PluginContextListener{
@@ -24,7 +25,8 @@ public class WebPluginContextListener implements PluginContextListener{
 	public void pluginInitialized(PluginContextEvent evt) {
 		try {
 			Plugin plugin = (Plugin) evt.getPluginNode().getExtend().get(PluginInitializer.PLUGIN);
-			if(plugin instanceof WebPlugin) {
+			Class<?> webPluginType = getWebPluginType(evt.getPluginNode());
+			if(webPluginType.isAssignableFrom(plugin.getClass())) {
 				try {
 					currentEntityContextPlugin = plugin.getEntityContextPlugin();
 					pluginInitialized0(evt);
@@ -37,6 +39,11 @@ public class WebPluginContextListener implements PluginContextListener{
 		catch(Throwable e) {
 			throw new PluginException(e);
 		}
+	}
+	
+	private Class<?> getWebPluginType(PluginNode pluginNode) throws ClassNotFoundException{
+		ClassLoader classLoader = (ClassLoader) pluginNode.getExtend().get(PluginInitializer.CLASS_LOADER);
+		return classLoader.loadClass(WebPlugin.class.getName());
 	}
 	
 	public void pluginInitialized0(PluginContextEvent evt) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
