@@ -9,10 +9,7 @@ import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginContextEvent;
 import br.com.uoutec.community.ediacaran.plugins.PluginContextListener;
-import br.com.uoutec.community.ediacaran.plugins.PluginException;
-import br.com.uoutec.community.ediacaran.plugins.PluginInfo;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
-import br.com.uoutec.community.ediacaran.plugins.PluginNode;
 import br.com.uoutec.community.ediacaran.system.WebPlugin;
 
 public class WebPluginContextListener implements PluginContextListener{
@@ -21,35 +18,34 @@ public class WebPluginContextListener implements PluginContextListener{
 	
 	private static EntityContextPlugin currentEntityContextPlugin;
 	
+	public WebPluginContextListener() {
+		WebPlugin.class.getName();
+	}
+	
 	@Override
 	public void pluginInitialized(PluginContextEvent evt) {
 		try {
 			Plugin plugin = (Plugin) evt.getPluginNode().getExtend().get(PluginInitializer.PLUGIN);
-			Class<?> webPluginType = getWebPluginType(evt.getPluginNode());
-			if(webPluginType.isAssignableFrom(plugin.getClass())) {
-				try {
+			
+			try {
+				if(plugin instanceof WebPlugin) {
 					currentEntityContextPlugin = plugin.getEntityContextPlugin();
 					pluginInitialized0(evt);
 				}
-				finally {
-					currentEntityContextPlugin = null;
-				}
+			}
+			finally {
+				currentEntityContextPlugin = null;
 			}
 		}
 		catch(Throwable e) {
-			throw new PluginException(e);
+			e.printStackTrace();
+			//throw new PluginException(e);
 		}
 	}
 	
-	private Class<?> getWebPluginType(PluginNode pluginNode) throws ClassNotFoundException{
-		ClassLoader classLoader = (ClassLoader) pluginNode.getExtend().get(PluginInitializer.CLASS_LOADER);
-		return classLoader.loadClass(WebPlugin.class.getName());
-	}
-	
 	public void pluginInitialized0(PluginContextEvent evt) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		PluginInfo pi = (PluginInfo) evt.getPluginNode().getExtend().get(PluginInitializer.PLUGIN_INFO);
 		ClassLoader classLoader = (ClassLoader) evt.getPluginNode().getExtend().get(PluginInitializer.CLASS_LOADER);
-		
+		String[] pluginPath = evt.getPluginNode().getPluginMetadata().getPath().getBase().toString().split("/");
 		Configuration config = 
 				(Configuration)ClassUtil.getInstance(
 						ClassUtil.get(Configuration.class.getName(), classLoader));
@@ -58,7 +54,7 @@ public class WebPluginContextListener implements PluginContextListener{
 		config.setProperty(BrutosConstants.CONTROLLER_MANAGER_CLASS, "br.com.uoutec.community.ediacaran.system.pub.EdiacaranControllerManager");
 		config.setProperty(BrutosConstants.OBJECT_FACTORY_CLASS,     "br.com.uoutec.community.ediacaran.system.pub.WebPluginObjectFactory");
 		config.setProperty(BrutosConstants.INVOKER_CLASS,            "br.com.uoutec.community.ediacaran.user.pub.LanguageWebInvoker");
-		config.setProperty(BrutosConstants.VIEW_RESOLVER_PREFIX,    "/plugins/" + pi.getSupplier() + "/" + pi.getName());
+		config.setProperty(BrutosConstants.VIEW_RESOLVER_PREFIX,    "/plugins/" + pluginPath[pluginPath.length-2] + "/" + pluginPath[pluginPath.length-1]);
 		
 		AnnotationWebApplicationContext appContext = 
 				(AnnotationWebApplicationContext)ClassUtil.getInstance(
