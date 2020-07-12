@@ -26,15 +26,8 @@ public class WebPluginContextListener implements PluginContextListener{
 	public void pluginInitialized(PluginContextEvent evt) {
 		try {
 			Plugin plugin = (Plugin) evt.getPluginNode().getExtend().get(PluginInitializer.PLUGIN);
-			
-			try {
-				if(plugin instanceof WebPlugin) {
-					currentEntityContextPlugin = plugin.getEntityContextPlugin();
-					pluginInitialized0(evt);
-				}
-			}
-			finally {
-				currentEntityContextPlugin = null;
+			if(plugin instanceof WebPlugin) {
+				pluginInitialized0(evt);
 			}
 		}
 		catch(Throwable e) {
