@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import br.com.uoutec.application.ApplicationContext;
 import br.com.uoutec.application.Configuration;
-import br.com.uoutec.application.EntityContext;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.i18n.MessageBundleUtils;
 import br.com.uoutec.i18n.MessageLocale;
 
@@ -83,7 +83,7 @@ public class MenuItem implements Serializable{
 	public String getResource() {
 		
 		Configuration config = 
-				EntityContext.getEntity(
+				EntityContextPlugin.getEntity(
 						ApplicationContext.CONFIGURATION_VARNAME, 
 						Configuration.class
 				);

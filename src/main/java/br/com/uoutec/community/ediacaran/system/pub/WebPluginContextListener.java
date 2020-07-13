@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
+import java.io.File;
+
 import org.brandao.brutos.BrutosConstants;
 import org.brandao.brutos.Configuration;
 import org.brandao.brutos.annotation.web.AnnotationWebApplicationContext;
@@ -38,7 +40,12 @@ public class WebPluginContextListener implements PluginContextListener{
 	
 	public void pluginInitialized0(PluginContextEvent evt) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		ClassLoader classLoader = (ClassLoader) evt.getPluginNode().getExtend().get(PluginInitializer.CLASS_LOADER);
-		String[] pluginPath = evt.getPluginNode().getPluginMetadata().getPath().getBase().toString().split("/");
+		File pluginPath  = 
+				evt.getPluginNode().getPluginMetadata().getPath().getBase();
+		File supplierPath = pluginPath.getParentFile();
+		File path = supplierPath.getParentFile();
+		String publicPath = "/plugins/" + path.getName() + "/" + supplierPath.getName() + "/" + pluginPath.getName();
+ 
 		Configuration config = 
 				(Configuration)ClassUtil.getInstance(
 						ClassUtil.get(Configuration.class.getName(), classLoader));
@@ -47,11 +54,12 @@ public class WebPluginContextListener implements PluginContextListener{
 		config.setProperty(BrutosConstants.CONTROLLER_MANAGER_CLASS, "br.com.uoutec.community.ediacaran.system.pub.EdiacaranControllerManager");
 		config.setProperty(BrutosConstants.OBJECT_FACTORY_CLASS,     "br.com.uoutec.community.ediacaran.system.pub.WebPluginObjectFactory");
 		config.setProperty(BrutosConstants.INVOKER_CLASS,            "br.com.uoutec.community.ediacaran.user.pub.LanguageWebInvoker");
-		config.setProperty(BrutosConstants.VIEW_RESOLVER_PREFIX,    "/plugins/" + pluginPath[pluginPath.length-2] + "/" + pluginPath[pluginPath.length-1]);
+		config.setProperty(BrutosConstants.VIEW_RESOLVER_PREFIX,     publicPath);
 		
 		AnnotationWebApplicationContext appContext = 
 				(AnnotationWebApplicationContext)ClassUtil.getInstance(
 						ClassUtil.get(AnnotationWebApplicationContext.class.getName(), classLoader));
+		appContext.setConfiguration(config);
 		appContext.flush();
 		
 		evt.getPluginNode().getExtend().put(WEB_APP_CONTEXT, appContext);
