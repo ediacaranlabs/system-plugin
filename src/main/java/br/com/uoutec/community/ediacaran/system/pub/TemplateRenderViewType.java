@@ -6,26 +6,23 @@ import org.brandao.brutos.web.WebMvcRequest;
 import org.brandao.brutos.web.WebMvcResponse;
 import org.brandao.brutos.web.http.view.JSPRenderView;
 
-import br.com.uoutec.application.Configuration;
-import br.com.uoutec.application.se.ApplicationBootstrapProvider;
-import br.com.uoutec.community.ediacaran.ServerBootstrap;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
+import br.com.uoutec.community.ediacaran.plugins.PluginsProperties;
 
 public class TemplateRenderViewType extends JSPRenderView{
 
-	private Configuration config;
+	private PluginsProperties pluginsProperties;
 	
 	public TemplateRenderViewType() {
-		ServerBootstrap sb = 
-				(ServerBootstrap) ApplicationBootstrapProvider.getBootstrap();
-		this.config = sb.getConfiguration();
-
+		this.pluginsProperties = EntityContextPlugin.getEntity(PluginsProperties.class);
 	}
+	
 	protected void show(int responseStatus, String reason,
 			WebMvcRequest webRequest,
 			WebMvcResponse webResponse,
 			String view, DispatcherType dispatcherType){
 		
-        view = config.getValue(view);
+        view = pluginsProperties.getValue(view);
         
 		if(WebDispatcherType.REDIRECT.equals(dispatcherType)){
 			super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
