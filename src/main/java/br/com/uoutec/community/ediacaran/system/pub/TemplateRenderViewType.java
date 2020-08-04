@@ -23,13 +23,7 @@ public class TemplateRenderViewType extends JSPRenderView{
 			String view, DispatcherType dispatcherType){
 		
         view = pluginsProperties.getValue(view);
-        
-		if(WebDispatcherType.REDIRECT.equals(dispatcherType)){
-			super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
-		}
-		else{
-			super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
-		}
+		super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
 	}
 	
 }
