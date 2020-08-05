@@ -1,20 +1,19 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
 import org.brandao.brutos.DispatcherType;
-import org.brandao.brutos.web.WebDispatcherType;
 import org.brandao.brutos.web.WebMvcRequest;
 import org.brandao.brutos.web.WebMvcResponse;
 import org.brandao.brutos.web.http.view.JSPRenderView;
 
+import br.com.uoutec.community.ediacaran.VarParser;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginsProperties;
 
 public class TemplateRenderViewType extends JSPRenderView{
 
-	private PluginsProperties pluginsProperties;
+	private VarParser varParser;
 	
 	public TemplateRenderViewType() {
-		this.pluginsProperties = EntityContextPlugin.getEntity(PluginsProperties.class);
+		this.varParser = EntityContextPlugin.getEntity(VarParser.class);
 	}
 	
 	protected void show(int responseStatus, String reason,
@@ -22,7 +21,7 @@ public class TemplateRenderViewType extends JSPRenderView{
 			WebMvcResponse webResponse,
 			String view, DispatcherType dispatcherType){
 		
-        view = pluginsProperties.getValue(view);
+        view = varParser.getValue(view);
 		super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
 	}
 	
