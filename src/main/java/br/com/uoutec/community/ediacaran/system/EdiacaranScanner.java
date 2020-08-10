@@ -12,7 +12,6 @@ public class EdiacaranScanner extends DefaultScanner{
 	private URL loc;
 	
 	public EdiacaranScanner() throws ClassNotFoundException {
-		ClassLoader cl = EdiacaranWebApplicationContext.class.getClassLoader();
 		loc = EdiacaranWebApplicationContext.location;
 	}
 	

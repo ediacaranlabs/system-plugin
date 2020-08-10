@@ -25,6 +25,7 @@ public class EdiacaranWebApplicationContext extends AbstractWebApplicationContex
 				new AnnotationDefinitionReader(this, registry);
 
 		Class<?> pt = plugin.getClass();
+		
 		try {
 			EdiacaranWebApplicationContext.location = pt.getProtectionDomain().getCodeSource().getLocation();
 			
@@ -33,6 +34,7 @@ public class EdiacaranWebApplicationContext extends AbstractWebApplicationContex
 			se.setScannerClassName(EdiacaranScanner.class.getName());
 			se.setUseDefaultfilter(true);
 			definitionReader.setScannerEntity(se);
+			
 			definitionReader.loadDefinitions();
 		}
 		finally {
