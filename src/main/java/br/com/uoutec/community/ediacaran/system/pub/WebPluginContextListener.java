@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.brandao.brutos.BrutosConstants;
 import org.brandao.brutos.Configuration;
-import org.brandao.brutos.annotation.web.AnnotationWebApplicationContext;
 
 import br.com.uoutec.application.ClassUtil;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
@@ -12,6 +11,7 @@ import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginContextEvent;
 import br.com.uoutec.community.ediacaran.plugins.PluginContextListener;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
+import br.com.uoutec.community.ediacaran.system.EdiacaranWebApplicationContext;
 import br.com.uoutec.community.ediacaran.system.WebPlugin;
 
 public class WebPluginContextListener implements PluginContextListener{
@@ -38,7 +38,8 @@ public class WebPluginContextListener implements PluginContextListener{
 		}
 	}
 	
-	public void pluginInitialized0(PluginContextEvent evt) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void pluginInitialized0(PluginContextEvent evt) throws Throwable {
+		Plugin plugin = (Plugin) evt.getPluginNode().getExtend().get(PluginInitializer.PLUGIN);
 		ClassLoader classLoader = (ClassLoader) evt.getPluginNode().getExtend().get(PluginInitializer.CLASS_LOADER);
 		File pluginPath  = 
 				evt.getPluginNode().getPluginMetadata().getPath().getBase();
@@ -56,9 +57,8 @@ public class WebPluginContextListener implements PluginContextListener{
 		config.setProperty(BrutosConstants.INVOKER_CLASS,            "br.com.uoutec.community.ediacaran.user.pub.LanguageWebInvoker");
 		config.setProperty(BrutosConstants.VIEW_RESOLVER_PREFIX,     publicPath);
 		
-		AnnotationWebApplicationContext appContext = 
-				(AnnotationWebApplicationContext)ClassUtil.getInstance(
-						ClassUtil.get(AnnotationWebApplicationContext.class.getName(), classLoader));
+		EdiacaranWebApplicationContext appContext = new EdiacaranWebApplicationContext(plugin);
+		ClassLoader cl = appContext.getClassloader();
 		appContext.setConfiguration(config);
 		appContext.flush();
 		
