@@ -13,20 +13,17 @@ import org.brandao.brutos.web.mapping.WebController;
 import org.brandao.brutos.web.mapping.WebControllerID;
 import org.brandao.brutos.web.util.WebUtil;
 
-import br.com.uoutec.application.Configuration;
-import br.com.uoutec.application.se.ApplicationBootstrapProvider;
-import br.com.uoutec.community.ediacaran.ServerBootstrap;
+import br.com.uoutec.community.ediacaran.VarParser;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 
 public class EdiacaranControllerManager 
 	extends WebControllerManager{
 
-	private Configuration config;
+	private VarParser varParser;
 	
 	public EdiacaranControllerManager() {
 		super();
-		ServerBootstrap sb = 
-				(ServerBootstrap) ApplicationBootstrapProvider.getBootstrap();
-		this.config = sb.getConfiguration();
+		this.varParser = EntityContextPlugin.getEntity(VarParser.class);
 	}
 
 	public ControllerBuilder addController(String id, 
@@ -50,7 +47,7 @@ public class EdiacaranControllerManager
 				getApplicationContext().getActionType() :
 					actionType;
 		
-		id = config.getValue(StringUtil.adjust(id));
+		id = varParser.getValue(StringUtil.adjust(id));
 		
         id = 
     		StringUtil.isEmpty(id)?
@@ -90,7 +87,7 @@ public class EdiacaranControllerManager
 
 		this.current = new EdiacaranControllerBuilder(controller, this,
 				interceptorManager, validatorFactory, applicationContext,
-				this, this.config);
+				this, varParser);
 
 		this.current
 			.setName(name)

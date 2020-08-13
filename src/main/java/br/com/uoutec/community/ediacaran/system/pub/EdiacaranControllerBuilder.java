@@ -20,22 +20,23 @@ import org.brandao.brutos.web.mapping.WebActionID;
 import org.brandao.brutos.web.mapping.WebController;
 
 import br.com.uoutec.application.Configuration;
+import br.com.uoutec.community.ediacaran.VarParser;
 
 public class EdiacaranControllerBuilder extends WebControllerBuilder{
 
-	private Configuration config;
+	private VarParser varParser;
 	
-    public EdiacaranControllerBuilder(ControllerBuilder builder, ControllerManager.InternalUpdate internalUpdate, Configuration config){
+    public EdiacaranControllerBuilder(ControllerBuilder builder, ControllerManager.InternalUpdate internalUpdate, VarParser varParser){
         super( builder, internalUpdate );
-        this.config = config;
+        this.varParser = varParser;
     }
     
     public EdiacaranControllerBuilder( Controller controller, ControllerManager controllerManager,
             InterceptorManager interceptorManager, ValidatorFactory validatorFactory,
-            ConfigurableApplicationContext applicationContext, ControllerManager.InternalUpdate internalUpdate, Configuration config ){
+            ConfigurableApplicationContext applicationContext, ControllerManager.InternalUpdate internalUpdate, VarParser varParser){
         super( controller, controllerManager, interceptorManager, 
                 validatorFactory, applicationContext, internalUpdate );
-        this.config = config;
+        this.varParser = varParser;
     }
 
     
@@ -45,7 +46,7 @@ public class EdiacaranControllerBuilder extends WebControllerBuilder{
     	
         ActionType type      = this.controller.getActionType();
         
-        id                   = config.getValue(StringUtil.adjust(id));
+        id                   = varParser.getValue(StringUtil.adjust(id));
 		
         resultId             = StringUtil.adjust(resultId);
 		
