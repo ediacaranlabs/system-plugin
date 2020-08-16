@@ -1,8 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
-import org.brandao.brutos.BrutosConstants;
-import org.brandao.brutos.Configuration;
-
+import br.com.uoutec.application.se.ApplicationBootstrapProvider;
+import br.com.uoutec.community.ediacaran.ServerBootstrap;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginContextEvent;
@@ -10,7 +9,6 @@ import br.com.uoutec.community.ediacaran.plugins.PluginContextListener;
 import br.com.uoutec.community.ediacaran.plugins.PluginException;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
 import br.com.uoutec.community.ediacaran.plugins.PluginNode;
-import br.com.uoutec.community.ediacaran.system.EdiacaranWebApplicationContext;
 import br.com.uoutec.community.ediacaran.system.WebPlugin;
 import br.com.uoutec.community.ediacaran.web.EdiacaranWebInvoker;
 
@@ -41,6 +39,10 @@ public class WebPluginContextListener implements PluginContextListener{
 		PluginNode pluginNode = evt.getPluginNode();
 		Plugin plugin         = (Plugin) pluginNode.getExtend().get(PluginInitializer.PLUGIN);
  
+		ServerBootstrap sb = (ServerBootstrap) ApplicationBootstrapProvider.getBootstrap();
+		sb.addContext(evt.getPluginNode().getPluginMetadata());
+		
+		/*
 		Configuration config = new Configuration();
 		
 		config.setProperty(BrutosConstants.RENDER_VIEW_CLASS,        "br.com.uoutec.community.ediacaran.system.pub.TemplateRenderView");
@@ -54,9 +56,16 @@ public class WebPluginContextListener implements PluginContextListener{
 		appContext.setConfiguration(config);
 		appContext.flush();
 		
+		
 		evt.getPluginNode().getExtend().put(WEB_APP_CONTEXT, appContext);
 		
-		EdiacaranWebInvoker.register(evt.getPluginNode().getPluginMetadata(), appContext);
+		ClassLoader cl = (ClassLoader)evt.getPluginNode().getExtend().get(PluginInitializer.CLASS_LOADER);
+		EntityContextPluginProvider ecpp = EntityContextPlugin.getEntity(EntityContextPluginProvider.class);
+		WebInvoker wi = (WebInvoker)appContext.getInvoker();
+		PluginMetadata pm = evt.getPluginNode().getPluginMetadata();
+		
+		EdiacaranWebInvoker.register(pm, new WebInvokerWrapper(wi, ecpp, cl));
+		*/
 	}
 
 	@Override

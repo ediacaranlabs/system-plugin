@@ -6,13 +6,16 @@ import org.brandao.brutos.annotation.scanner.DefaultScanner;
 import org.brandao.brutos.scanner.vfs.Vfs;
 
 import br.com.uoutec.application.ClassUtil;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
+import br.com.uoutec.community.ediacaran.plugins.PluginData;
 
 public class EdiacaranScanner extends DefaultScanner{
 	
 	private URL loc;
 	
 	public EdiacaranScanner() throws ClassNotFoundException {
-		loc = EdiacaranWebApplicationContext.location;
+		PluginData pd = EntityContextPlugin.getEntity(PluginData.class);
+		loc = pd.getType().getProtectionDomain().getCodeSource().getLocation();
 	}
 	
 	protected boolean accepts(String resource) {
