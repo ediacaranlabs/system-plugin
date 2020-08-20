@@ -8,6 +8,7 @@ import org.brandao.brutos.scanner.vfs.Vfs;
 import br.com.uoutec.application.ClassUtil;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginData;
+import br.com.uoutec.community.ediacaran.plugins.PublicType;
 
 public class EdiacaranScanner extends DefaultScanner{
 	
@@ -24,7 +25,7 @@ public class EdiacaranScanner extends DefaultScanner{
 			if(super.accepts(resource)) {
 				Class<?> type = ClassUtil.get(Vfs.toClass(resource));
 				URL typeLocation = type.getProtectionDomain().getCodeSource().getLocation();
-				return typeLocation.equals(loc);
+				return typeLocation.equals(loc) || PublicType.class.isAssignableFrom(type);
 			}
 			
 			return false;
