@@ -19,9 +19,13 @@ import org.brandao.brutos.web.bean.JsonBeanEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.uoutec.community.ediacaran.plugins.PublicType;
+
 @Singleton
 @Intercepts
-public class ErrorLoggerInterceptor extends AbstractInterceptor{
+public class ErrorLoggerInterceptor 
+	extends AbstractInterceptor
+	implements PublicType{
 
 	private static final Logger logger = LoggerFactory.getLogger(ErrorLoggerInterceptor.class); 
 
