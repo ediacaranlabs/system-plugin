@@ -2,28 +2,23 @@ package br.com.uoutec.community.ediacaran.system.pub;
 
 import java.beans.FeatureDescriptor;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.el.ELContext;
 import javax.el.ELResolver;
 
-import br.com.uoutec.application.se.ApplicationBootstrapProvider;
-import br.com.uoutec.community.ediacaran.EdiacaranBootstrap;
-import br.com.uoutec.community.ediacaran.PluginManager;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginException;
-import br.com.uoutec.community.ediacaran.plugins.PluginMetadata;
-import br.com.uoutec.community.ediacaran.plugins.PluginPropertyValue;
+import br.com.uoutec.community.ediacaran.plugins.PluginProperties;
+import br.com.uoutec.community.ediacaran.plugins.PluginsProperties;
 
 public class PluginELResolver extends ELResolver{
 
 	private static final String PLUGINS = "plugins";
 	
-	private PluginManager pluginManager;
+	private PluginsProperties pluginsProperties;
 
 	public PluginELResolver() {
-		EdiacaranBootstrap bootstrap = 
-				(EdiacaranBootstrap) ApplicationBootstrapProvider.getBootstrap();
-		this.pluginManager = bootstrap.getPluginManager();
+		this.pluginsProperties = EntityContextPlugin.getEntity(PluginsProperties.class);
 	}
 	
 	@Override
@@ -39,30 +34,18 @@ public class PluginELResolver extends ELResolver{
 	public Object getVal(ELContext context, Object base, Object property) throws PluginException {
 		if(base == null && PLUGINS.equals(property)) {
 			context.setPropertyResolved(true);
-			return pluginManager;
+			return pluginsProperties;
 		}
 		else
-		if(base instanceof PluginManager) {
-			PluginMetadata pm = pluginManager.findById(String.valueOf(property));
+		if(base instanceof PluginsProperties) {
+			PluginProperties pm = pluginsProperties.getPluginProperties(String.valueOf(property));
 			context.setPropertyResolved(true);
 			return pm;
 		}
 		else
-		if(base instanceof PluginMetadata) {
+		if(base instanceof PluginProperties) {
 			context.setPropertyResolved(true);
-			return ((PluginMetadata)base).getValue(String.valueOf(property));
-		}
-		else
-		if(base instanceof PluginPropertyValue) {
-			context.setPropertyResolved(true);
-			if(property.equals("value")) {
-				return ((PluginPropertyValue)base).getValue();
-			}
-			else
-			if(property.equals("values")) {
-				List<String> list = ((PluginPropertyValue)base).getValues();
-				return list == null? null : list.toString();
-			}
+			return ((PluginProperties)base).getString(String.valueOf(property));
 		}
 		
 		return null;

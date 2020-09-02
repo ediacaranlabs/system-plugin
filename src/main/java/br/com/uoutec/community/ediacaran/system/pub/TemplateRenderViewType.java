@@ -1,6 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
 import org.brandao.brutos.DispatcherType;
+import org.brandao.brutos.RenderViewException;
+import org.brandao.brutos.web.WebDispatcherType;
 import org.brandao.brutos.web.WebMvcRequest;
 import org.brandao.brutos.web.WebMvcResponse;
 import org.brandao.brutos.web.http.view.JSPRenderView;
@@ -22,7 +24,17 @@ public class TemplateRenderViewType extends JSPRenderView{
 			String view, DispatcherType dispatcherType){
 		
         view = varParser.getValue(view);
-		super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
+        if( dispatcherType == WebDispatcherType.REDIRECT ){
+        	try {
+        		webResponse.sendRedirect(view);
+        	}
+        	catch(Throwable e){
+    			throw new RenderViewException(e);
+    		}
+        }
+        else {
+        	super.show(responseStatus, reason, webRequest, webResponse, view, dispatcherType);
+        }
 	}
 	
 }
