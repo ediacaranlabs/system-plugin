@@ -40,7 +40,7 @@ public class MenuItem implements Serializable{
 
 	public String getFullName(){
 		Locale locale = MessageLocale.getLocale();
-		return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale);
+		return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale, getClass().getClassLoader());
 	}
 	
 	public String getName() {

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import br.com.uoutec.community.ediacaran.VarParser;
+import br.com.uoutec.community.ediacaran.core.system.registry.LanguageRegistry;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.i18n.MessageBundleUtils;
 import br.com.uoutec.i18n.MessageLocale;
@@ -60,7 +61,8 @@ public class Menu implements Serializable{
 
 	public String getFullName(){
 		Locale locale = MessageLocale.getLocale();
-		return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale);
+		//PropertyResourceBundle
+		return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale, getClass().getClassLoader());
 	}
 	
 	public String getName() {
