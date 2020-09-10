@@ -9,7 +9,9 @@ import javax.servlet.http.HttpSessionListener;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
+import br.com.uoutec.community.ediacaran.core.system.registry.LanguageManager;
 import br.com.uoutec.community.ediacaran.core.system.tx.lock.NamedLockThreadContext;
+import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.system.Constants;
 
 public class ContextInitializer implements ServletContextListener,
@@ -45,6 +47,7 @@ public class ContextInitializer implements ServletContextListener,
 
 	public void contextInitialized(ServletContextEvent arg0) {
 		
+		arg0.getServletContext().setAttribute("lang-manager", EntityContextPlugin.getEntity(LanguageManager.class));
 		JspApplicationContext jspAc = 
 				JspFactory.getDefaultFactory()
 				.getJspApplicationContext(arg0.getServletContext());
