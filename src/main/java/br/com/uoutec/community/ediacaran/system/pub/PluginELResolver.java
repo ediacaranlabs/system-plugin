@@ -34,7 +34,7 @@ public class PluginELResolver extends ELResolver{
 	public Object getVal(ELContext context, Object base, Object property) throws PluginException {
 		if(base == null && PLUGINS.equals(property)) {
 			context.setPropertyResolved(true);
-			return pluginsProperties;
+			return pluginsProperties.get;
 		}
 		else
 		if(base instanceof PluginsProperties) {
