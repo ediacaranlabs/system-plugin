@@ -9,16 +9,17 @@ import javax.el.ELResolver;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginException;
 import br.com.uoutec.community.ediacaran.plugins.PluginProperties;
-import br.com.uoutec.community.ediacaran.plugins.PluginsProperties;
+import br.com.uoutec.community.ediacaran.plugins.PluginsSupplier;
+import br.com.uoutec.community.ediacaran.plugins.PluginsSuppliers;
 
 public class PluginELResolver extends ELResolver{
 
 	private static final String PLUGINS = "plugins";
 	
-	private PluginsProperties pluginsProperties;
+	private PluginsSuppliers pluginsSuppliers;
 
 	public PluginELResolver() {
-		this.pluginsProperties = EntityContextPlugin.getEntity(PluginsProperties.class);
+		this.pluginsSuppliers = EntityContextPlugin.getEntity(PluginsSuppliers.class);
 	}
 	
 	@Override
@@ -34,11 +35,17 @@ public class PluginELResolver extends ELResolver{
 	public Object getVal(ELContext context, Object base, Object property) throws PluginException {
 		if(base == null && PLUGINS.equals(property)) {
 			context.setPropertyResolved(true);
-			return pluginsProperties.get;
+			return pluginsSuppliers;
 		}
 		else
-		if(base instanceof PluginsProperties) {
-			PluginProperties pm = pluginsProperties.getPluginProperties(String.valueOf(property));
+		if(base instanceof PluginsSuppliers) {
+			PluginsSupplier ps = ((PluginsSuppliers)base).getSupplier(String.valueOf(property));
+			context.setPropertyResolved(true);
+			return ps;
+		}
+		else
+		if(base instanceof PluginsSupplier) {
+			PluginProperties pm = ((PluginsSupplier)base).getProperties(String.valueOf(property));
 			context.setPropertyResolved(true);
 			return pm;
 		}
