@@ -10,11 +10,16 @@ import org.brandao.brutos.xml.ScannerEntity;
 
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginData;
+import br.com.uoutec.community.ediacaran.system.pub.type.DateFactory;
 
 public class EdiacaranWebApplicationContext extends AbstractWebApplicationContext{
 	
 	@Override
 	protected void loadDefinitions(ComponentRegistry registry) {
+		
+		//add default types
+		registry.registerType(new DateFactory());
+		
 		AnnotationDefinitionReader definitionReader = 
 				new AnnotationDefinitionReader(this, registry);
 
@@ -37,6 +42,8 @@ public class EdiacaranWebApplicationContext extends AbstractWebApplicationContex
 		se.setUseDefaultfilter(true);
 		definitionReader.setScannerEntity(se);
 		definitionReader.loadDefinitions();
+		
+
 	}
 
 }
