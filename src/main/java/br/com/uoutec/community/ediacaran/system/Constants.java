@@ -8,6 +8,8 @@ public interface Constants {
 	
 	public static final String DATABASE_TX                      = "DATABASE_TX";
 	
+	public static final String MESSAGEBUNDLE                 	= "messageBundle";
+	
 	/* Vars */
 	
 	@Deprecated

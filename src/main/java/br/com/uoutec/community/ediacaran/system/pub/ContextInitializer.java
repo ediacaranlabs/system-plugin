@@ -47,7 +47,8 @@ public class ContextInitializer implements ServletContextListener,
 
 	public void contextInitialized(ServletContextEvent arg0) {
 		
-		arg0.getServletContext().setAttribute("lang-manager", EntityContextPlugin.getEntity(MessageBundle.class));
+		arg0.getServletContext().setAttribute(Constants.MESSAGEBUNDLE, EntityContextPlugin.getEntity(MessageBundle.class));
+		
 		JspApplicationContext jspAc = 
 				JspFactory.getDefaultFactory()
 				.getJspApplicationContext(arg0.getServletContext());
