@@ -27,10 +27,9 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		this.pluginData = pluginData;
 	}
 	
-	//registryTema("default", "front", "/default_template/front", "/plugins/ediacaran/front");
-	//registryTema("default/front", "/default_template/front", "/plugins/ediacaran/front");
+	//registryTema("default", "front", "/plugins/ediacaran/front", "/default_template/front");
 	@Override
-	public synchronized void registerTemplate(String name, String template, String context, String packageName) throws TemaException{
+	public synchronized void registerTemplate(String name, String packageName, String context, String template) throws TemaException{
 		//TODO: security
 		
 		TemaEntry entry = temas.get(name);
@@ -39,7 +38,6 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 			
 			entry = new TemaEntry();
 			entry.name = name;
-			entry.path = template;
 			entry.context = context;
 			entry.packages = new ConcurrentHashMap<String, TemaPackage>();
 			entry.tema = new TemaImp(name, context, template, entry.packages);
@@ -56,11 +54,11 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 				throw new TemaException("tema package has been added: " + name + "/" + packageName);
 			}
 			
-			TemaPackage temaPackage = new TemaPackage(packageName, "/" + packageName, new ConcurrentHashMap<String, TagTemplate>());
+			TemaPackage temaPackage = new TemaPackage(packageName, template, new ConcurrentHashMap<String, TagTemplate>());
 			entry.packages.put(packageName, temaPackage);
 			
 			if(logger.isTraceEnabled()) {
-				logger.trace("tema added: {}[template={}, context={}, package={}]", name, entry.path, context, packageName);
+				logger.trace("tema added: {}[template={}, context={}, package={}]", name, template, context, packageName);
 			}
 			
 		}
@@ -68,7 +66,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	}
 
 	@Override
-	public synchronized void registerTemplate(String name, String template, String packageName, TagTemplate tagTemplate) throws TemaException{
+	public synchronized void registerTemplate(String name, String packageName, String template, TagTemplate tagTemplate) throws TemaException{
 		//TODO: security
 
 		TemaEntry entry = temas.get(name);
@@ -137,8 +135,6 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		public String name;
 		
 		public String context;
-		
-		public String path;
 		
 		public ConcurrentMap<String, TemaPackage> packages;
 		

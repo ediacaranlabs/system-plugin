@@ -32,7 +32,7 @@ public class TagTemplateImp implements TagTemplate {
 	}
 
 	@Override
-	public void applyTagTemplate(String template, Map<String, Object> vars, Writer out) throws TemaException {
+	public void applyTagTemplate(Map<String, Object> vars, Writer out) throws TemaException {
 		try {
 			sp.toWriter(out, vars);
 		}
@@ -42,7 +42,7 @@ public class TagTemplateImp implements TagTemplate {
 	}
 
 	@Override
-	public void applyTagTemplate(String template, Writer out, Object... vars) throws TemaException {
+	public void applyTagTemplate(Writer out, Object... vars) throws TemaException {
 		try {
 			sp.toWriter(out, vars);
 		}

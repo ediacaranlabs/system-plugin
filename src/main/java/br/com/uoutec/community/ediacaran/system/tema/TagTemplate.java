@@ -4,8 +4,6 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.jasper.compiler.AttributeParser;
-
 public interface TagTemplate {
 
 	void applyTagTemplate(Map<String,Object> vars, Writer out) throws TemaException;
