@@ -13,6 +13,7 @@ import br.com.uoutec.community.ediacaran.core.system.registry.MessageBundle;
 import br.com.uoutec.community.ediacaran.core.system.tx.lock.NamedLockThreadContext;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.system.Constants;
+import br.com.uoutec.community.ediacaran.system.tema.TemaRegistry;
 
 public class ContextInitializer implements ServletContextListener,
 	HttpSessionListener, ServletRequestListener{
@@ -48,6 +49,7 @@ public class ContextInitializer implements ServletContextListener,
 	public void contextInitialized(ServletContextEvent arg0) {
 		
 		arg0.getServletContext().setAttribute(Constants.MESSAGEBUNDLE, EntityContextPlugin.getEntity(MessageBundle.class));
+		arg0.getServletContext().setAttribute(Constants.TEMA_REGISTRY, EntityContextPlugin.getEntity(TemaRegistry.class));
 		
 		JspApplicationContext jspAc = 
 				JspFactory.getDefaultFactory()

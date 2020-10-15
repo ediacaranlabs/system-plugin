@@ -10,6 +10,8 @@ public interface Constants {
 	
 	public static final String MESSAGEBUNDLE                 	= "messageBundle";
 	
+	public static final String TEMA_REGISTRY 					= "tema-registry";
+	
 	/* Vars */
 	
 	@Deprecated
