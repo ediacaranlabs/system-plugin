@@ -6,11 +6,11 @@ public interface TemaRegistry extends PublicBean{
 
 	void registerTemplate(String name, String packageName, String context, String template);
 	
-	void registerTemplate(String name, String packageName, String template, TagTemplate tagTemplate);
+	void registerTemplate(String name, String packageName, String template, Component tagTemplate);
 	
-	Tema getCurrentTema();
+	Theme getCurrentTema();
 	
-	Tema getTema(String name);
+	Theme getTema(String name);
 	
 	void unregisterTema(String name);
 	

@@ -1,13 +1,14 @@
 package br.com.uoutec.community.ediacaran.system.tema;
 
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.jasper.compiler.AttributeParser;
 
-public class TemaImp implements Tema{
+public class ThemeImp implements Theme{
 
 	public String name;
 	
@@ -18,23 +19,39 @@ public class TemaImp implements Tema{
 	public ConcurrentMap<String, TemaPackage> packages;
 	
 
-	public TemaImp(String name, String context, String path, ConcurrentMap<String, TemaPackage> packages) {
+	public ThemeImp(String name, String context, String path, ConcurrentMap<String, TemaPackage> packages) {
 		this.name = name;
 		this.packages = packages;
 		this.path = path;
 	}
 
 	@Override
-	public void applyTagTemplate(String template, String packageName, Map<String, Object> vars, Writer out) throws TemaException {
+	public void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> extVars, Writer out) throws TemaException {
 		
 		TemaPackage temaPackage = getPackage(packageName);
 		
-		ConcurrentMap<String, TagTemplate> tagTemplates = temaPackage.getTagTemplates();
+		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
 		
-		TagTemplate p = tagTemplates.get(template);
+		Component p = tagTemplates.get(template);
 		
 		if(p == null) {
 			throw new TemaException("template not found: " + template);
+		}
+		
+		Map<String, Object> vars = new HashMap<String, Object>();
+		
+		vars.putAll(
+			componentVars.prepareVars(
+				p.getPropertiesParse(), p.getProperties(), 
+				p.getAttributesParser(), 
+				p.getEmptyAttributes(), 
+				p.getAttributes()
+			)
+		);
+			
+			
+		if(extVars != null) {
+			vars.putAll(extVars);
 		}
 		
 		p.applyTagTemplate(vars, out);
@@ -45,9 +62,9 @@ public class TemaImp implements Tema{
 		
 		TemaPackage temaPackage = getPackage(packageName);
 		
-		ConcurrentMap<String, TagTemplate> tagTemplates = temaPackage.getTagTemplates();
+		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
 		
-		TagTemplate p = tagTemplates.get(template);
+		Component p = tagTemplates.get(template);
 		
 		if(p == null) {
 			throw new TemaException("template not found: " + template);

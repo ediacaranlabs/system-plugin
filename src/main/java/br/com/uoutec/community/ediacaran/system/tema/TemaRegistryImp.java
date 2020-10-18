@@ -40,7 +40,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 			entry.name = name;
 			entry.context = context;
 			entry.packages = new ConcurrentHashMap<String, TemaPackage>();
-			entry.tema = new TemaImp(name, context, template, entry.packages);
+			entry.tema = new ThemeImp(name, context, template, entry.packages);
 			
 			if(logger.isTraceEnabled()) {
 				logger.trace("tema created: {}[template={}, context={}, package={}]", name, template, context);
@@ -54,7 +54,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 				throw new TemaException("tema package has been added: " + name + "/" + packageName);
 			}
 			
-			TemaPackage temaPackage = new TemaPackage(packageName, template, new ConcurrentHashMap<String, TagTemplate>());
+			TemaPackage temaPackage = new TemaPackage(packageName, template, new ConcurrentHashMap<String, Component>());
 			entry.packages.put(packageName, temaPackage);
 			
 			if(logger.isTraceEnabled()) {
@@ -66,7 +66,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	}
 
 	@Override
-	public synchronized void registerTemplate(String name, String packageName, String template, TagTemplate tagTemplate) throws TemaException{
+	public synchronized void registerTemplate(String name, String packageName, String template, Component tagTemplate) throws TemaException{
 		//TODO: security
 
 		TemaEntry entry = temas.get(name);
@@ -81,7 +81,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 			throw new TemaException("tema package not found: " + name + "/" + packageName);
 		}
 		
-		ConcurrentMap<String, TagTemplate> tagTemplates = temaPackage.getTagTemplates();
+		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
 		
 		if(tagTemplates.put(template, tagTemplate) == null){
 			
@@ -98,12 +98,12 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	}
 	
 	@Override
-	public Tema getCurrentTema() {
+	public Theme getCurrentTema() {
 		return getTema(pluginData.getPropertyValue("template"));
 	}
 	
 	@Override
-	public Tema getTema(String name) {
+	public Theme getTema(String name) {
 		
 		TemaEntry entry = temas.get(name);
 		
@@ -138,7 +138,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		
 		public ConcurrentMap<String, TemaPackage> packages;
 		
-		public Tema tema;
+		public Theme tema;
 		
 	}
 

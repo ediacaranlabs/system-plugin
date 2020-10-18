@@ -36,7 +36,7 @@ public class TemaLoaderImp implements TemaLoader, PublicBean{
 	}
 
 	@Override
-	public Tema loadTema() {
+	public Theme loadTema() {
 		try {
 			return null;//new TemaImp(getTagTemplates(), context, base);
 		}
@@ -45,9 +45,9 @@ public class TemaLoaderImp implements TemaLoader, PublicBean{
 		}
 	}
 
-	private Map<String,StringPattern> getTagTemplates() throws IOException, PluginException {
+	private Map<String,TagTemplate> getTagTemplates() throws IOException, PluginException {
 		
-		Map<String,StringPattern> templates = new HashMap<String, StringPattern>();
+		Map<String,TagTemplate> templates = new HashMap<String, TagTemplate>();
 		
 		File[] files = templatesPath.listFiles();
 		
@@ -58,7 +58,7 @@ public class TemaLoaderImp implements TemaLoader, PublicBean{
 			}
 			
 			Resource r      = loader.getResource(f.toURI().toString());
-			StringPattern t = templateLoader.load(r, charset);
+			TagTemplate t = templateLoader.load(r, charset);
 			
 			templates.put(f.getName().split("\\.")[0], t);
 						

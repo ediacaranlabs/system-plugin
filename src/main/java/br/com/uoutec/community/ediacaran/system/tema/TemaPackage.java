@@ -8,9 +8,9 @@ public class TemaPackage {
 	
 	private String path;
 	
-	private ConcurrentMap<String, TagTemplate> tagTemplates;
+	private ConcurrentMap<String, Component> tagTemplates;
 
-	public TemaPackage(String name, String path, ConcurrentMap<String, TagTemplate> tagTemplates) {
+	public TemaPackage(String name, String path, ConcurrentMap<String, Component> tagTemplates) {
 		this.name = name;
 		this.path = path;
 		this.tagTemplates = tagTemplates;
@@ -24,7 +24,7 @@ public class TemaPackage {
 		return path;
 	}
 
-	public ConcurrentMap<String, TagTemplate> getTagTemplates() {
+	public ConcurrentMap<String, Component> getTagTemplates() {
 		return tagTemplates;
 	}
 	
