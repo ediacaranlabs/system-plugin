@@ -58,9 +58,9 @@ public class TemaLoaderImp implements TemaLoader, PublicBean{
 			}
 			
 			Resource r      = loader.getResource(f.toURI().toString());
-			TagTemplate t = templateLoader.load(r, charset);
+			//TagTemplate t = templateLoader.load(r, charset);
 			
-			templates.put(f.getName().split("\\.")[0], t);
+			//templates.put(f.getName().split("\\.")[0], t);
 						
 		}
 		
