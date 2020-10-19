@@ -29,7 +29,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	
 	//registryTema("default", "front", "/plugins/ediacaran/front", "/default_template/front");
 	@Override
-	public synchronized void registerTemplate(String name, String packageName, String context, String template) throws TemaException{
+	public synchronized void registerTemplate(String name, String packageName, String context, String template) throws ThemeException{
 		//TODO: security
 		
 		TemaEntry entry = temas.get(name);
@@ -51,7 +51,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		if(packageName != null) {
 			
 			if(entry.packages.containsKey(packageName)) {
-				throw new TemaException("tema package has been added: " + name + "/" + packageName);
+				throw new ThemeException("tema package has been added: " + name + "/" + packageName);
 			}
 			
 			TemaPackage temaPackage = new TemaPackage(packageName, template, new ConcurrentHashMap<String, Component>());
@@ -66,19 +66,19 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	}
 
 	@Override
-	public synchronized void registerTemplate(String name, String packageName, String template, Component tagTemplate) throws TemaException{
+	public synchronized void registerTemplate(String name, String packageName, String template, Component tagTemplate) throws ThemeException{
 		//TODO: security
 
 		TemaEntry entry = temas.get(name);
 		
 		if(entry == null) {
-			throw new TemaException("tema not found: " + name);
+			throw new ThemeException("tema not found: " + name);
 		}
 		
 		TemaPackage temaPackage = entry.packages.get(packageName);
 		
 		if(temaPackage == null) {
-			throw new TemaException("tema package not found: " + name + "/" + packageName);
+			throw new ThemeException("tema package not found: " + name + "/" + packageName);
 		}
 		
 		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
@@ -108,7 +108,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		TemaEntry entry = temas.get(name);
 		
 		if(entry == null) {
-			throw new TemaException("tema not found: " + name);
+			throw new ThemeException("tema not found: " + name);
 		}
 		
 		return entry.tema;

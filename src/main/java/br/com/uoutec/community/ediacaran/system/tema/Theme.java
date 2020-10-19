@@ -8,9 +8,9 @@ import org.apache.jasper.compiler.AttributeParser;
 
 public interface Theme {
 	
-	void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> vars, Writer out) throws TemaException;
+	void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> vars, Writer out) throws ThemeException;
 	
-	void applyTagTemplate(String template, String packageName, Writer out, Object ... vars) throws TemaException;
+	void applyTagTemplate(String template, String packageName, Writer out, Object ... vars) throws ThemeException;
 	
 	String getContext();
 	

@@ -41,7 +41,7 @@ public class TemaLoaderImp implements TemaLoader, PublicBean{
 			return null;//new TemaImp(getTagTemplates(), context, base);
 		}
 		catch(Throwable e) {
-			throw new TemaException(e);
+			throw new ThemeException(e);
 		}
 	}
 

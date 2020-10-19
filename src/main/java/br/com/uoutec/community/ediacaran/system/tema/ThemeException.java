@@ -1,22 +1,22 @@
 package br.com.uoutec.community.ediacaran.system.tema;
 
-public class TemaException extends RuntimeException{
+public class ThemeException extends RuntimeException{
 
 	private static final long serialVersionUID = 4632242435979612295L;
 
-	public TemaException() {
+	public ThemeException() {
 		super();
 	}
 
-	public TemaException(String message, Throwable cause) {
+	public ThemeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public TemaException(String message) {
+	public ThemeException(String message) {
 		super(message);
 	}
 
-	public TemaException(Throwable cause) {
+	public ThemeException(Throwable cause) {
 		super(cause);
 	}
 

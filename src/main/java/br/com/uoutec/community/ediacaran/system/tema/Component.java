@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface Component {
 
-	void applyTagTemplate(Map<String,Object> vars, Writer out) throws TemaException;
+	void applyTagTemplate(Map<String,Object> vars, Writer out) throws ThemeException;
 	
-	void applyTagTemplate(Writer out, Object ... vars) throws TemaException;
+	void applyTagTemplate(Writer out, Object ... vars) throws ThemeException;
 	
 	Set<String> getAttributes();
 	

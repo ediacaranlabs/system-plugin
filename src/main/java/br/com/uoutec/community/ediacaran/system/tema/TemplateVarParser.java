@@ -41,7 +41,7 @@ public class TemplateVarParser  extends AbstractVarParser{
 	}
 	
 	@Override
-	public void parse(Writer writter) throws TemaException {
+	public void parse(Writer writter) throws ThemeException {
 		tema.applyTagTemplate(template, packageName, componentVars, vars, writter);
 	}
 

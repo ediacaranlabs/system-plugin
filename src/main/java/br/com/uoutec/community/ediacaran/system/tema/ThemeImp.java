@@ -26,7 +26,7 @@ public class ThemeImp implements Theme{
 	}
 
 	@Override
-	public void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> extVars, Writer out) throws TemaException {
+	public void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> extVars, Writer out) throws ThemeException {
 		
 		TemaPackage temaPackage = getPackage(packageName);
 		
@@ -35,7 +35,7 @@ public class ThemeImp implements Theme{
 		Component p = tagTemplates.get(template);
 		
 		if(p == null) {
-			throw new TemaException("template not found: " + template);
+			throw new ThemeException("template not found: " + template);
 		}
 		
 		Map<String, Object> vars = new HashMap<String, Object>();
@@ -58,7 +58,7 @@ public class ThemeImp implements Theme{
 	}
 
 	@Override
-	public void applyTagTemplate(String template, String packageName, Writer out, Object... vars) throws TemaException {
+	public void applyTagTemplate(String template, String packageName, Writer out, Object... vars) throws ThemeException {
 		
 		TemaPackage temaPackage = getPackage(packageName);
 		
@@ -67,7 +67,7 @@ public class ThemeImp implements Theme{
 		Component p = tagTemplates.get(template);
 		
 		if(p == null) {
-			throw new TemaException("template not found: " + template);
+			throw new ThemeException("template not found: " + template);
 		}
 		
 		p.applyTagTemplate(out, vars);
@@ -109,7 +109,7 @@ public class ThemeImp implements Theme{
 		return null;
 	}
 
-	private TemaPackage getPackage(String name) throws TemaException {
+	private TemaPackage getPackage(String name) throws ThemeException {
 		
 		if(name == null) {
 			name = "front";
@@ -122,7 +122,7 @@ public class ThemeImp implements Theme{
 			temaPackage = packages.get("front");
 			
 			if(temaPackage == null) {
-				throw new TemaException("tema package not found: " + this.name + "/" + name);
+				throw new ThemeException("tema package not found: " + this.name + "/" + name);
 			}
 		}
 		
