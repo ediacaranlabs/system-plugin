@@ -49,7 +49,7 @@ public class ContextInitializer implements ServletContextListener,
 	public void contextInitialized(ServletContextEvent arg0) {
 		
 		arg0.getServletContext().setAttribute(Constants.MESSAGEBUNDLE, EntityContextPlugin.getEntity(MessageBundle.class));
-		arg0.getServletContext().setAttribute(Constants.TEMA_REGISTRY, EntityContextPlugin.getEntity(TemaRegistry.class));
+		arg0.getServletContext().setAttribute(Constants.THEME_REGISTRY, EntityContextPlugin.getEntity(TemaRegistry.class));
 		
 		JspApplicationContext jspAc = 
 				JspFactory.getDefaultFactory()

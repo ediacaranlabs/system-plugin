@@ -5,23 +5,28 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.uoutec.community.ediacaran.front.AbstractVarParser;
-import br.com.uoutec.community.ediacaran.front.TemplatesManager;
-import br.com.uoutec.community.ediacaran.front.TemplatesManagerProvider;
-
 public class TemplateListVarParser  extends AbstractVarParser{
 
 	private String template;
 	
 	private List<Object[]> vars;
 	
-	public TemplateListVarParser(String template) {
-		this(template, new ArrayList<Object[]>());
+	private String packageName;
+	
+	private ComponentVars componentVars;
+	
+	private Theme theme;
+	
+	public TemplateListVarParser(String template, String packageName, ComponentVars componentVars, Theme theme) {
+		this(template, packageName, componentVars, theme, new ArrayList<Object[]>());
 	}
 
-	public TemplateListVarParser(String template, List<Object[]> vars) {
+	public TemplateListVarParser(String template, String packageName, ComponentVars componentVars, Theme theme, List<Object[]> vars) {
 		this.template = template;
 		this.vars = vars;
+		this.packageName = packageName;
+		this.componentVars = componentVars;
+		this.theme = theme;
 	}
 	
 	public TemplateListVarParser clear() {
@@ -39,15 +44,9 @@ public class TemplateListVarParser  extends AbstractVarParser{
 	}
 	
 	@Override
-	public void parse(Writer writter) throws IOException {
-		try {
-			TemplatesManager tm = TemplatesManagerProvider.getTemplatesManager();
-			for(Object[] o: vars) {
-				tm.apply(template, writter, o);
-			}
-		}
-		catch(Throwable e) {
-			throw new IllegalStateException(e);
+	public void parse(Writer writter) throws ThemeException {
+		for(Object[] o: vars) {
+			theme.applyTagTemplate(template, packageName, writter, o);
 		}
 	}
 

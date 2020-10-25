@@ -11,17 +11,17 @@ public class TemplateVarParser  extends AbstractVarParser{
 	
 	private String packageName;
 	
-	private Theme tema;
+	private Theme theme;
 	
 	private Map<String, Object> vars;
 	
 	private ComponentVars componentVars;
 	
-	public TemplateVarParser(String template, String packageName, ComponentVars componentVars, Theme tema) {
+	public TemplateVarParser(String template, String packageName, ComponentVars componentVars, Theme theme) {
 		this.template = template;
 		this.vars = new HashMap<String, Object>();
 		this.packageName = packageName;
-		this.tema = tema;
+		this.theme = theme;
 		this.componentVars = componentVars;
 	}
 	
@@ -42,7 +42,7 @@ public class TemplateVarParser  extends AbstractVarParser{
 	
 	@Override
 	public void parse(Writer writter) throws ThemeException {
-		tema.applyTagTemplate(template, packageName, componentVars, vars, writter);
+		theme.applyTagTemplate(template, packageName, componentVars, vars, writter);
 	}
 
 	@Override
