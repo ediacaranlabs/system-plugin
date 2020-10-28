@@ -13,17 +13,20 @@ import br.com.uoutec.community.ediacaran.plugins.PluginData;
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 
 @Singleton
-public class TemaRegistryImp implements TemaRegistry, PublicBean{
+public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 
-	private static final Logger logger = LoggerFactory.getLogger(TemaRegistry.class);
+	private static final Logger logger = LoggerFactory.getLogger(ThemeRegistry.class);
 	
-	private ConcurrentMap<String, TemaEntry> temas;
+	private ConcurrentMap<String, ThemeEntry> temas;
 	
 	private PluginData pluginData;
 	
+	public ThemeRegistryImp() {
+	}
+	
 	@Inject
-	public TemaRegistryImp(PluginData pluginData) {
-		this.temas = new ConcurrentHashMap<String, TemaEntry>();
+	public ThemeRegistryImp(PluginData pluginData) {
+		this.temas = new ConcurrentHashMap<String, ThemeEntry>();
 		this.pluginData = pluginData;
 	}
 	
@@ -32,11 +35,11 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	public synchronized void registerTemplate(String name, String packageName, String context, String template) throws ThemeException{
 		//TODO: security
 		
-		TemaEntry entry = temas.get(name);
+		ThemeEntry entry = temas.get(name);
 		
 		if(entry == null) {
 			
-			entry = new TemaEntry();
+			entry = new ThemeEntry();
 			entry.name = name;
 			entry.context = context;
 			entry.packages = new ConcurrentHashMap<String, TemaPackage>();
@@ -69,7 +72,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	public synchronized void registerTemplate(String name, String packageName, String template, Component tagTemplate) throws ThemeException{
 		//TODO: security
 
-		TemaEntry entry = temas.get(name);
+		ThemeEntry entry = temas.get(name);
 		
 		if(entry == null) {
 			throw new ThemeException("tema not found: " + name);
@@ -105,7 +108,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 	@Override
 	public Theme getTema(String name) {
 		
-		TemaEntry entry = temas.get(name);
+		ThemeEntry entry = temas.get(name);
 		
 		if(entry == null) {
 			throw new ThemeException("tema not found: " + name);
@@ -130,7 +133,7 @@ public class TemaRegistryImp implements TemaRegistry, PublicBean{
 		
 	}
 
-	private static class TemaEntry {
+	private static class ThemeEntry {
 		
 		public String name;
 		

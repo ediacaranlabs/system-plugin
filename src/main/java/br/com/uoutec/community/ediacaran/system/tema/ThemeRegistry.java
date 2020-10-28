@@ -2,7 +2,7 @@ package br.com.uoutec.community.ediacaran.system.tema;
 
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 
-public interface TemaRegistry extends PublicBean{
+public interface ThemeRegistry extends PublicBean{
 
 	void registerTemplate(String name, String packageName, String context, String template);
 	
