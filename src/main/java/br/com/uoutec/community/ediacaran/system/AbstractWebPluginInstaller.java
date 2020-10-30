@@ -37,6 +37,7 @@ public abstract class AbstractWebPluginInstaller
 		
 		PluginPath pp = metadata.getPath();
 		File base = pp.getBase();
+		base = new File(base, "themes");
 		File packages = new File(base, "themes.properties");
 		packages = packages.getAbsoluteFile();
 		
@@ -54,18 +55,48 @@ public abstract class AbstractWebPluginInstaller
 				String value = p.getProperty(name);
 				
 				String[] path = name.split("/");
-				if(path.length == 2) {
-					themeRegistry.registerTemplate(path[0], path[1], contextManager.getContext(pmd), value);
+				if(path.length == 1) {
+					themeRegistry.registerTheme(path[0], contextManager.getContext(pmd), value);
 				}
-				else
+				
+			}
+
+			names = (Enumeration<String>) p.propertyNames();
+			
+			while(names.hasMoreElements()) {
+				
+				String name = names.nextElement();
+				String value = p.getProperty(name);
+				
+				String[] path = name.split("/");
+				
+				if(path.length == 2) {
+					themeRegistry.registerPackageTheme(path[0], path[1], value);
+					
+				}
+			}
+			
+			
+			names = (Enumeration<String>) p.propertyNames();
+			
+			while(names.hasMoreElements()) {
+				
+				String name = names.nextElement();
+				String value = p.getProperty(name);
+				
+				String[] path = name.split("/");
+				
 				if(path.length >= 3) {
 					String[] tmp = Arrays.copyOfRange(path, 2, path.length);
 					String template = "/" + String.join("/", tmp);
 					Component c = (Component)ClassUtil.getInstance(value);
-					themeRegistry.registerTemplate(path[0], path[1], template, c);
+					c.loadConfiguration();
+					c.loadTemplate();
+					themeRegistry.registerComponentTemplate(path[0], path[1], template, c);
 					
 				}
 			}
+			
 		}
 		
 	}

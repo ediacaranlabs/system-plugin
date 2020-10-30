@@ -10,6 +10,10 @@ public interface Component {
 	
 	void applyTagTemplate(Writer out, Object ... vars) throws ThemeException;
 	
+	void loadConfiguration();
+	
+	void loadTemplate();
+	
 	String getTemplate();
 	
 	Set<String> getAttributes();

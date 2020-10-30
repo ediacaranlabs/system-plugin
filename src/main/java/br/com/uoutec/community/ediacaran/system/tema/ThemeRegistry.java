@@ -4,9 +4,11 @@ import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 
 public interface ThemeRegistry extends PublicBean{
 
-	void registerTemplate(String name, String packageName, String context, String template);
+	void registerTheme(String name, String context, String template) throws ThemeException;
 	
-	void registerTemplate(String name, String packageName, String template, Component tagTemplate);
+	void registerPackageTheme(String name, String packageName, String template) throws ThemeException;
+	
+	void registerComponentTemplate(String name, String packageName, String template, Component tagTemplate) throws ThemeException;
 	
 	Theme getCurrentTema();
 	
