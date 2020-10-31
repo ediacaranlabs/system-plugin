@@ -117,12 +117,12 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 	}
 	
 	@Override
-	public Theme getCurrentTema() {
-		return getTema(pluginData.getPropertyValue("template"));
+	public Theme getCurrentTheme() {
+		return getTheme(pluginData.getPropertyValue("theme"));
 	}
 	
 	@Override
-	public Theme getTema(String name) {
+	public Theme getTheme(String name) {
 		
 		ThemeEntry entry = themes.get(name);
 		
