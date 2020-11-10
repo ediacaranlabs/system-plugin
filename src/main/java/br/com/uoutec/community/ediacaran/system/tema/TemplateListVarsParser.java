@@ -40,6 +40,13 @@ public class TemplateListVarsParser  extends AbstractVarParser{
 		vars.add(current);
 		return this;
 	}
+
+	public TemplateListVarsParser createNewItem(ComponentVars value) {
+		current = new HashMap<String, Object>();
+		vars.add(current);
+		current.put(null, value);
+		return this;
+	}
 	
 	public TemplateListVarsParser put(String key, Object value) {
 		current.put(key, value);
@@ -53,7 +60,8 @@ public class TemplateListVarsParser  extends AbstractVarParser{
 	@Override
 	public void parse(Writer writter) throws ThemeException {
 		for(Map<String, Object> o: vars) {
-			theme.applyTagTemplate(template, packageName, new EmptyVarsBuilder(), o, writter);
+			ComponentVars cv = (ComponentVars) o.get(null);
+			theme.applyTagTemplate(template, packageName, cv == null? new EmptyVarsBuilder() : cv, o, writter);
 		}
 	}
 
