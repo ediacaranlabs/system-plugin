@@ -10,10 +10,14 @@ public class TemaPackage {
 	
 	private ConcurrentMap<String, Component> tagTemplates;
 
-	public TemaPackage(String name, String path, ConcurrentMap<String, Component> tagTemplates) {
+	private ConcurrentMap<String, ConcurrentMap<String, PublicResource>> resources;
+	
+	public TemaPackage(String name, String path, ConcurrentMap<String, Component> tagTemplates, 
+			ConcurrentMap<String, ConcurrentMap<String, PublicResource>> resources) {
 		this.name = name;
 		this.path = path;
 		this.tagTemplates = tagTemplates;
+		this.resources = resources;
 	}
 
 	public String getName() {
@@ -26,6 +30,10 @@ public class TemaPackage {
 
 	public ConcurrentMap<String, Component> getTagTemplates() {
 		return tagTemplates;
+	}
+
+	public ConcurrentMap<String, ConcurrentMap<String, PublicResource>> getResources() {
+		return resources;
 	}
 	
 }

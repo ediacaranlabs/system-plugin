@@ -3,13 +3,15 @@ package br.com.uoutec.community.ediacaran.system.tema;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
-import org.apache.jasper.compiler.AttributeParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ThemeImp implements Theme{
 
+	private static final Logger logger = LoggerFactory.getLogger(Theme.class);
+	
 	public String name;
 	
 	public String context;
@@ -84,6 +86,7 @@ public class ThemeImp implements Theme{
 		return path + temaPackage.getPath();
 	}
 
+	/*
 	@Override
 	public Set<String> getAttributes(Object tag, String packageName) {
 		return null;
@@ -108,7 +111,8 @@ public class ThemeImp implements Theme{
 	public Map<String, AttributeParser> getPropertiesParse(Object tag, String packageName) {
 		return null;
 	}
-
+	 */
+	
 	private TemaPackage getPackage(String name) throws ThemeException {
 		
 		if(name == null) {
@@ -127,6 +131,20 @@ public class ThemeImp implements Theme{
 		}
 		
 		return temaPackage;
+	}
+
+	@Override
+	public ConcurrentMap<String, PublicResource> getResourcesByType(String type, String packageName) {
+		
+		TemaPackage temaPackage = getPackage(packageName);
+		
+		ConcurrentMap<String, PublicResource> resourcesType = temaPackage.getResources().get(type);
+		
+		if(resourcesType == null && logger.isTraceEnabled()) {
+			logger.trace("resource type {} not found [package={}, theme={}]", type, packageName, name);
+		}
+		
+		return resourcesType;
 	}
 	
 }

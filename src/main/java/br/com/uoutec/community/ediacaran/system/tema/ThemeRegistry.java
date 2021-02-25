@@ -10,6 +10,8 @@ public interface ThemeRegistry extends PublicBean{
 	
 	void registerComponentTemplate(String name, String packageName, String template, Component tagTemplate) throws ThemeException;
 	
+	void registerResource(String name, String packageName, String resource, String type, String path) throws ThemeException;
+	
 	Theme getCurrentTheme();
 	
 	Theme getTheme(String name);

@@ -74,7 +74,12 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			throw new ThemeException("theme package has been added: " + name + "/" + packageName);
 		}
 		
-		TemaPackage temaPackage = new TemaPackage(packageName, template, new ConcurrentHashMap<String, Component>());
+		TemaPackage temaPackage = new TemaPackage(
+				packageName, 
+				template, 
+				new ConcurrentHashMap<String, Component>(),
+				new ConcurrentHashMap<String, ConcurrentMap<String, PublicResource>>());
+		
 		entry.packages.put(packageName, temaPackage);
 		
 		if(logger.isTraceEnabled()) {
@@ -112,6 +117,45 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 		else
 		if(logger.isTraceEnabled()) {
 			logger.trace("overridden component template: {}[template={}, package={}]", name, template, packageName);
+		}
+		
+	}
+
+	@Override
+	public synchronized void registerResource(String name, String packageName, String resource, String type, String path) throws ThemeException{
+		//TODO: security
+
+		ThemeEntry entry = themes.get(name);
+		
+		if(entry == null) {
+			throw new ThemeException("theme not found: " + name);
+		}
+		
+		TemaPackage temaPackage = entry.packages.get(packageName);
+		
+		if(temaPackage == null) {
+			throw new ThemeException("theme package not found: " + name + "/" + packageName);
+		}
+		
+		ConcurrentMap<String, ConcurrentMap<String, PublicResource>> map = temaPackage.getResources();
+		
+		ConcurrentMap<String, PublicResource> resources = map.get(type);
+		
+		if(resources == null) {
+			resources = new ConcurrentHashMap<String, PublicResource>();
+			map.put(type, resources);
+		}
+		
+		if(resources.put(resource, new PublicResource(resource, path)) == null){
+			
+			if(logger.isTraceEnabled()) {
+				logger.trace("added resource: {}[resource={}, package={}]", name, resource, packageName);
+			}
+			
+		}
+		else
+		if(logger.isTraceEnabled()) {
+			logger.trace("overridden resource: {}[template={}, package={}]", name, resource, packageName);
 		}
 		
 	}

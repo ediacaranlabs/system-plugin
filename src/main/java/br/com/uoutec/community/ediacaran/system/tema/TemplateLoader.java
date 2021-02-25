@@ -16,6 +16,9 @@ public class TemplateLoader {
 		
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(resource), Charset.forName(charsetName)))) {	
 				while ((line = br.readLine()) != null) {
+					if(stringBuilder.length() != 0) {
+						stringBuilder.append("\n");
+					}
 					stringBuilder.append(line);
 				}
 		}

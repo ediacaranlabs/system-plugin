@@ -2,9 +2,7 @@ package br.com.uoutec.community.ediacaran.system.tema;
 
 import java.io.Writer;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.jasper.compiler.AttributeParser;
+import java.util.concurrent.ConcurrentMap;
 
 public interface Theme {
 	
@@ -15,7 +13,7 @@ public interface Theme {
 	String getContext();
 	
 	String getTemplate(String packageName);
-	
+	/*
 	Set<String> getAttributes(Object tag, String packageName);
 	
 	Set<String> getEmptyAttributes(Object tag, String packageName);
@@ -25,5 +23,8 @@ public interface Theme {
 	Set<String> getProperties(Object tag, String packageName);
 	
 	Map<String, AttributeParser> getPropertiesParse(Object tag, String packageName);
+	*/
+	
+	ConcurrentMap<String, PublicResource> getResourcesByType(String type, String packageName);
 	
 }

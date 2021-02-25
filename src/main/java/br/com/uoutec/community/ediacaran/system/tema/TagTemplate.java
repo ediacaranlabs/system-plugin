@@ -76,7 +76,7 @@ public class TagTemplate {
     					var.substring(0, separatorIndex);
     					
 		        if(id == null || id.isEmpty())
-		            throw new IllegalStateException("invalid parameter id " + var);
+		            throw new IllegalStateException("invalid parameter id " + var + ": " + content.substring(0, firstOpenKeys) + "...");
     					
     			String regex = 
 					separatorIndex != -1?
@@ -97,7 +97,7 @@ public class TagTemplate {
         }
         
         if(openKeysCount > 0 && openKeysCount != closeKeysCount){
-            throw new IllegalStateException("expected: }");
+            throw new IllegalStateException("expected }: " + content.substring(0, lastCloseKeys) + "...");
         }
         
         if(startFrag >= 0 && startFrag <= content.length()){
