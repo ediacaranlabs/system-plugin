@@ -13,7 +13,7 @@ import br.com.uoutec.community.ediacaran.core.system.registry.MessageBundle;
 import br.com.uoutec.community.ediacaran.core.system.tx.lock.NamedLockThreadContext;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.system.Constants;
-import br.com.uoutec.community.ediacaran.system.tema.ThemeRegistry;
+import br.com.uoutec.community.ediacaran.system.theme.ThemeRegistry;
 
 public class ContextInitializer implements ServletContextListener,
 	HttpSessionListener, ServletRequestListener{

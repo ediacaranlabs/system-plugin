@@ -1,4 +1,4 @@
-package br.com.uoutec.community.ediacaran.system.tema;
+package br.com.uoutec.community.ediacaran.system.theme;
 
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 

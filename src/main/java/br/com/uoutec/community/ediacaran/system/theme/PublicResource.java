@@ -1,4 +1,4 @@
-package br.com.uoutec.community.ediacaran.system.tema;
+package br.com.uoutec.community.ediacaran.system.theme;
 
 public class PublicResource {
 

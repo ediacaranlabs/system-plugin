@@ -14,8 +14,8 @@ import br.com.uoutec.community.ediacaran.core.system.AbstractPluginInstaller;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginMetadata;
 import br.com.uoutec.community.ediacaran.plugins.PluginPath;
-import br.com.uoutec.community.ediacaran.system.tema.Component;
-import br.com.uoutec.community.ediacaran.system.tema.ThemeRegistry;
+import br.com.uoutec.community.ediacaran.system.theme.Component;
+import br.com.uoutec.community.ediacaran.system.theme.ThemeRegistry;
 
 public abstract class AbstractWebPluginInstaller 
 	extends AbstractPluginInstaller
