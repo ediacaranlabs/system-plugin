@@ -86,13 +86,23 @@ public abstract class AbstractWebPluginInstaller
 				
 				String[] path = name.split("/");
 				
-				if(path.length >= 3) {
-					String[] tmp = Arrays.copyOfRange(path, 2, path.length);
-					String template = "/" + String.join("/", tmp);
-					Component c = (Component)ClassUtil.getInstance(value);
-					c.loadConfiguration();
-					c.loadTemplate();
-					themeRegistry.registerComponentTemplate(path[0], path[1], template, c);
+				if(path.length > 3) {
+					
+					if("resources".equals(path[2])) {
+						String[] tmp = Arrays.copyOfRange(path, 3, path.length - 1);
+						String resource = "/" + String.join("/", tmp);
+						String type = path[path.length - 1];
+						themeRegistry.registerResource(path[0], path[1], resource, type, value);
+					}
+					else
+					if("tags".equals(path[2])) {
+						String[] tmp = Arrays.copyOfRange(path, 3, path.length);
+						String template = "/" + String.join("/", tmp);
+						Component c = (Component)ClassUtil.getInstance(value);
+						c.loadConfiguration();
+						c.loadTemplate();
+						themeRegistry.registerComponentTemplate(path[0], path[1], template, c);
+					}
 					
 				}
 			}

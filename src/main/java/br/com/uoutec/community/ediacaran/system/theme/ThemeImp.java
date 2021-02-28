@@ -25,6 +25,7 @@ public class ThemeImp implements Theme{
 		this.name = name;
 		this.packages = packages;
 		this.path = path;
+		this.context = context;
 	}
 
 	@Override
@@ -41,22 +42,32 @@ public class ThemeImp implements Theme{
 		}
 		
 		Map<String, Object> vars = new HashMap<String, Object>();
-		
-		vars.putAll(
-			componentVars.prepareVars(
-				p.getPropertiesParse(), p.getProperties(), 
-				p.getAttributesParser(), 
-				p.getEmptyAttributes(), 
-				p.getAttributes()
-			)
-		);
+
+		try {
+			vars.putAll(
+				componentVars.prepareVars(
+					p.getPropertiesParse(), p.getProperties(), 
+					p.getAttributesParser(), 
+					p.getEmptyAttributes(), 
+					p.getAttributes()
+				)
+			);
+		}
+		catch(Throwable ex) {
+			throw new ThemeException("unable to get tag properties: " + template + "[package=" + temaPackage.getName() + "]", ex);
+		}
 			
 			
 		if(extVars != null) {
 			vars.putAll(extVars);
 		}
-		
-		p.applyTagTemplate(vars, out);
+
+		try {
+			p.applyTagTemplate(vars, out);
+		}
+		catch(Throwable ex) {
+			throw new ThemeException("unable to load template tag: " + template + "[package=" + temaPackage.getName() + "]", ex);
+		}
 	}
 
 	@Override
@@ -75,6 +86,11 @@ public class ThemeImp implements Theme{
 		p.applyTagTemplate(out, vars);
 	}
 
+	@Override
+	public String getBasePath() {
+		return path;
+	}
+	
 	@Override
 	public String getContext() {
 		return context;

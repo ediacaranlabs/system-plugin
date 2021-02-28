@@ -145,17 +145,21 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			resources = new ConcurrentHashMap<String, PublicResource>();
 			map.put(type, resources);
 		}
+
+		if(path.startsWith("/")) {
+			path = entry.tema.getContext() + path;
+		}
 		
 		if(resources.put(resource, new PublicResource(resource, path)) == null){
 			
 			if(logger.isTraceEnabled()) {
-				logger.trace("added resource: {}[resource={}, package={}]", name, resource, packageName);
+				logger.trace("added resource: {}[resource={}, package={}]", name, path, packageName);
 			}
 			
 		}
 		else
 		if(logger.isTraceEnabled()) {
-			logger.trace("overridden resource: {}[template={}, package={}]", name, resource, packageName);
+			logger.trace("overridden resource: {}[resource={}, package={}]", name, path, packageName);
 		}
 		
 	}

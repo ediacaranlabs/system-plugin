@@ -10,6 +10,8 @@ public interface Theme {
 	
 	void applyTagTemplate(String template, String packageName, Writer out, Object ... vars) throws ThemeException;
 	
+	String getBasePath();
+	
 	String getContext();
 	
 	String getTemplate(String packageName);
