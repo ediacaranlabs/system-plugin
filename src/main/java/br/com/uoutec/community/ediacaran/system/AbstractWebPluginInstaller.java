@@ -15,6 +15,7 @@ import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginMetadata;
 import br.com.uoutec.community.ediacaran.plugins.PluginPath;
 import br.com.uoutec.community.ediacaran.system.theme.Component;
+import br.com.uoutec.community.ediacaran.system.theme.ThemeException;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeRegistry;
 
 public abstract class AbstractWebPluginInstaller 
@@ -78,7 +79,62 @@ public abstract class AbstractWebPluginInstaller
 			
 			
 			names = (Enumeration<String>) p.propertyNames();
-			
+
+			while(names.hasMoreElements()) {
+				
+				String name = names.nextElement();
+				String value = p.getProperty(name);
+				
+				String[] path = name.split("/");
+				
+				if(path.length == 3) {
+					
+					if("resources".equals(path[2])) {
+						String[] resources = value.split("\\,");
+						
+						for(String resource: resources) {
+							String rValue = p.getProperty(path[0] + "/" + path[1] + "/resources" + resource);
+							
+							if(rValue == null) {
+								throw new ThemeException("resource not found: " + resource);
+							}
+
+							String[] tmp = resource.split("/");
+							String resourceName = String.join("/", Arrays.copyOf(tmp, tmp.length - 1));
+							String type = tmp[tmp.length - 1];
+							themeRegistry.registerResource(path[0], path[1], resourceName, type, rValue);
+							
+						}
+					}
+					
+				}
+			}
+
+			names = (Enumeration<String>) p.propertyNames();
+
+			while(names.hasMoreElements()) {
+				
+				String name = names.nextElement();
+				String value = p.getProperty(name);
+				
+				String[] path = name.split("/");
+				
+				if(path.length > 3) {
+					
+					if("tags".equals(path[2])) {
+						String[] tmp = Arrays.copyOfRange(path, 3, path.length);
+						String template = "/" + String.join("/", tmp);
+						Component c = (Component)ClassUtil.getInstance(value);
+						c.loadConfiguration();
+						c.loadTemplate();
+						themeRegistry.registerComponentTemplate(path[0], path[1], template, c);
+					}
+					
+				}
+			}			
+			/*
+			names = (Enumeration<String>) p.propertyNames();
+
 			while(names.hasMoreElements()) {
 				
 				String name = names.nextElement();
@@ -106,7 +162,7 @@ public abstract class AbstractWebPluginInstaller
 					
 				}
 			}
-			
+			*/
 		}
 		
 	}

@@ -1,5 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.theme;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 public class TemaPackage {
@@ -10,10 +11,10 @@ public class TemaPackage {
 	
 	private ConcurrentMap<String, Component> tagTemplates;
 
-	private ConcurrentMap<String, ConcurrentMap<String, PublicResource>> resources;
+	private ConcurrentMap<String, List<PublicResource>> resources;
 	
 	public TemaPackage(String name, String path, ConcurrentMap<String, Component> tagTemplates, 
-			ConcurrentMap<String, ConcurrentMap<String, PublicResource>> resources) {
+			ConcurrentMap<String, List<PublicResource>> resources) {
 		this.name = name;
 		this.path = path;
 		this.tagTemplates = tagTemplates;
@@ -32,7 +33,7 @@ public class TemaPackage {
 		return tagTemplates;
 	}
 
-	public ConcurrentMap<String, ConcurrentMap<String, PublicResource>> getResources() {
+	public ConcurrentMap<String, List<PublicResource>> getResources() {
 		return resources;
 	}
 	

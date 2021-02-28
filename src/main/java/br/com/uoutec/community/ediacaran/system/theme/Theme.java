@@ -1,8 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.theme;
 
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 public interface Theme {
 	
@@ -27,6 +27,6 @@ public interface Theme {
 	Map<String, AttributeParser> getPropertiesParse(Object tag, String packageName);
 	*/
 	
-	ConcurrentMap<String, PublicResource> getResourcesByType(String type, String packageName);
+	List<PublicResource> getResourcesByType(String type, String packageName);
 	
 }

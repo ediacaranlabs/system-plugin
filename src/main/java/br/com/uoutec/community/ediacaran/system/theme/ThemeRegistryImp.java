@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.theme;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -78,7 +80,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 				packageName, 
 				template, 
 				new ConcurrentHashMap<String, Component>(),
-				new ConcurrentHashMap<String, ConcurrentMap<String, PublicResource>>());
+				new ConcurrentHashMap<String, List<PublicResource>>());
 		
 		entry.packages.put(packageName, temaPackage);
 		
@@ -137,12 +139,12 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			throw new ThemeException("theme package not found: " + name + "/" + packageName);
 		}
 		
-		ConcurrentMap<String, ConcurrentMap<String, PublicResource>> map = temaPackage.getResources();
+		ConcurrentMap<String, List<PublicResource>> map = temaPackage.getResources();
 		
-		ConcurrentMap<String, PublicResource> resources = map.get(type);
+		List<PublicResource> resources = map.get(type);
 		
 		if(resources == null) {
-			resources = new ConcurrentHashMap<String, PublicResource>();
+			resources = new ArrayList<PublicResource>();
 			map.put(type, resources);
 		}
 
@@ -150,16 +152,26 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			path = entry.tema.getContext() + path;
 		}
 		
-		if(resources.put(resource, new PublicResource(resource, path)) == null){
+		PublicResource pr = new PublicResource(resource, path);
+		int index;
+		
+		if((index = resources.indexOf(pr)) >= 0){
+			
+			resources.set(index, pr);
+			
+			if(logger.isTraceEnabled()) {
+				logger.trace("overridden resource: {}[resource={}, package={}]", name, path, packageName);
+			}
+			
+		}
+		else {
+			
+			resources.add(pr);
 			
 			if(logger.isTraceEnabled()) {
 				logger.trace("added resource: {}[resource={}, package={}]", name, path, packageName);
 			}
 			
-		}
-		else
-		if(logger.isTraceEnabled()) {
-			logger.trace("overridden resource: {}[resource={}, package={}]", name, path, packageName);
 		}
 		
 	}

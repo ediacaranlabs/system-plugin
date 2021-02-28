@@ -2,6 +2,7 @@ package br.com.uoutec.community.ediacaran.system.theme;
 
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
@@ -150,11 +151,11 @@ public class ThemeImp implements Theme{
 	}
 
 	@Override
-	public ConcurrentMap<String, PublicResource> getResourcesByType(String type, String packageName) {
+	public List<PublicResource> getResourcesByType(String type, String packageName) {
 		
 		TemaPackage temaPackage = getPackage(packageName);
 		
-		ConcurrentMap<String, PublicResource> resourcesType = temaPackage.getResources().get(type);
+		List<PublicResource> resourcesType = temaPackage.getResources().get(type);
 		
 		if(resourcesType == null && logger.isTraceEnabled()) {
 			logger.trace("resource type {} not found [package={}, theme={}]", type, packageName, name);
