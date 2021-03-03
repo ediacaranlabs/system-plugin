@@ -160,7 +160,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			resources.set(index, pr);
 			
 			if(logger.isTraceEnabled()) {
-				logger.trace("overridden resource: {}[resource={}, package={}]", name, path, packageName);
+				logger.trace("overridden resource: {}[path={}, resource={}, package={}]", name, path, resource, packageName);
 			}
 			
 		}
@@ -169,7 +169,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			resources.add(pr);
 			
 			if(logger.isTraceEnabled()) {
-				logger.trace("added resource: {}[resource={}, package={}]", name, path, packageName);
+				logger.trace("added resource: {}[resource={}, resource={}, package={}]", name, path, resource, packageName);
 			}
 			
 		}
