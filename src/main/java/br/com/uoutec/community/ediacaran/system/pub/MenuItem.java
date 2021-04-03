@@ -8,6 +8,7 @@ import br.com.uoutec.community.ediacaran.core.system.registry.MessageBundle;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.i18n.MessageLocale;
 
+@Deprecated
 public class MenuItem implements Serializable{
 
 	private static final long serialVersionUID = -5651914208489395269L;
@@ -17,6 +18,10 @@ public class MenuItem implements Serializable{
 	private String icon;
 
 	private String resourceBundle;
+	
+	private String badge;
+	
+	private String badgeStyle;
 	
 	private String template;
 	
@@ -28,7 +33,7 @@ public class MenuItem implements Serializable{
 	}
 	
 	public MenuItem(String name, String icon, String resourceBundle,
-			String template, String resource, int order) {
+			String template, String resource, String badge, String badgeStyle, int order) {
 		super();
 		this.name = name;
 		this.icon = icon;
@@ -36,13 +41,19 @@ public class MenuItem implements Serializable{
 		this.template = template;
 		this.resource = resource;
 		this.order = order;
+		this.badge = badge;
+		this.badgeStyle = badgeStyle;
 	}
 
 	public String getFullName(){
-		Locale locale = MessageLocale.getLocale();
-		MessageBundle lang = EntityContextPlugin.getEntity(MessageBundle.class);
-		return lang.getMessageResourceString(resourceBundle, this.template, locale);
-		//return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale, getClass().getClassLoader());
+		
+		if(resourceBundle != null) {
+			Locale locale = MessageLocale.getLocale();
+			MessageBundle lang = EntityContextPlugin.getEntity(MessageBundle.class);
+			return lang.getMessageResourceString(resourceBundle, this.template, locale);
+		}
+		
+		return name;
 	}
 	
 	public String getName() {
@@ -81,6 +92,22 @@ public class MenuItem implements Serializable{
 		return resource;
 	}
 	
+	public String getBadge() {
+		return badge;
+	}
+
+	public void setBadge(String badge) {
+		this.badge = badge;
+	}
+
+	public String getBadgeStyle() {
+		return badgeStyle;
+	}
+
+	public void setBadgeStyle(String badgeStyle) {
+		this.badgeStyle = badgeStyle;
+	}
+
 	public String getResource() {
 		VarParser varParser = EntityContextPlugin.getEntity(VarParser.class);
 		return varParser.getValue(resource);

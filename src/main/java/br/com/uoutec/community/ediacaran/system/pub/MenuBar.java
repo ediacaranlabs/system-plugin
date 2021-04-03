@@ -22,6 +22,7 @@ public class MenuBar {
 	}
 	
 	public void addMenu(Menu menu){
+		
 		synchronized (this) {
 			if(map.containsKey(menu.getName())) {
 				throw new IllegalStateException("menu exist: " + menu.getName());

@@ -302,17 +302,26 @@ public class TagTemplate {
                 writter.write(p.getStart());
             }
 
-            Object v = params[p.getIndex()];
-            
-            if(v instanceof VarParser) {
-            	((VarParser)v).parse(writter);
+            try {
+	            Object v = params[p.getIndex()];
+	            
+	            if(v instanceof VarParser) {
+	            	((VarParser)v).parse(writter);
+	            }
+	            else
+	            if(v instanceof TagTemplate) {
+	            	((TagTemplate)v).toWriter(writter, params);
+	            }
+	            else
+	            	writter.write(String.valueOf(v));
             }
-            else
-            if(v instanceof TagTemplate) {
-            	((TagTemplate)v).toWriter(writter, params);
+            catch(Throwable e) {
+	            throw new IllegalStateException(
+	            		"unable to resolve var " + p.getId() + ": " + 
+        				(p.getStart() == null? "" : p.getStart()) + "..." + (p.getEnd() == null? "" : p.getEnd()),
+        				e
+				);
             }
-            else
-            	writter.write(String.valueOf(v));
             
             if(p.getEnd() != null){
             	writter.write(p.getEnd());
@@ -336,18 +345,27 @@ public class TagTemplate {
                 writter.write(p.getStart());
             }
 
-            Object v = params.get(p.getId());
-            
-            if(v instanceof VarParser) {
-            	((VarParser)v).parse(writter);
+            try {
+	            Object v = params.get(p.getId());
+	            
+	            if(v instanceof VarParser) {
+	            	((VarParser)v).parse(writter);
+	            }
+	            else
+	            if(v instanceof TagTemplate) {
+	            	((TagTemplate)v).toWriter(writter, params);
+	            }
+	            else
+	            if(v != null) {
+	            	writter.write(String.valueOf(v));
+	            }
             }
-            else
-            if(v instanceof TagTemplate) {
-            	((TagTemplate)v).toWriter(writter, params);
-            }
-            else
-            if(v != null) {
-            	writter.write(String.valueOf(v));
+            catch(Throwable e) {
+	            throw new IllegalStateException(
+	            		"unable to resolve var " + p.getId() + ": " + 
+        				(p.getStart() == null? "" : p.getStart()) + "..." + (p.getEnd() == null? "" : p.getEnd()),
+        				e
+				);
             }
             
             if(p.getEnd() != null){

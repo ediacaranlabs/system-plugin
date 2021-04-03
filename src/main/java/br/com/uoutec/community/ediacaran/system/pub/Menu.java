@@ -24,23 +24,39 @@ public class Menu implements Serializable{
 	
 	private String resource;
 	
+	private String body;
+	
 	private String resourceBundle;
+	
+	private String badge;
+	
+	private String badgeStyle;
 	
 	private String template;
 	
-	private List<MenuItem> itens;
+	private List<Menu> itens;
 	
-	private Map<String, MenuItem> map;
+	private Map<String, Menu> map;
 	
 	private int order;
 
 	public Menu(){
-		this(null, null, null, null, null, new ArrayList<MenuItem>(), 0);
+		this(null, null, null, null, null, new ArrayList<Menu>(), null, null, null, 0);
+	}
+
+	public Menu(String name){
+		this(name, null, null, null, null, new ArrayList<Menu>(), null, null, null, 0);
 	}
 	
 	public Menu(String name, String icon, String resource,
-			String resourceBundle, String template, List<MenuItem> itens,
-			int order) {
+			String resourceBundle, String template, String badge, String badgeStyle, String body, int order) {
+		this(name, icon, resource, resourceBundle, template, new ArrayList<Menu>(),
+				badge, badgeStyle, body, order);
+	}
+	
+	public Menu(String name, String icon, String resource,
+			String resourceBundle, String template, List<Menu> itens,
+			String badge, String badgeStyle, String body, int order) {
 		super();
 		this.name = name;
 		this.icon = icon;
@@ -49,37 +65,54 @@ public class Menu implements Serializable{
 		this.template = template;
 		this.itens = itens;
 		this.order = order;
-		this.map = new HashMap<String, MenuItem>();
+		this.badge = badge;
+		this.badgeStyle = badgeStyle;
+		
+		this.map = new HashMap<String, Menu>();
 		
 		if(itens != null) {
-			for(MenuItem i: itens) {
+			for(Menu i: itens) {
 				addItem(i);
 			}
 		}
 	}
 
 	public String getFullName(){
-		Locale locale = MessageLocale.getLocale();
-		//PropertyResourceBundle
-		MessageBundle lang = EntityContextPlugin.getEntity(MessageBundle.class);
-		return lang.getMessageResourceString(this.resourceBundle, this.template, locale);
-		//return MessageBundleUtils.getMessageResourceString(this.resourceBundle, this.template, locale, getClass().getClassLoader());
+		
+		if(resourceBundle != null) {
+			Locale locale = MessageLocale.getLocale();
+			MessageBundle lang = EntityContextPlugin.getEntity(MessageBundle.class);
+			return lang.getMessageResourceString(this.resourceBundle, this.template, locale);
+		}
+		
+		return name;
 	}
 	
+	public String getBody() {
+		return body;
+	}
+
+	public Menu setBody(String body) {
+		this.body = body;
+		return this;
+	}
+
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public Menu setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	public String getIcon() {
 		return icon;
 	}
 
-	public void setIcon(String icon) {
+	public Menu setIcon(String icon) {
 		this.icon = icon;
+		return this;
 	}
 
 	public String getRawResource() {
@@ -91,39 +124,61 @@ public class Menu implements Serializable{
 		return varParser.getValue(resource);
 	}
 
-	public void setResource(String resource) {
+	public Menu setResource(String resource) {
 		this.resource = resource;
+		return this;
 	}
 
 	public String getResourceBundle() {
 		return resourceBundle;
 	}
 
-	public void setResourceBundle(String resourceBundle) {
+	public Menu setResourceBundle(String resourceBundle) {
 		this.resourceBundle = resourceBundle;
+		return this;
 	}
 
 	public String getTemplate() {
 		return template;
 	}
 
-	public void setTemplate(String template) {
+	public Menu setTemplate(String template) {
 		this.template = template;
+		return this;
 	}
 
 	public int getOrder() {
 		return order;
 	}
 
-	public void setOrder(int order) {
+	public Menu setOrder(int order) {
 		this.order = order;
+		return this;
 	}
 
-	public List<MenuItem> getItens() {
+	public String getBadgeStyle() {
+		return badgeStyle;
+	}
+
+	public Menu setBadgeStyle(String badgeStyle) {
+		this.badgeStyle = badgeStyle;
+		return this;
+	}
+
+	public List<Menu> getItens() {
 		return itens;
 	}
 
-	public void addItem(MenuItem item){
+	public String getBadge() {
+		return badge;
+	}
+
+	public Menu setBadge(String badge) {
+		this.badge = badge;
+		return this;
+	}
+
+	public Menu addItem(Menu item){
 		synchronized (this) {
 			if(map.containsKey(item.getName())) {
 				throw new IllegalStateException("menu exist: " + item.getName());
@@ -132,30 +187,33 @@ public class Menu implements Serializable{
 			this.itens.add(item);
 			this.map.put(item.getName(), item);
 			
-			Collections.sort(this.itens, new Comparator<MenuItem>(){
+			Collections.sort(this.itens, new Comparator<Menu>(){
 
-				public int compare(MenuItem o1, MenuItem o2) {
+				public int compare(Menu o1, Menu o2) {
 					return o2.getOrder() - o1.getOrder();
 				}
 				
 			});
 			
+			return this;
 		}
 	}
 
-	public MenuItem getItem(String name){
+	public Menu getItem(String name){
 		return map.get(name);
 	}
 	
-	public void removeItem(MenuItem item){
+	public Menu removeItem(Menu item){
 		synchronized (this) {
-			MenuItem m = map.get(item.getName());
+			Menu m = map.get(item.getName());
 			
 			if(m == null) 
-				return;
+				return this;
 			
 			itens.remove(m);
 			map.remove(m.getName());
+			
+			return this;
 		}
 	}
 	
