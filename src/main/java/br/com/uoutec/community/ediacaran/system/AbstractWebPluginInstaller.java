@@ -34,9 +34,9 @@ public abstract class AbstractWebPluginInstaller
 		ThemeRegistry themeRegistry = EntityContextPlugin.getEntity(ThemeRegistry.class);
 		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
 		
-		PluginMetadata pmd = super.getMetadata();
+		PluginMetadata pmd = pluginConfiguration.getMetadata();
 		
-		PluginPath pp = metadata.getPath();
+		PluginPath pp = pmd.getPath();
 		File base = pp.getBase();
 		base = new File(base, "themes");
 		File packages = new File(base, "themes.properties");

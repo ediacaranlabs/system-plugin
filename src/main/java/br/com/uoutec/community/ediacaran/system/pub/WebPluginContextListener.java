@@ -28,13 +28,13 @@ public class WebPluginContextListener implements PluginContextListener{
 	
 	public void pluginInitialized0(PluginContextEvent evt) throws Throwable {
 		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
-		contextManager.registerContext(evt.getPluginNode().getPluginMetadata());
+		contextManager.registerContext(evt.getPluginNode().getPluginConfiguration().getMetadata());
 	}
 
 	@Override
 	public void pluginDestroyed(PluginContextEvent evt) {
 		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
-		contextManager.unregisterContext(evt.getPluginNode().getPluginMetadata());
+		contextManager.unregisterContext(evt.getPluginNode().getPluginConfiguration().getMetadata());
 	}
 
 }

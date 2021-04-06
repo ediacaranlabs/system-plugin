@@ -203,9 +203,9 @@ public class Menu implements Serializable{
 		return map.get(name);
 	}
 	
-	public Menu removeItem(Menu item){
+	public Menu removeItem(String name){
 		synchronized (this) {
-			Menu m = map.get(item.getName());
+			Menu m = map.get(name);
 			
 			if(m == null) 
 				return this;
