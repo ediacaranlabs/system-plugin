@@ -9,7 +9,7 @@ import org.brandao.brutos.web.AbstractWebApplicationContext;
 import org.brandao.brutos.xml.ScannerEntity;
 
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginData;
+import br.com.uoutec.community.ediacaran.plugins.PluginType;
 import br.com.uoutec.community.ediacaran.system.pub.type.DateFactory;
 
 public class EdiacaranWebApplicationContext extends AbstractWebApplicationContext{
@@ -23,7 +23,7 @@ public class EdiacaranWebApplicationContext extends AbstractWebApplicationContex
 		AnnotationDefinitionReader definitionReader = 
 				new AnnotationDefinitionReader(this, registry);
 
-		PluginData pd = EntityContextPlugin.getEntity(PluginData.class);
+		PluginType pd = EntityContextPlugin.getEntity(PluginType.class);
 		
 		Set<String> packageNames = new HashSet<String>();
 		packageNames.add(pd.getPackage().getName());

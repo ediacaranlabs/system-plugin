@@ -12,7 +12,7 @@ import org.brandao.brutos.ClassUtil;
 import br.com.uoutec.community.ediacaran.ContextManager;
 import br.com.uoutec.community.ediacaran.core.system.AbstractPluginInstaller;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginMetadata;
+import br.com.uoutec.community.ediacaran.plugins.PluginConfigurationMetadata;
 import br.com.uoutec.community.ediacaran.plugins.PluginPath;
 import br.com.uoutec.community.ediacaran.system.theme.Component;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeException;
@@ -34,7 +34,7 @@ public abstract class AbstractWebPluginInstaller
 		ThemeRegistry themeRegistry = EntityContextPlugin.getEntity(ThemeRegistry.class);
 		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
 		
-		PluginMetadata pmd = pluginConfiguration.getMetadata();
+		PluginConfigurationMetadata pmd = pluginConfiguration.getMetadata();
 		
 		PluginPath pp = pmd.getPath();
 		File base = pp.getBase();

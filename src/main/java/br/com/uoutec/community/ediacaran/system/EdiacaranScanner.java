@@ -7,7 +7,7 @@ import org.brandao.brutos.scanner.vfs.Vfs;
 
 import br.com.uoutec.application.ClassUtil;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginData;
+import br.com.uoutec.community.ediacaran.plugins.PluginType;
 import br.com.uoutec.community.ediacaran.plugins.PublicType;
 
 public class EdiacaranScanner extends DefaultScanner{
@@ -15,7 +15,7 @@ public class EdiacaranScanner extends DefaultScanner{
 	private URL loc;
 	
 	public EdiacaranScanner() throws ClassNotFoundException {
-		PluginData pd = EntityContextPlugin.getEntity(PluginData.class);
+		PluginType pd = EntityContextPlugin.getEntity(PluginType.class);
 		loc = pd.getType().getProtectionDomain().getCodeSource().getLocation();
 	}
 	

@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.uoutec.community.ediacaran.plugins.PluginData;
+import br.com.uoutec.community.ediacaran.plugins.PluginType;
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 
 @Singleton
@@ -21,13 +21,13 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 	
 	private ConcurrentMap<String, ThemeEntry> themes;
 	
-	private PluginData pluginData;
+	private PluginType pluginData;
 	
 	public ThemeRegistryImp() {
 	}
 	
 	@Inject
-	public ThemeRegistryImp(PluginData pluginData) {
+	public ThemeRegistryImp(PluginType pluginData) {
 		this.themes = new ConcurrentHashMap<String, ThemeEntry>();
 		this.pluginData = pluginData;
 	}
@@ -178,7 +178,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 	
 	@Override
 	public Theme getCurrentTheme() {
-		return getTheme(pluginData.getPropertyValue("theme"));
+		return getTheme(pluginData.getConfiguration().getString("theme"));
 	}
 	
 	@Override
