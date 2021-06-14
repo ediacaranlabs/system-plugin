@@ -43,6 +43,21 @@
 		</dependency>
 		<!-- ediacaran -->
 		<dependency>
+		    <groupId>org.apache.shiro</groupId>
+		    <artifactId>shiro-web</artifactId>
+		    <version>1.6.0</version>
+		</dependency>
+	    <dependency>
+	        <groupId>javax.security.enterprise</groupId>
+	        <artifactId>javax.security.enterprise-api</artifactId>
+	        <version>1.0</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.glassfish.soteria</groupId>
+	        <artifactId>javax.security.enterprise</artifactId>
+	        <version>1.0</version>
+	    </dependency>	    
+		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>ediacaran</artifactId>
 			<version>1.0.0</version>
