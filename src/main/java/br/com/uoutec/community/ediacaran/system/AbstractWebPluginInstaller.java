@@ -25,8 +25,23 @@ public abstract class AbstractWebPluginInstaller
 	public void install() throws Throwable {
 		super.install();
 		loadThemes();
+		registerContext();
 	}
 	
+	public void uninstall() throws Throwable{
+		super.uninstall();
+		unregisterContext();
+	}
+	
+	protected void registerContext() {
+		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
+		contextManager.registerContext();
+	}
+
+	protected void unregisterContext() {
+		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
+		contextManager.unregisterContext();
+	}
 	
 	@SuppressWarnings("unchecked")
 	protected void loadThemes() throws Throwable {
@@ -132,37 +147,6 @@ public abstract class AbstractWebPluginInstaller
 					
 				}
 			}			
-			/*
-			names = (Enumeration<String>) p.propertyNames();
-
-			while(names.hasMoreElements()) {
-				
-				String name = names.nextElement();
-				String value = p.getProperty(name);
-				
-				String[] path = name.split("/");
-				
-				if(path.length > 3) {
-					
-					if("resources".equals(path[2])) {
-						String[] tmp = Arrays.copyOfRange(path, 3, path.length - 1);
-						String resource = "/" + String.join("/", tmp);
-						String type = path[path.length - 1];
-						themeRegistry.registerResource(path[0], path[1], resource, type, value);
-					}
-					else
-					if("tags".equals(path[2])) {
-						String[] tmp = Arrays.copyOfRange(path, 3, path.length);
-						String template = "/" + String.join("/", tmp);
-						Component c = (Component)ClassUtil.getInstance(value);
-						c.loadConfiguration();
-						c.loadTemplate();
-						themeRegistry.registerComponentTemplate(path[0], path[1], template, c);
-					}
-					
-				}
-			}
-			*/
 		}
 		
 	}
