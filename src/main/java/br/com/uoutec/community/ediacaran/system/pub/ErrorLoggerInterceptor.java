@@ -43,8 +43,7 @@ public class ErrorLoggerInterceptor
 			ResourceAction resourceAction = request.getResourceAction();
 			Method method = resourceAction == null? null : resourceAction.getMethod();
 			
-			if((method != null && method.isAnnotationPresent(LogAction.class)) ||
-				request.getThrowable() != null){
+			if((method != null && method.isAnnotationPresent(LogAction.class)) || request.getThrowable() != null){
 				
 				ex = request.getThrowable();
 				Object[] params = request.getParameters();
