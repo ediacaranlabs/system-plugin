@@ -22,9 +22,10 @@ import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PublicType;
 import br.com.uoutec.community.ediacaran.web.EdiacaranWebInvoker;
 
-@Singleton
-@Intercepts(isDefault=false)
-@InterceptsStack(name="securityStack", isdefault=true)
+//@Singleton
+//@Intercepts(isDefault=false)
+//@InterceptsStack(name="securityStack", isdefault=true)
+@Deprecated
 public class LanguageInterceptor 
 	extends AbstractInterceptor 
 	implements PublicType{
