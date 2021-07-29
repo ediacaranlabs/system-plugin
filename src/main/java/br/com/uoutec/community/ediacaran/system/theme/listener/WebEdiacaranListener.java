@@ -1,4 +1,4 @@
-package br.com.uoutec.community.ediacaran.system;
+package br.com.uoutec.community.ediacaran.system.theme.listener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,48 +8,73 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.brandao.brutos.ClassUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.ContextManager;
-import br.com.uoutec.community.ediacaran.core.system.AbstractPluginInstaller;
+import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
+import br.com.uoutec.community.ediacaran.plugins.EdiacaranEventObject;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginConfigurationMetadata;
+import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
+import br.com.uoutec.community.ediacaran.plugins.PluginNode;
 import br.com.uoutec.community.ediacaran.plugins.PluginPath;
+import br.com.uoutec.community.ediacaran.plugins.PluginType;
 import br.com.uoutec.community.ediacaran.system.theme.Component;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeException;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeRegistry;
 
-public abstract class AbstractWebPluginInstaller 
-	extends AbstractPluginInstaller
-	implements WebPlugin{
+public class WebEdiacaranListener implements EdiacaranEventListener{
 
-	public void install() throws Throwable {
-		super.install();
-		loadThemes();
-		registerContext();
+	private static final Logger logger = LoggerFactory.getLogger(WebEdiacaranListener.class);
+	
+	@Override
+	public void onEvent(EdiacaranEventObject event) {
+
+		if(event.getSource() instanceof PluginInitializer) {
+			
+			if("installed".equals(event.getType())){
+				startContext((PluginNode)event.getData());
+			}
+			else
+			if("uninstalled".equals(event.getType())){
+				stopContext((PluginNode)event.getData());
+			}
+			
+		}
+		
+	}
+
+	private void startContext(PluginNode node) {
+		try {
+			loadThemes();
+			ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
+			contextManager.registerContext();
+		}
+		catch(Throwable ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 	
-	public void uninstall() throws Throwable{
-		super.uninstall();
-		unregisterContext();
-	}
-	
-	protected void registerContext() {
-		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
-		contextManager.registerContext();
-	}
-
-	protected void unregisterContext() {
-		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
-		contextManager.unregisterContext();
+	private void stopContext(PluginNode node) {
+		try {
+			ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
+			contextManager.unregisterContext();
+		}
+		catch(Throwable ex) {
+			throw new RuntimeException(ex);
+		}
+			
 	}
 	
 	@SuppressWarnings("unchecked")
 	protected void loadThemes() throws Throwable {
 		
+		PluginType pluginType = EntityContextPlugin.getEntity(PluginType.class);
 		ThemeRegistry themeRegistry = EntityContextPlugin.getEntity(ThemeRegistry.class);
 		ContextManager contextManager = EntityContextPlugin.getEntity(ContextManager.class);
 		
-		PluginConfigurationMetadata pmd = pluginConfiguration.getMetadata();
+		PluginConfigurationMetadata pmd = pluginType.getConfiguration().getMetadata();
 		
 		PluginPath pp = pmd.getPath();
 		File base = pp.getBase();
