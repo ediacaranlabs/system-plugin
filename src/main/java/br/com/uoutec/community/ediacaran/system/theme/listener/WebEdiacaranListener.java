@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.ContextManager;
 import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
-import br.com.uoutec.community.ediacaran.plugins.EdiacaranEventObject;
+import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginConfigurationMetadata;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
