@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javax.inject.Singleton;
+
 import org.brandao.brutos.ClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import br.com.uoutec.community.ediacaran.system.theme.Component;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeException;
 import br.com.uoutec.community.ediacaran.system.theme.ThemeRegistry;
 
+@Singleton
 public class WebEdiacaranListener implements EdiacaranEventListener{
 
 	private static final Logger logger = LoggerFactory.getLogger(WebEdiacaranListener.class);

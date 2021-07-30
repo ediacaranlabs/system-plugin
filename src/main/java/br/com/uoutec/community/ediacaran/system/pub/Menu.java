@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +16,12 @@ import br.com.uoutec.community.ediacaran.core.system.registry.MessageBundle;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.i18n.MessageLocale;
 
-public class Menu implements Serializable{
+public class Menu implements Serializable {
 
 	private static final long serialVersionUID = -110898947175676961L;
 
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	private String name;
 	
 	private String icon;
@@ -58,6 +62,7 @@ public class Menu implements Serializable{
 			String resourceBundle, String template, List<Menu> itens,
 			String badge, String badgeStyle, String body, int order) {
 		super();
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.name = name;
 		this.icon = icon;
 		this.resource = resource;
@@ -93,7 +98,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setBody(String body) {
+		
+		String oldBody = this.body;
 		this.body = body;
+		propertyChangeSupport.firePropertyChange("body", oldBody, body);
+		
 		return this;
 	}
 
@@ -102,7 +111,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setName(String name) {
+		
+		String oldName = this.name;
 		this.name = name;
+		propertyChangeSupport.firePropertyChange("name", oldName, name);
+		
 		return this;
 	}
 
@@ -111,7 +124,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setIcon(String icon) {
+		
+		String oldIcon = this.icon;
 		this.icon = icon;
+		propertyChangeSupport.firePropertyChange("icon", oldIcon, icon);
+		
 		return this;
 	}
 
@@ -125,7 +142,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setResource(String resource) {
+		
+		String oldResource = this.resource;
 		this.resource = resource;
+		propertyChangeSupport.firePropertyChange("resource", oldResource, resource);
+		
 		return this;
 	}
 
@@ -134,7 +155,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setResourceBundle(String resourceBundle) {
+		
+		String oldResourceBundle = this.resourceBundle;
 		this.resourceBundle = resourceBundle;
+		propertyChangeSupport.firePropertyChange("resourceBundle", oldResourceBundle, resourceBundle);
+		
 		return this;
 	}
 
@@ -143,7 +168,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setTemplate(String template) {
+
+		String oldTemplate = this.template;
 		this.template = template;
+		propertyChangeSupport.firePropertyChange("template", oldTemplate, template);
+		
 		return this;
 	}
 
@@ -152,7 +181,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setOrder(int order) {
+		
+		int oldOrder = this.order;
 		this.order = order;
+		propertyChangeSupport.firePropertyChange("order", oldOrder, order);
+		
 		return this;
 	}
 
@@ -161,7 +194,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setBadgeStyle(String badgeStyle) {
+		
+		String oldBadgeStyle = this.badgeStyle; 
 		this.badgeStyle = badgeStyle;
+		propertyChangeSupport.firePropertyChange("badgeStyle", oldBadgeStyle, badgeStyle);
+		
 		return this;
 	}
 
@@ -174,7 +211,11 @@ public class Menu implements Serializable{
 	}
 
 	public Menu setBadge(String badge) {
+		
+		String oldBadge = this.badge;
 		this.badge = badge;
+		propertyChangeSupport.firePropertyChange("badge", oldBadge, badge);
+		
 		return this;
 	}
 
@@ -195,6 +236,8 @@ public class Menu implements Serializable{
 				
 			});
 			
+			propertyChangeSupport.fireIndexedPropertyChange("item", itens.size() - 1, null, item);
+			
 			return this;
 		}
 	}
@@ -213,10 +256,24 @@ public class Menu implements Serializable{
 			itens.remove(m);
 			map.remove(m.getName());
 			
+			propertyChangeSupport.fireIndexedPropertyChange("item", itens.size(), m, null);
+			
 			return this;
 		}
 	}
-	
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+
+        propertyChangeSupport.addPropertyChangeListener(listener);
+
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+
+    	propertyChangeSupport.removePropertyChangeListener(listener);
+
+    }
+    
 	@Override
 	public int hashCode() {
 		final int prime = 31;

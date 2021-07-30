@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.pub;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,10 +11,14 @@ import java.util.Map;
 
 public class MenuBar {
 
+	private PropertyChangeSupport propertyChangeSupport;
+	
 	private List<Menu> list;
+	
 	private Map<String, Menu> map;
 	
 	public MenuBar(){
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.list = new ArrayList<Menu>();
 		this.map = new HashMap<String, Menu>();
 	}
@@ -39,6 +45,8 @@ public class MenuBar {
 				
 			});
 			
+			propertyChangeSupport.fireIndexedPropertyChange("menu", list.size() - 1, null, menu);
+			
 		}
 	}
 
@@ -55,7 +63,22 @@ public class MenuBar {
 			
 			list.remove(m);
 			map.remove(m.getName());
+			
+			propertyChangeSupport.fireIndexedPropertyChange("menu", list.size(), m, null);
+			
 		}
 	}
+	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+
+        propertyChangeSupport.addPropertyChangeListener(listener);
+
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+
+    	propertyChangeSupport.removePropertyChangeListener(listener);
+
+    }
 	
 }
