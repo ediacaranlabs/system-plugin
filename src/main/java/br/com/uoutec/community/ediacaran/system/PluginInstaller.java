@@ -6,7 +6,6 @@ import br.com.uoutec.community.ediacaran.core.system.listener.EntityInheritanceL
 import br.com.uoutec.community.ediacaran.core.system.listener.FilterListener;
 import br.com.uoutec.community.ediacaran.core.system.listener.LanguageListener;
 import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.system.theme.listener.WebEdiacaranListener;
 
 public class PluginInstaller extends AbstractPlugin{
 
@@ -23,6 +22,7 @@ public class PluginInstaller extends AbstractPlugin{
 	}
 
 	private void registerListeners(EdiacaranListenerManager ediacaranListenerManager) {
+		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(WebEdiacaranListener.class));
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(LanguageListener.class));
@@ -35,6 +35,7 @@ public class PluginInstaller extends AbstractPlugin{
 	}
 
 	public void unregisterListeners(EdiacaranListenerManager ediacaranListenerManager) throws Throwable {
+		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(WebEdiacaranListener.class));
 		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
 		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(FilterListener.class));
 		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(LanguageListener.class));

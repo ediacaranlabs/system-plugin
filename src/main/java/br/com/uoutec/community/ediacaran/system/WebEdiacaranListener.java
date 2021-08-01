@@ -1,4 +1,4 @@
-package br.com.uoutec.community.ediacaran.system.theme.listener;
+package br.com.uoutec.community.ediacaran.system;
 
 import java.io.File;
 import java.io.FileInputStream;
