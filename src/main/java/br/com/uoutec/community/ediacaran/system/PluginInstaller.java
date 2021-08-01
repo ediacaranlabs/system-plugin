@@ -23,9 +23,9 @@ public class PluginInstaller extends AbstractPlugin{
 
 	private void registerListeners(EdiacaranListenerManager ediacaranListenerManager) {
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(WebEdiacaranListener.class));
-		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
-		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
-		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(LanguageListener.class));
+			ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
+			ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
+			ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(LanguageListener.class));
 	}
 	
 	@Override
@@ -36,9 +36,11 @@ public class PluginInstaller extends AbstractPlugin{
 
 	public void unregisterListeners(EdiacaranListenerManager ediacaranListenerManager) throws Throwable {
 		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(WebEdiacaranListener.class));
-		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
-		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(FilterListener.class));
-		ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(LanguageListener.class));
+		
+			ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
+			ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(FilterListener.class));
+			ediacaranListenerManager.removeListener(EntityContextPlugin.getEntity(LanguageListener.class));
+		
 	}
 	
 }
