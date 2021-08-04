@@ -16,6 +16,6 @@ public interface ThemeRegistry extends PublicBean{
 	
 	Theme getTheme(String name);
 	
-	void unregisterTema(String name);
+	void unregisterTheme(String name);
 	
 }

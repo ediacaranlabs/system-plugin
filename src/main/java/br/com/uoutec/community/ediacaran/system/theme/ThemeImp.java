@@ -19,10 +19,10 @@ public class ThemeImp implements Theme{
 	
 	public String path;
 	
-	public ConcurrentMap<String, TemaPackage> packages;
+	public ConcurrentMap<String, ThemePackage> packages;
 	
 
-	public ThemeImp(String name, String context, String path, ConcurrentMap<String, TemaPackage> packages) {
+	public ThemeImp(String name, String context, String path, ConcurrentMap<String, ThemePackage> packages) {
 		this.name = name;
 		this.packages = packages;
 		this.path = path;
@@ -32,7 +32,7 @@ public class ThemeImp implements Theme{
 	@Override
 	public void applyTagTemplate(String template, String packageName, ComponentVars componentVars, Map<String, Object> extVars, Writer out) throws ThemeException {
 		
-		TemaPackage temaPackage = getPackage(packageName);
+		ThemePackage temaPackage = getPackage(packageName);
 		
 		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
 		
@@ -74,7 +74,7 @@ public class ThemeImp implements Theme{
 	@Override
 	public void applyTagTemplate(String template, String packageName, Writer out, Object... vars) throws ThemeException {
 		
-		TemaPackage temaPackage = getPackage(packageName);
+		ThemePackage temaPackage = getPackage(packageName);
 		
 		ConcurrentMap<String, Component> tagTemplates = temaPackage.getTagTemplates();
 		
@@ -99,7 +99,7 @@ public class ThemeImp implements Theme{
 
 	@Override
 	public String getTemplate(String name) {
-		TemaPackage temaPackage = getPackage(name);
+		ThemePackage temaPackage = getPackage(name);
 		return path + temaPackage.getPath();
 	}
 
@@ -130,13 +130,13 @@ public class ThemeImp implements Theme{
 	}
 	 */
 	
-	private TemaPackage getPackage(String name) throws ThemeException {
+	private ThemePackage getPackage(String name) throws ThemeException {
 		
 		if(name == null) {
 			name = "front";
 		}
 		
-		TemaPackage temaPackage = packages.get(name);
+		ThemePackage temaPackage = packages.get(name);
 		
 		if(temaPackage == null) {
 			
@@ -153,7 +153,7 @@ public class ThemeImp implements Theme{
 	@Override
 	public List<PublicResource> getResourcesByType(String type, String packageName) {
 		
-		TemaPackage temaPackage = getPackage(packageName);
+		ThemePackage temaPackage = getPackage(packageName);
 		
 		List<PublicResource> resourcesType = temaPackage.getResources().get(type);
 		

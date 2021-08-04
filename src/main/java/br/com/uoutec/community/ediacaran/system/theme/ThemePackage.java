@@ -3,7 +3,7 @@ package br.com.uoutec.community.ediacaran.system.theme;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
-public class TemaPackage {
+public class ThemePackage {
 
 	private String name;
 	
@@ -13,7 +13,7 @@ public class TemaPackage {
 
 	private ConcurrentMap<String, List<PublicResource>> resources;
 	
-	public TemaPackage(String name, String path, ConcurrentMap<String, Component> tagTemplates, 
+	public ThemePackage(String name, String path, ConcurrentMap<String, Component> tagTemplates, 
 			ConcurrentMap<String, List<PublicResource>> resources) {
 		this.name = name;
 		this.path = path;

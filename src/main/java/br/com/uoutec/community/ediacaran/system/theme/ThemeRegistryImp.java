@@ -46,7 +46,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 		entry = new ThemeEntry();
 		entry.name = name;
 		entry.context = context;
-		entry.packages = new ConcurrentHashMap<String, TemaPackage>();
+		entry.packages = new ConcurrentHashMap<String, ThemePackage>();
 		entry.tema = new ThemeImp(name, context, template, entry.packages);
 		
 		if(logger.isTraceEnabled()) {
@@ -76,7 +76,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			throw new ThemeException("theme package has been added: " + name + "/" + packageName);
 		}
 		
-		TemaPackage temaPackage = new TemaPackage(
+		ThemePackage temaPackage = new ThemePackage(
 				packageName, 
 				template, 
 				new ConcurrentHashMap<String, Component>(),
@@ -101,7 +101,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			throw new ThemeException("theme not found: " + name);
 		}
 		
-		TemaPackage temaPackage = entry.packages.get(packageName);
+		ThemePackage temaPackage = entry.packages.get(packageName);
 		
 		if(temaPackage == null) {
 			throw new ThemeException("theme package not found: " + name + "/" + packageName);
@@ -133,7 +133,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 			throw new ThemeException("theme not found: " + name);
 		}
 		
-		TemaPackage temaPackage = entry.packages.get(packageName);
+		ThemePackage temaPackage = entry.packages.get(packageName);
 		
 		if(temaPackage == null) {
 			throw new ThemeException("theme package not found: " + name + "/" + packageName);
@@ -194,7 +194,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 	}
 
 	@Override
-	public void unregisterTema(String name) {
+	public void unregisterTheme(String name) {
 		//TODO: security
 		
 		if(themes.remove(name) != null) {
@@ -215,7 +215,7 @@ public class ThemeRegistryImp implements ThemeRegistry, PublicBean{
 		
 		public String context;
 		
-		public ConcurrentMap<String, TemaPackage> packages;
+		public ConcurrentMap<String, ThemePackage> packages;
 		
 		public Theme tema;
 		
