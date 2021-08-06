@@ -1,5 +1,0 @@
-<web-fragment>
-  <listener>
-    <listener-class>br.com.uoutec.community.ediacaran.system.pub.ContextInitializer</listener-class>
-  </listener>
-</web-fragment>

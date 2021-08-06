@@ -1,8 +1,9 @@
 package br.com.uoutec.community.ediacaran.system;
 
-import br.com.uoutec.community.ediacaran.AbstractPlugin;
+import br.com.uoutec.community.ediacaran.core.system.AbstractSystemPlugin;
 
-public class PluginInstaller extends AbstractPlugin{
+public class PluginInstaller 
+	extends AbstractSystemPlugin{
 
 	public static final String PACKAGE        = "community";
 	
@@ -10,12 +11,5 @@ public class PluginInstaller extends AbstractPlugin{
 	
 	public static final String PLUGIN         = "system";
 
-	@Override
-	public void install() throws Throwable {
-	}
-
-	@Override
-	public void uninstall() throws Throwable {
-	}
 
 }
