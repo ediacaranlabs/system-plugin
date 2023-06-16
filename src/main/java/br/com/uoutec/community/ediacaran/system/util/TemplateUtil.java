@@ -1,0 +1,102 @@
+package br.com.uoutec.community.ediacaran.system.util;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.brandao.brutos.io.DefaultResourceLoader;
+import org.brandao.brutos.io.Resource;
+import org.brandao.brutos.io.ResourceLoader;
+
+import br.com.uoutec.application.Configuration;
+
+public class TemplateUtil {
+
+	private static final String propertyRegex    = "\\{\\{([^\\s]+)\\}\\}";
+	
+	private static final Pattern propertyPattern = Pattern.compile(propertyRegex);
+	
+	private ResourceLoader loader;
+
+	public TemplateUtil() {
+		this.loader = new DefaultResourceLoader();
+	}
+	
+	public String parser(String path, Configuration config, String encoding) throws IOException {
+		String template   = this.getContent(path, encoding);
+		return parser(template, config);
+	}
+	
+	public String parser(String template, Configuration config) throws IOException {
+		
+		StringBuffer text = new StringBuffer();
+		
+		Matcher matcher = propertyPattern.matcher(template);
+
+		while(matcher.find()) {
+			String var = matcher.group(1);
+			String value = config.getValue("${" + var + "}");
+			matcher.appendReplacement(text, value == null? "" : value);
+		}
+		
+		matcher.appendTail(text);
+		
+		return text.toString();
+	}
+	
+	public String getContent(String path, String encoding) throws IOException {
+		
+		if(path == null || path.isEmpty()) {
+			return null;
+		}
+		
+		if(!path.startsWith(ResourceLoader.CLASSPATH_URL_PREFIX)) {
+			if(!path.startsWith(ResourceLoader.FILE_URL_PREFIX)) {
+				path = ResourceLoader.FILE_URL_PREFIX.concat(new File(path).getAbsolutePath());
+			}
+		}
+		
+		Resource resource = this.loader.getResource(path);
+		
+		if(resource == null || !resource.exists()) {
+			return null;
+		}
+		
+		InputStream in = null;
+		try{
+			in = resource.getInputStream();
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			byte[] buf = new byte[1024];
+			int len = 0;
+			
+			while((len = in.read(buf, 0, buf.length)) > -1){
+				out.write(buf, 0, len);
+			}
+			String tmp = new String(out.toByteArray(), encoding);
+			return tmp;
+		}
+		finally{
+			if(in != null){
+				in.close();
+			}
+		}
+	}
+
+	public Resource getContent(String path) throws IOException {
+		
+		if(path == null || path.isEmpty()) {
+			return null;
+		}
+		
+		if(!path.startsWith(ResourceLoader.CLASSPATH_URL_PREFIX)) {
+			if(!path.startsWith(ResourceLoader.FILE_URL_PREFIX)) {
+				path = ResourceLoader.FILE_URL_PREFIX.concat(new File(path).getAbsolutePath());
+			}
+		}
+		return this.loader.getResource(path);
+	}
+	
+}
