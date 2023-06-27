@@ -18,6 +18,7 @@ import br.com.uoutec.application.ClassUtil;
 import br.com.uoutec.application.scanner.DefaultScanner;
 import br.com.uoutec.application.scanner.filter.AnnotationTypeFilter;
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
 
 @Singleton
 public class EntityInheritanceManager implements PublicBean {
@@ -34,8 +35,6 @@ public class EntityInheritanceManager implements PublicBean {
 	
 	public void loadEntities(List<Class<?>> clazzList) {
 		
-		SecurityManager sm = System.getSecurityManager();
-		
 		for (Class<?> clazz : clazzList) {
 			EntityInheritance entityInheritance = 
 					clazz.getAnnotation(EntityInheritance.class);
@@ -44,9 +43,7 @@ public class EntityInheritanceManager implements PublicBean {
 			Class<?> base = entityInheritance.base();
 			
 			
-			if(sm != null) {
-				sm.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".register"));
-			}
+			SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".register"));
 			
 			ConcurrentMap<String,Class<?>> map = this.clazz.get(base);
 			
@@ -71,8 +68,6 @@ public class EntityInheritanceManager implements PublicBean {
 
 	public void removeEntities(List<Class<?>> clazzList) {
 		
-		SecurityManager sm = System.getSecurityManager();
-		
 		for (Class<?> clazz : clazzList) {
 			EntityInheritance entityInheritance = 
 					clazz.getAnnotation(EntityInheritance.class);
@@ -84,9 +79,7 @@ public class EntityInheritanceManager implements PublicBean {
 			
 			if(map != null){
 				
-				if(sm != null) {
-					sm.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister"));
-				}
+				SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister"));
 				
 				map.remove(name, clazz);
 				

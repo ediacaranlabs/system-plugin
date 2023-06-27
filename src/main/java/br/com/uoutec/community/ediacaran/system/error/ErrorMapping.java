@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import javax.inject.Singleton;
 
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
 
 @Singleton
 public class ErrorMapping implements PublicBean{
@@ -33,11 +34,7 @@ public class ErrorMapping implements PublicBean{
 			String error, Class<? extends Throwable> t, ErrorResolver resolver
 			) throws ErrorMessageMappingException{
 		
-		SecurityManager sm = System.getSecurityManager();
-
-		if(sm != null) {
-			sm.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "register"));
-		}
+		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "register"));
 
 		ExceptionMessageMappingkey key = new ExceptionMessageMappingkey(type, action, error);
 		
@@ -65,11 +62,7 @@ public class ErrorMapping implements PublicBean{
 	public synchronized void removeError(Class<?> type, String action, 
 			String error, Class<? extends Throwable> t) throws ErrorMessageMappingException{
 		
-		SecurityManager sm = System.getSecurityManager();
-
-		if(sm != null) {
-			sm.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "unregister"));
-		}
+		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "unregister"));
 		
 		ExceptionMessageMappingkey key = new ExceptionMessageMappingkey(type, action, error);
 		
@@ -91,11 +84,7 @@ public class ErrorMapping implements PublicBean{
 
 	public void setDefaultError(String defaultError) {
 		
-		SecurityManager sm = System.getSecurityManager();
-
-		if(sm != null) {
-			sm.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "defaultError"));
-		}
+		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "defaultError"));
 		
 		this.defaultError = defaultError;
 	}
