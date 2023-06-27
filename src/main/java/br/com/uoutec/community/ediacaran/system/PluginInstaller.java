@@ -31,8 +31,8 @@ public class PluginInstaller extends AbstractPlugin{
 	
 	private void registerListeners() {
 		EdiacaranListenerManager ediacaranListenerManager = EntityContextPlugin.getEntity(EdiacaranListenerManager.class);
-		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
-		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
+		//ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
+		//ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(LanguageListener.class));
 	}
 	

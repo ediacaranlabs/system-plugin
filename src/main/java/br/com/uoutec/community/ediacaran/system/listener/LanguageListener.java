@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
@@ -37,11 +39,17 @@ public class LanguageListener implements EdiacaranEventListener{
 		if(event.getSource() instanceof PluginInitializer) {
 			
 			if("installing".equals(event.getType())){
-				startPlugin((PluginNode)event.getData());
+				AccessController.doPrivileged((PrivilegedAction<Object>)()->{
+					startPlugin((PluginNode)event.getData());
+					return null;
+				});
 			}
 			else
 			if("destroying".equals(event.getType())){
-				stopPlugin((PluginNode)event.getData());
+				AccessController.doPrivileged((PrivilegedAction<Object>)()->{
+					stopPlugin((PluginNode)event.getData());
+					return null;
+				});
 			}
 			
 		}
