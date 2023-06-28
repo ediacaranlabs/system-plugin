@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
@@ -14,6 +15,9 @@ import java.util.PropertyResourceBundle;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
 import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
@@ -25,6 +29,8 @@ import br.com.uoutec.community.ediacaran.system.i18n.LanguageRegistry;
 
 @Singleton
 public class LanguageListener implements EdiacaranEventListener{
+
+	private static final Logger logger = LoggerFactory.getLogger(LanguageListener.class);
 
 	private LanguageRegistry languageRegistry;
 	
@@ -59,6 +65,9 @@ public class LanguageListener implements EdiacaranEventListener{
 	private void startPlugin(PluginNode node) {
 		try {
 			loadLanguages((Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
+		}
+		catch(AccessControlException ex) {
+			logger.warn("don't have permission to load language", ex);
 		}
 		catch(Throwable ex) {
 			throw new RuntimeException(ex);
