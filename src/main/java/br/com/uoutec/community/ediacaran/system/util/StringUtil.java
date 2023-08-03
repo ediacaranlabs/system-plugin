@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -51,6 +53,15 @@ public class StringUtil {
 		return b.toString();
 	}
 
+	public static String normalize(String name) {
+		return 
+			Normalizer.normalize(name, Form.NFD)
+			.replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+			.replaceAll("[^a-zA-Z0-9\\s]", " ")
+			.toLowerCase()
+			.replaceAll("\\s+", "-");
+	}
+	
 	public static String toString(Collection<?> l, String separator) {
 		StringBuilder b = new StringBuilder();
 		for(Object e: l ) {
