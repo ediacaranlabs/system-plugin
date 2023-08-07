@@ -102,4 +102,8 @@ public class SecretUtil {
         
     }
 	
+	public static boolean isEquals(String a, String b) {
+		return a == null || b == null? false : a.equals(b); 
+	}
+	
 }
