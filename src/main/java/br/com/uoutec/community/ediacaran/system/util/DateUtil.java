@@ -99,5 +99,10 @@ public class DateUtil {
 		totalSeconds -= timeLow;
 		totalSeconds += timeHight;
 		return TimeUnit.SECONDS.toHours(totalSeconds);
-	}	
+	}
+	
+	public static Date now() {
+		return new Date(System.currentTimeMillis());
+	}
+	
 }
