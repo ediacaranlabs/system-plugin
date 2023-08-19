@@ -6,13 +6,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class LockUtil {
+import javax.inject.Singleton;
+
+import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+
+@Singleton
+public class NamedLock implements PublicBean {
 
 	private Object[] locks;
 	
 	private ConcurrentMap<String, LockCount> count;
 	
-	public LockUtil() {
+	public NamedLock() {
 		count = new ConcurrentHashMap<String, LockCount>();
 		locks = new Object[100];
 		
@@ -93,6 +98,7 @@ public class LockUtil {
 		if(active) {
 			c.lock.unlock();
 		}
+		
 	}
 
 	public static class LockCount{

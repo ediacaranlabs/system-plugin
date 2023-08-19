@@ -27,7 +27,7 @@ public class TemplateUtil {
 	
 	public String parser(String path, Configuration config, String encoding) throws IOException {
 		String template   = this.getContent(path, encoding);
-		return parser(template, config);
+		return config == null || config.isEmpty()? template : parser(template, config);
 	}
 	
 	public String parser(String template, Configuration config) throws IOException {
@@ -47,7 +47,25 @@ public class TemplateUtil {
 		return text.toString();
 	}
 	
-	public String getContent(String path, String encoding) throws IOException {
+	private String getContent(String path, String encoding) throws IOException {
+		
+		try(InputStream in = getRaw(path)){
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			byte[] buf = new byte[1024];
+			int len = 0;
+			
+			while((len = in.read(buf, 0, buf.length)) > -1){
+				out.write(buf, 0, len);
+			}
+			String tmp = new String(out.toByteArray(), encoding);
+			return tmp;
+			
+		}
+		
+	}
+	
+	public InputStream getRaw(String path) throws IOException {
 		
 		if(path == null || path.isEmpty()) {
 			return null;
@@ -65,24 +83,7 @@ public class TemplateUtil {
 			return null;
 		}
 		
-		InputStream in = null;
-		try{
-			in = resource.getInputStream();
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			byte[] buf = new byte[1024];
-			int len = 0;
-			
-			while((len = in.read(buf, 0, buf.length)) > -1){
-				out.write(buf, 0, len);
-			}
-			String tmp = new String(out.toByteArray(), encoding);
-			return tmp;
-		}
-		finally{
-			if(in != null){
-				in.close();
-			}
-		}
+		return resource.getInputStream();
 	}
 
 	public Resource getContent(String path) throws IOException {
