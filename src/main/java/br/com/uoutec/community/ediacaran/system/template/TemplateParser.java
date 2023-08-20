@@ -12,6 +12,8 @@ public interface TemplateParser {
 	
 	String parser(String path, Configuration config, String encoding) throws TemplateException;
 
+	String parserContent(String template, Configuration config) throws TemplateException;
+	
 	InputStream getRaw(String path) throws TemplateException;
 	
 }

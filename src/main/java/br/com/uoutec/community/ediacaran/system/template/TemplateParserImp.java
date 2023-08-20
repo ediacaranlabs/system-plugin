@@ -5,13 +5,23 @@ import java.io.InputStream;
 import br.com.uoutec.application.Configuration;
 import br.com.uoutec.community.ediacaran.system.util.TemplateUtil;
 
-public class TemplateParserImp implements TemplateParser{
+public class TemplateParserImp implements TemplateParser {
 
 	private TemplateUtil util;
 	
 	@Override
 	public String parser(String path) throws TemplateException{
 		return parser(path, null, "UTF-8");
+	}
+	
+	@Override
+	public String parserContent(String template, Configuration config) throws TemplateException{
+		try {
+			return util.parser(template, config);
+		}
+		catch(Throwable ex) {
+			throw new TemplateException(ex);
+		}
 	}
 	
 	@Override
