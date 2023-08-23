@@ -4,6 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -117,7 +118,7 @@ public class EntityInheritanceManager implements PublicBean {
 	
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance(Class<T> base, String name) 
-			throws InstantiationException, IllegalAccessException{
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Class<?> type = this.getType(base, name);
 		return (T)ClassUtil.getInstance(type == null? base : type);
 	}
