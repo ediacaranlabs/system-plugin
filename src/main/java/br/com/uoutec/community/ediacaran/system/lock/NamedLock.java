@@ -28,7 +28,8 @@ public class NamedLock implements PublicBean {
 	
 	public boolean lock(String name) {
 		
-		Object lock = locks[name.hashCode() % locks.length];
+		int index = Math.abs(name.hashCode() % locks.length);
+		Object lock = locks[index];
 		
 		LockCount c = null;
 		
@@ -53,7 +54,8 @@ public class NamedLock implements PublicBean {
 
 	public boolean tryLock(String name, long time, TimeUnit timeUnit) throws InterruptedException {
 		
-		Object lock = locks[name.hashCode() % locks.length];
+		int index = Math.abs(name.hashCode() % locks.length);
+		Object lock = locks[index];
 		LockCount c = null;
 		
 		synchronized(lock) {
@@ -77,7 +79,8 @@ public class NamedLock implements PublicBean {
 	
 	public void unlock(String name, boolean active) {
 		
-		Object lock = locks[name.hashCode() % locks.length];
+		int index = Math.abs(name.hashCode() % locks.length);
+		Object lock = locks[index];
 		LockCount c = null;
 		
 		synchronized(lock) {
