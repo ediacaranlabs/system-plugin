@@ -9,6 +9,9 @@ public class TemplateParserImp implements TemplateParser {
 
 	private TemplateUtil util;
 	
+	public TemplateParserImp() {
+		this.util = new TemplateUtil();
+	}
 	@Override
 	public String parser(String path) throws TemplateException{
 		return parser(path, null, "UTF-8");
