@@ -38,7 +38,7 @@ public class TemplateUtil {
 
 		while(matcher.find()) {
 			String var = matcher.group(1);
-			String value = config.getValue("${" + var + "}");
+			String value = config.getProperty(var);
 			matcher.appendReplacement(text, value == null? "" : value);
 		}
 		
