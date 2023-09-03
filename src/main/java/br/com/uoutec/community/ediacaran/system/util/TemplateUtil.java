@@ -15,7 +15,7 @@ import br.com.uoutec.application.Configuration;
 
 public class TemplateUtil {
 
-	private static final String propertyRegex    = "\\{\\{([^\\s]+)\\}\\}";
+	private static final String propertyRegex    = "\\{\\{([^\\}]+)\\}\\}";
 	
 	private static final Pattern propertyPattern = Pattern.compile(propertyRegex);
 	
