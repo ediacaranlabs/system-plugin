@@ -13,12 +13,12 @@ import org.jboss.weld.context.unbound.Unbound;
 
 import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
 import br.com.uoutec.community.ediacaran.EdiacaranListenerManager;
-import br.com.uoutec.community.ediacaran.system.cdi.RequestContextOperation;
+import br.com.uoutec.community.ediacaran.system.cdi.ActiveRequestContext;
 
 @Interceptor
-@RequestContextOperation
+@ActiveRequestContext
 @Priority(Interceptor.Priority.PLATFORM_BEFORE + 100)
-public class RequestContextInterceptor implements Serializable{
+public class ActiveRequestContextInterceptor implements Serializable{
 
 	private static final long serialVersionUID = -3059444465469022566L;
 	
@@ -29,27 +29,32 @@ public class RequestContextInterceptor implements Serializable{
 	@Inject
 	private EdiacaranListenerManager listeners;
 	
-    public RequestContextInterceptor(){
+    public ActiveRequestContextInterceptor(){
     }
     
     @AroundInvoke
     public Object activateRequestContext(final InvocationContext p_invocationContext) throws Exception {
+    	
+    	boolean needActive = !m_requestContext.isActive();
         try {
-            m_requestContext.activate();
-            
-			listeners.fireEvent(
-					new EdiacaranEventObject(this, "active_request_context",m_requestContext));
-        	
+        	if(needActive) {
+        		m_requestContext.activate();
+				listeners.fireEvent(
+						new EdiacaranEventObject(this, "active_request_context", m_requestContext));
+        	}
             return p_invocationContext.proceed();
+            
         }
         finally {
-        	try {
-    			listeners.fireEvent(
-    					new EdiacaranEventObject(this, "deactivate_request_context", m_requestContext));
-        	}
-        	finally {
-                m_requestContext.invalidate();
-                m_requestContext.deactivate();
+        	if(needActive) {
+	        	try {
+	    			listeners.fireEvent(
+	    					new EdiacaranEventObject(this, "deactivate_request_context", m_requestContext));
+	        	}
+	        	finally {
+	        		m_requestContext.invalidate();
+	        		m_requestContext.deactivate();
+	        	}
         	}
         }
     }

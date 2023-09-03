@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.system.cdi.Parallel;
-import br.com.uoutec.community.ediacaran.system.cdi.RequestContextOperation;
+import br.com.uoutec.community.ediacaran.system.cdi.ActiveRequestContext;
 
 @Singleton
 public class EventRegistryImp implements EventRegistry{
@@ -25,35 +25,35 @@ public class EventRegistryImp implements EventRegistry{
 
 	@Transactional
 	@Parallel
-	@RequestContextOperation
+	@ActiveRequestContext
 	public void info(String group, String subgroup, String message) {
 		this.registry(SystemEventType.INFO, group, subgroup, message, null);
 	}
 	
 	@Transactional
 	@Parallel
-	@RequestContextOperation
+	@ActiveRequestContext
 	public void warn(String group, String subgroup, String message, Throwable ex) {
 		this.registry(SystemEventType.WARNING, group, subgroup, message, ex);
 	}
 
 	@Transactional
 	@Parallel
-	@RequestContextOperation
+	@ActiveRequestContext
 	public void warn(String group, String subgroup, String message) {
 		this.registry(SystemEventType.WARNING, group, subgroup, message, null);
 	}
 	
 	@Transactional
 	@Parallel
-	@RequestContextOperation
+	@ActiveRequestContext
 	public void error(String group, String subgroup, String message) {
 		this.registry(SystemEventType.ERROR, group, subgroup, message, null);
 	}
 	
 	@Transactional
 	@Parallel
-	@RequestContextOperation
+	@ActiveRequestContext
 	public void error(String group, String subgroup, String message, Throwable ex) {
 		this.registry(SystemEventType.ERROR, group, subgroup, message, ex);
 	}
