@@ -6,7 +6,7 @@ import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.system.concurrent.ListThreadPoolExecutor;
 import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManager;
 import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManagerException;
-import br.com.uoutec.community.ediacaran.system.listener.EntityInheritanceListener;
+import br.com.uoutec.community.ediacaran.system.entity.EntityInheritanceListener;
 import br.com.uoutec.community.ediacaran.system.listener.FilterListener;
 import br.com.uoutec.community.ediacaran.system.listener.LanguageListener;
 
@@ -31,7 +31,7 @@ public class PluginInstaller extends AbstractPlugin{
 	
 	private void registerListeners() {
 		EdiacaranListenerManager ediacaranListenerManager = EntityContextPlugin.getEntity(EdiacaranListenerManager.class);
-		//ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
+		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(EntityInheritanceListener.class));
 		//ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(FilterListener.class));
 		ediacaranListenerManager.addListener(EntityContextPlugin.getEntity(LanguageListener.class));
 	}

@@ -1,4 +1,6 @@
-package br.com.uoutec.community.ediacaran.system.listener;
+package br.com.uoutec.community.ediacaran.system.entity;
+
+import java.util.List;
 
 import javax.inject.Singleton;
 
@@ -8,12 +10,12 @@ import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
 import br.com.uoutec.community.ediacaran.plugins.PluginNode;
-import br.com.uoutec.community.ediacaran.system.util.EntityInheritanceManager;
-import br.com.uoutec.community.ediacaran.system.util.EntityInheritanceManager.EntityInheritanceUtilLoader;
 
 @Singleton
-public class EntityInheritanceListener implements EdiacaranEventListener{
+public class EntityInheritanceListener implements EdiacaranEventListener {
 
+	private static final String LIST = EntityInheritanceListener.class.getName() + ".List";
+	
 	@Override
 	public void onEvent(EdiacaranEventObject event) {
 	
@@ -33,7 +35,7 @@ public class EntityInheritanceListener implements EdiacaranEventListener{
 
 	private void startPlugin(PluginNode node) {
 		try {
-			loadEntityInheritance((Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
+			loadEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
 		}
 		catch(Throwable ex) {
 			throw new RuntimeException(ex);
@@ -42,23 +44,34 @@ public class EntityInheritanceListener implements EdiacaranEventListener{
 	
 	private void stopPlugin(PluginNode node) {
 		try {
-			destroyEntityInheritance((Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
+			destroyEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
 		}
 		catch(Throwable ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
-	protected void loadEntityInheritance(Plugin plugin) {
+	protected void loadEntityInheritance(PluginNode node, Plugin plugin) {
 		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
-		EntityInheritanceUtilLoader loader = new EntityInheritanceUtilLoader();
+		EntityInheritanceLoader loader = new EntityInheritanceLoader();
+		
+		List<Class<?>> list = loader.loadEntities(plugin.getPackagesNames());
+		node.setVar(LIST, list);
+		
 		eiu.loadEntities(loader.loadEntities(plugin.getPackagesNames()));
 	}
 
-	protected void destroyEntityInheritance(Plugin plugin) {
+	@SuppressWarnings("unchecked")
+	protected void destroyEntityInheritance(PluginNode node, Plugin plugin) {
 		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
-		EntityInheritanceUtilLoader loader = new EntityInheritanceUtilLoader();
-		eiu.removeEntities(loader.loadEntities(plugin.getPackagesNames()));
+		
+		List<Class<?>> list = node.getVar(LIST, List.class);
+		
+		if(list!= null) {
+			eiu.removeEntities(list);
+			node.setVar(LIST, null);
+		}
+		
 	}
 	
 }
