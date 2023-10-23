@@ -1,5 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.entity;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,8 +16,15 @@ public class EntityInheritanceLoader {
 		filter.setExpression(Arrays
 				.asList(EntityInheritance.class.getName()));
 
-		DefaultScanner s = new DefaultScanner();
+		DefaultScanner s = new DefaultScanner() {
+			
+			public ClassLoader getClassLoader() throws IOException {
+				return Thread.currentThread().getContextClassLoader();
+			}
+		};
+		
 		s.setBasePackage(basePackage);
+		
 		s.addIncludeFilter(filter);
 		s.scan();
 		return s.getClassList();
