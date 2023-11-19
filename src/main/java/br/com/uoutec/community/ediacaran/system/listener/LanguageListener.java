@@ -1,7 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.listener;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
 import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
+import br.com.uoutec.community.ediacaran.io.FileSystem;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
 import br.com.uoutec.community.ediacaran.plugins.PluginNode;
@@ -33,6 +33,8 @@ public class LanguageListener implements EdiacaranEventListener{
 	private static final Logger logger = LoggerFactory.getLogger(LanguageListener.class);
 
 	private LanguageRegistry languageRegistry;
+	
+	private FileSystem fileSystem = new FileSystem();
 	
 	@Inject
 	public LanguageListener(LanguageRegistry languageRegistry) {
@@ -89,7 +91,7 @@ public class LanguageListener implements EdiacaranEventListener{
 			File packages = new File(base, "language.properties");
 			Properties p = new Properties();
 			
-			try (InputStream i = new FileInputStream(packages)){
+			try (InputStream i = fileSystem.getInputStream(packages)/*new FileInputStream(packages)*/){
 				p.load(i);
 			}
 			
@@ -137,7 +139,7 @@ public class LanguageListener implements EdiacaranEventListener{
 					continue;
 				}
 					
-				try (InputStream i = new FileInputStream(f)){
+				try (InputStream i = fileSystem.getInputStream(f) /*new FileInputStream(f)*/){
 					PropertyResourceBundle prb = new PropertyResourceBundle(i);
 					languageRegistry.registerResourceBundle(prb, lang, packageID + "/" + id);
 				}

@@ -1,5 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
+import br.com.uoutec.community.ediacaran.SystemProperties;
+
 public class IDGenerator {
 
 	private static String CHARP = "QWERTY5IOPLKJHGF3SAZXCVBNM";
@@ -8,7 +10,7 @@ public class IDGenerator {
 
 	private static Object[] locks = new Object[CHARP.length()];
 	
-	private static final long startTime = System.currentTimeMillis();
+	private static final long startTime = SystemProperties.currentTimeMillis();
 	
 	static{
 		
@@ -33,7 +35,7 @@ public class IDGenerator {
 			currentIndex = counts[index]++ % 1000;
 		}
 		
-		return getID(prefix, group, index, currentIndex, startTime, System.currentTimeMillis());
+		return getID(prefix, group, index, currentIndex, startTime, SystemProperties.currentTimeMillis());
 	}
 
 	private static String getID(char prefix, int group, 

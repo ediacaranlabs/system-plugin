@@ -1,9 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -15,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.com.uoutec.community.ediacaran.io.FileSystem;
 import br.com.uoutec.community.ediacaran.system.util.DataUtil.ClassTypeAdapter;
 
 public class JsonFileManagerHandler extends AbstractFileManagerHandler{
@@ -27,6 +26,8 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
         .registerTypeAdapter(Class.class, new ClassTypeAdapter())
         .create();		
 	}
+
+	private FileSystem fileSystem = new FileSystem();
 	
 	@Override
 	public Object read(File file, FileMetadata metadata) throws IOException {
@@ -38,7 +39,8 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 	}
 
 	private Reader getReader(File file) throws FileNotFoundException {
-		return new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+		//return new InputStreamReader(new java.io.FileInputStream(file), StandardCharsets.UTF_8);
+		return new InputStreamReader(fileSystem.getInputStream(file), StandardCharsets.UTF_8);
 	}
 	
 	@Override
@@ -52,7 +54,8 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 	}
 
 	public Writer getWriter(File file) throws FileNotFoundException {
-		return new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+		//return new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+		return new OutputStreamWriter(fileSystem.getOutputStream(file), StandardCharsets.UTF_8);
 	}
 
 	@Override

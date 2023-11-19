@@ -12,12 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.system.cdi.Parallel;
+import br.com.uoutec.community.ediacaran.SystemProperties;
 import br.com.uoutec.community.ediacaran.system.cdi.ActiveRequestContext;
 
 @Singleton
 public class EventRegistryImp implements EventRegistry{
 
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	private static final String LINE_SEPARATOR = SystemProperties.getProperty("line.separator");
 	
 	private static final Logger logger = LoggerFactory.getLogger(EventRegistryImp.class);
 	@Inject
