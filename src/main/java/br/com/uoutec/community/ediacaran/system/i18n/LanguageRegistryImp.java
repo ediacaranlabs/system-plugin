@@ -10,10 +10,11 @@ import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
 import br.com.uoutec.community.ediacaran.plugins.PluginProperty;
 import br.com.uoutec.community.ediacaran.plugins.PluginPropertyOption;
 import br.com.uoutec.community.ediacaran.plugins.PluginType;
-import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
 import br.com.uoutec.i18n.MessageBundleConfiguration;
 import br.com.uoutec.i18n.MessageBundleImp;
 
@@ -44,7 +45,7 @@ public class LanguageRegistryImp implements LanguageRegistry{
 	public void registerResourceBundle(ResourceBundle resourceBundle, Locale e, String id) {
 		
 		String packID = id.replaceAll("\\/", ".");
-		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".register"));
 		
 		languageManagerConfiguration.installI18nResource(resourceBundle, e, id);
 	}
@@ -53,7 +54,7 @@ public class LanguageRegistryImp implements LanguageRegistry{
 	public void unregisterResourceBundle(Locale e, String id) {
 		
 		String packID = id.replaceAll("\\/", ".");
-		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".unregister"));
 
 		languageManagerConfiguration.uninstallI18nResource(e, id);
 	}

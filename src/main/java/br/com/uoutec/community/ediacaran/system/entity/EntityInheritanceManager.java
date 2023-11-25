@@ -11,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.application.ClassUtil;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
 import br.com.uoutec.community.ediacaran.plugins.PublicBean;
-import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
 
 @Singleton
 public class EntityInheritanceManager implements PublicBean {
@@ -37,7 +38,7 @@ public class EntityInheritanceManager implements PublicBean {
 			Class<?> base = entityInheritance.base();
 			
 			
-			SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".register"));
+			ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + base.getSimpleName() + ".register"));
 			
 			ConcurrentMap<String,Class<?>> map = this.clazz.get(base);
 			
@@ -73,7 +74,7 @@ public class EntityInheritanceManager implements PublicBean {
 			
 			if(map != null){
 				
-				SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister"));
+				ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister"));
 				
 				map.remove(name, clazz);
 				

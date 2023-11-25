@@ -7,7 +7,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
 
 public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriver {
 
@@ -40,14 +41,14 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 	
 	public void addListener(ObjectsManagerDriverListener listener) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + name + ".listener.register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + name + ".listener.register"));
 		
 		listeners.registerListener(listener);
 	}
 
 	public void removeListener(ObjectsManagerDriverListener listener) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + name + ".listener.unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + name + ".listener.unregister"));
 		
 		listeners.unregisterListener(listener);
 	}
@@ -55,7 +56,7 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 	@Override
 	public void registerObjectHandler(ObjectHandler handler) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + name + ".handler.register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + name + ".handler.register"));
 		
 		if(handlers.indexOf(handler) != -1) {
 			throw new IllegalStateException("handler");
@@ -75,7 +76,7 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 	@Override
 	public void unregisterObjectHandler(ObjectHandler handler) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + name + ".handler.unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + name + ".handler.unregister"));
 
 		Lock lock = handlersLock.writeLock();
 		lock.lock();
@@ -94,7 +95,7 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 
 	public void setDefaultObjectHandler(ObjectHandler defaultObjectHandler) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + name + ".default_handler.register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + name + ".default_handler.register"));
 		
 		this.defaultObjectHandler = defaultObjectHandler;
 	}

@@ -7,7 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
 
 public abstract class FileObjectsTemplateManagerDriver 
 	extends FileObjectsManagerDriver
@@ -23,7 +24,7 @@ public abstract class FileObjectsTemplateManagerDriver
 	@Override
 	public void registerTemplate(ObjectTemplate template) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + ".templates.register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + ".templates.register"));
 		
 		templates.put(template.getId(), template);
 	}
@@ -31,7 +32,7 @@ public abstract class FileObjectsTemplateManagerDriver
 	@Override
 	public void unregisterTemplate(String id) {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(basePermission + ".templates.unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + ".templates.unregister"));
 		
 		templates.remove(id);
 		

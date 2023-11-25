@@ -5,7 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.plugins.SecurityUtil;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
 
 
 @Singleton
@@ -19,7 +20,7 @@ public class SystemEventRegistryImp
 	public void registerSystemEvent(SystemEvent entity)
 			throws SystemEventRegistryException {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + "register"));
 
 		try{
 			if(entity.getId() == null){
@@ -38,7 +39,7 @@ public class SystemEventRegistryImp
 	public void removeSystemEvent(SystemEvent entity)
 			throws SystemEventRegistryException {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + "unregister"));
 		
 		try{
 			this.entityAccess.delete(entity);
@@ -52,7 +53,7 @@ public class SystemEventRegistryImp
 	public List<SystemEvent> getSystemEventByType(SystemEventType type,
 			Integer first, Integer max) throws SystemEventRegistryException {
 		
-		SecurityUtil.checkPermission(new RuntimePermission(PERMISSION_PREFIX + "access.type"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + "access.type"));
 		
 		try{
 			return this.entityAccess.getByType(type, first, max);
