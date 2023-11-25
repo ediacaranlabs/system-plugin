@@ -1,25 +1,22 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import br.com.uoutec.community.ediacaran.io.FileSystem;
+import br.com.uoutec.application.io.Path;
 
 public class FileObject {
 
-	private File file;
+	private Path file;
 
-	private FileSystem fileSystem = new FileSystem();
-	
 	private boolean isTransient;
 	
-	public FileObject(File file) {
+	public FileObject(Path file) {
 		this(file, true);
 	}
 	
-	public FileObject(File file, boolean isTransient) {
+	public FileObject(Path file, boolean isTransient) {
 		this.file = file;
 		this.isTransient = isTransient;
 		
@@ -31,12 +28,12 @@ public class FileObject {
 	
 	public InputStream getInputStream() throws FileNotFoundException {
 		//return new FileInputStream(file);
-		return fileSystem.getInputStream(file);
+		return file.openInputStream();
 	}
 	
 	public OutputStream getOutputStream() throws FileNotFoundException {
 		//return new FileOutputStream(file);
-		return fileSystem.getOutputStream(file);
+		return file.openOutputStream();
 	}
 
 	public boolean isTransient() {

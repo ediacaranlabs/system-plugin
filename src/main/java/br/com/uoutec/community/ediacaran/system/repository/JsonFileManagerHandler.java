@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import br.com.uoutec.community.ediacaran.io.FileSystem;
+import br.com.uoutec.application.io.Path;
 import br.com.uoutec.community.ediacaran.system.util.DataUtil.ClassTypeAdapter;
 
 public class JsonFileManagerHandler extends AbstractFileManagerHandler{
@@ -27,10 +26,8 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
         .create();		
 	}
 
-	private FileSystem fileSystem = new FileSystem();
-	
 	@Override
-	public Object read(File file, FileMetadata metadata) throws IOException {
+	public Object read(Path file, FileMetadata metadata) throws IOException {
 
 		try(Reader reader = getReader(file)){
 			return  gson.fromJson(reader, Object.class);
@@ -38,13 +35,13 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 		
 	}
 
-	private Reader getReader(File file) throws FileNotFoundException {
+	private Reader getReader(Path file) throws FileNotFoundException {
 		//return new InputStreamReader(new java.io.FileInputStream(file), StandardCharsets.UTF_8);
-		return new InputStreamReader(fileSystem.getInputStream(file), StandardCharsets.UTF_8);
+		return new InputStreamReader(file.openInputStream(), StandardCharsets.UTF_8);
 	}
 	
 	@Override
-	public void write(File file, FileMetadata metadata, Object value) throws FileNotFoundException, IOException {
+	public void write(Path file, FileMetadata metadata, Object value) throws FileNotFoundException, IOException {
 		
 		try(Writer stream = getWriter(file)){
 			gson.toJson(value, Object.class, stream);
@@ -53,13 +50,13 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 		
 	}
 
-	public Writer getWriter(File file) throws FileNotFoundException {
+	public Writer getWriter(Path file) throws FileNotFoundException {
 		//return new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
-		return new OutputStreamWriter(fileSystem.getOutputStream(file), StandardCharsets.UTF_8);
+		return new OutputStreamWriter(file.openOutputStream(), StandardCharsets.UTF_8);
 	}
 
 	@Override
-	public void delete(File file, FileMetadata metadata) throws IOException {
+	public void delete(Path file, FileMetadata metadata) throws IOException {
 		file.delete();
 	}
 	

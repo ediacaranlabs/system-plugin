@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.community.ediacaran.system.cdi.Parallel;
-import br.com.uoutec.community.ediacaran.SystemProperties;
+import br.com.uoutec.application.SystemProperties;
 import br.com.uoutec.community.ediacaran.system.cdi.ActiveRequestContext;
 
 @Singleton

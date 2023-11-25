@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.listener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,9 +17,9 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.uoutec.application.io.Path;
 import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
 import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
-import br.com.uoutec.community.ediacaran.io.FileSystem;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
 import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
 import br.com.uoutec.community.ediacaran.plugins.PluginNode;
@@ -33,8 +32,6 @@ public class LanguageListener implements EdiacaranEventListener{
 	private static final Logger logger = LoggerFactory.getLogger(LanguageListener.class);
 
 	private LanguageRegistry languageRegistry;
-	
-	private FileSystem fileSystem = new FileSystem();
 	
 	@Inject
 	public LanguageListener(LanguageRegistry languageRegistry) {
@@ -85,13 +82,13 @@ public class LanguageListener implements EdiacaranEventListener{
 
 		PluginPath pp = plugin.getConfiguration()
 				.getMetadata().getPath();
-		File base = new File(pp.getBase(), "i18n");
+		Path base = pp.getBase().getPath("i18n");
 		
 		if(base.exists() && base.isDirectory()) {
-			File packages = new File(base, "language.properties");
+			Path packages = base.getPath("language.properties");
 			Properties p = new Properties();
 			
-			try (InputStream i = fileSystem.getInputStream(packages)/*new FileInputStream(packages)*/){
+			try (InputStream i = packages.openInputStream() /*new FileInputStream(packages)*/){
 				p.load(i);
 			}
 			
@@ -101,21 +98,21 @@ public class LanguageListener implements EdiacaranEventListener{
 				String name = names.nextElement();
 				String path = p.getProperty(name);
 				
-				loadLanguages(name, new File(base, path), languageRegistry);
+				loadLanguages(name, base.getPath(path), languageRegistry);
 			}
 		}
 		
 	}
 
-	protected void loadLanguages(String packageID, File path, LanguageRegistry languageRegistry) throws FileNotFoundException, IOException {
+	protected void loadLanguages(String packageID, Path path, LanguageRegistry languageRegistry) throws FileNotFoundException, IOException {
 		
 		if(!path.exists() || !path.isDirectory()) {
 			return;
 		}
 		
-		File[] files = path.listFiles();
+		Path[] files = path.getFiles();
 		
-		for(File f: files) {
+		for(Path f: files) {
 			
 			if(f.isDirectory()) {
 				loadLanguages(packageID + "/" + f.getName(), f, languageRegistry);
@@ -139,7 +136,7 @@ public class LanguageListener implements EdiacaranEventListener{
 					continue;
 				}
 					
-				try (InputStream i = fileSystem.getInputStream(f) /*new FileInputStream(f)*/){
+				try (InputStream i = f.openInputStream() /*new FileInputStream(f)*/){
 					PropertyResourceBundle prb = new PropertyResourceBundle(i);
 					languageRegistry.registerResourceBundle(prb, lang, packageID + "/" + id);
 				}

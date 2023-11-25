@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import br.com.uoutec.application.io.Path;
 import br.com.uoutec.community.ediacaran.system.repository.FileManager.FileValue;
 
 public class FileObjectsManagerDriver extends AbstractObjectsManagerDriver {
@@ -71,7 +71,7 @@ public class FileObjectsManagerDriver extends AbstractObjectsManagerDriver {
 		
 		try {
 			FileMetadata fmd = toFileMetadata(path, name, locale, handler.getType());
-			File file = fileManager.persist(fmd, handler.toData(obj));
+			Path file = fileManager.persist(fmd, handler.toData(obj));
 			return new FileObjectsManagerDriverValue(file, obj);
 		}
 		catch(IOException e) {
@@ -137,13 +137,13 @@ public class FileObjectsManagerDriver extends AbstractObjectsManagerDriver {
 	
 	public static class FileObjectsManagerDriverValue implements ObjectValue {
 		
-		private File file;
+		private Path file;
 		
 		private long lastModified;
 		
 		private Object object;
 
-		public FileObjectsManagerDriverValue(File file, Object object) {
+		public FileObjectsManagerDriverValue(Path file, Object object) {
 			this.file = file;
 			this.lastModified = object == null? -1 : file.lastModified();
 			this.object = object;
@@ -153,7 +153,7 @@ public class FileObjectsManagerDriver extends AbstractObjectsManagerDriver {
 			return lastModified == file.lastModified();
 		}
 
-		public File getFile() {
+		public Path getFile() {
 			return file;
 		}
 

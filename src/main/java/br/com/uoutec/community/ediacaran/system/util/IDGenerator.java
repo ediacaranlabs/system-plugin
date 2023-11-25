@@ -1,6 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
-import br.com.uoutec.community.ediacaran.SystemProperties;
+import br.com.uoutec.application.SystemProperties;
 
 public class IDGenerator {
 

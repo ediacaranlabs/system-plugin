@@ -3,6 +3,9 @@ package br.com.uoutec.community.ediacaran.system.repository;
 import java.io.File;
 import java.io.IOException;
 
+import br.com.uoutec.application.io.Path;
+import br.com.uoutec.application.io.Vfs;
+
 public interface FileManagerHandler {
 
 	default String toFilePath(String value) {
@@ -29,18 +32,18 @@ public interface FileManagerHandler {
 		*/
 	}
 	
-	FileMetadata toMetadata(File base, File file);
+	FileMetadata toMetadata(Path base, Path file);
 
-	default FileMetadata toMetadata(File base, String path) {
-		return toMetadata(base, new File(path));
+	default FileMetadata toMetadata(Path base, String path) {
+		return toMetadata(base, Vfs.getPath(path));
 	}
 	
-	File toFile(File base, FileMetadata omd);
+	Path toFile(Path base, FileMetadata omd);
 
-	Object read(File file, FileMetadata metadata) throws IOException;
+	Object read(Path file, FileMetadata metadata) throws IOException;
 	
-	void write(File file, FileMetadata metadata, Object value) throws IOException;
+	void write(Path file, FileMetadata metadata, Object value) throws IOException;
 	
-	void delete(File file, FileMetadata metadata) throws IOException;
+	void delete(Path file, FileMetadata metadata) throws IOException;
 	
 }

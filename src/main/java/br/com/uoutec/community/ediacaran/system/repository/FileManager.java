@@ -1,10 +1,11 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import br.com.uoutec.application.io.Path;
 
 public class FileManager {
 
@@ -16,18 +17,18 @@ public class FileManager {
 
 	private FileManagerHandler fileManagerHandler;
 	
-	private File basePath;
+	private Path basePath;
 	
-	public FileManager(File basePath, FileManagerHandler fileManagerHandler) {
+	public FileManager(Path basePath, FileManagerHandler fileManagerHandler) {
 		this.basePath = basePath;
 		this.fileManagerHandler = fileManagerHandler;
 	}
 	
-	public FileMetadata toMetadata(File base, String path) {
+	public FileMetadata toMetadata(Path base, String path) {
 		return fileManagerHandler.toMetadata(base, path);
 	}
 
-	public FileMetadata toMetadata(File base, File file) {
+	public FileMetadata toMetadata(Path base, Path file) {
 		return fileManagerHandler.toMetadata(base, file);
 	}
 	
@@ -69,7 +70,7 @@ public class FileManager {
 	
 	public List<FileMetadata> list(String path, boolean recursive, Filter filter){
 		
-		File base;
+		Path base;
 		
 		if(path != null && !BASE_PATH.equals(path)) {
 			if(!pathPattern.matcher(path).matches()) {
@@ -77,7 +78,7 @@ public class FileManager {
 			}
 			
 			path = fileManagerHandler.toFilePath(path);
-			base = new File(basePath, path);
+			base = basePath.getPath(path);
 		}
 		else {
 			base = basePath;
@@ -88,15 +89,15 @@ public class FileManager {
 		return list;
 	}
 	
-	private void list(List<FileMetadata> result, File path, Filter filter, boolean recursive) {
+	private void list(List<FileMetadata> result, Path path, Filter filter, boolean recursive) {
 		
-		File[] l = path.listFiles();
+		Path[] l = path.getFiles();
 		
 		if(l == null) {
 			return;
 		}
 		
-		for(File f: l) {
+		for(Path f: l) {
 			if(f.isDirectory() && recursive) {
 				list(result, f, filter, recursive);
 			}
@@ -114,9 +115,9 @@ public class FileManager {
 
 	public FileValue get(FileMetadata fmd) throws IOException {
 		
-		File file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(basePath, fmd);
 
-		if(!file.getAbsolutePath().startsWith(basePath.getAbsolutePath())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
@@ -132,15 +133,15 @@ public class FileManager {
 	
 	/* persist */
 	
-	public File persist(FileMetadata fmd, Object object) throws IOException {
+	public Path persist(FileMetadata fmd, Object object) throws IOException {
 		
-		File file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(basePath, fmd);
 		
-		if(!file.getAbsolutePath().startsWith(basePath.getAbsolutePath())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
-		file.getParentFile().mkdirs();
+		file.getParent().mkdirs();
 		fileManagerHandler.write(file, fmd, object);
 		return file;
 	}
@@ -149,18 +150,18 @@ public class FileManager {
 	
 	public void delete(FileMetadata fmd) throws IOException {
 		
-		File file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(basePath, fmd);
 		
-		if(!file.getAbsolutePath().startsWith(basePath.getAbsolutePath())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
 		fileManagerHandler.delete(file, fmd);
 		
-		delete(basePath, file.getParentFile());
+		delete(basePath, file.getParent());
 	}
 	
-	private void delete(File base, File file) throws IOException {
+	private void delete(Path base, Path file) throws IOException {
 		
 		if(file.equals(base)) {
 			return;
@@ -168,9 +169,10 @@ public class FileManager {
 		
 		file.delete();
 		
-		File parent = file.getParentFile();
+		Path parent = file.getParent();
 		
-		if(parent.listFiles(e->e.isFile()).length == 0) {
+		//if(parent.listFiles(e->e.isFile()).length == 0) {
+		if(parent.getFiles(e->e.isFile()).length == 0) {
 			delete(base, parent);
 		}
 		
@@ -185,13 +187,13 @@ public class FileManager {
 	
 	public static class FileValue {
 		
-		private File file;
+		private Path file;
 		
 		private long lastModified;
 		
 		private Object object;
 
-		public FileValue(File file, Object object) {
+		public FileValue(Path file, Object object) {
 			this.file = file;
 			this.lastModified = object == null? -1 : file.lastModified();
 			this.object = object;
@@ -201,7 +203,7 @@ public class FileManager {
 			return lastModified == file.lastModified();
 		}
 
-		public File getFile() {
+		public Path getFile() {
 			return file;
 		}
 

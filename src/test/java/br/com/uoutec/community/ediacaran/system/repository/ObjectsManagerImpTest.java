@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -17,11 +16,15 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import br.com.uoutec.application.SystemProperties;
+import br.com.uoutec.application.io.Path;
+import br.com.uoutec.application.io.Vfs;
+
 public class ObjectsManagerImpTest {
 
-	private static final File BASE = new File(System.getProperty("user.dir"));
+	private static final Path BASE = Vfs.getPath(SystemProperties.getProperty("user.dir"));
 	
-	private static final File BASE_BJECTS = new File(BASE, ObjectsManagerImp.OBJECTS_REPOSITORY);
+	private static final Path BASE_BJECTS = BASE.getPath(ObjectsManagerImp.OBJECTS_REPOSITORY);
 	
 	private ObjectsManagerImp objectsManager;
 	
@@ -29,10 +32,10 @@ public class ObjectsManagerImpTest {
 	
 	private FileManager fileManager;
 	
-	public boolean clearRepository(File directoryToBeDeleted) {
-	    File[] allContents = directoryToBeDeleted.listFiles();
+	public boolean clearRepository(Path directoryToBeDeleted) {
+	    Path[] allContents = directoryToBeDeleted.getFiles();
 	    if (allContents != null) {
-	        for (File file : allContents) {
+	        for (Path file : allContents) {
 	        	clearRepository(file);
 	        }
 	    }
@@ -42,7 +45,7 @@ public class ObjectsManagerImpTest {
 	@BeforeEach
 	public void before() throws ObjectsManagerDriverException {
 		
-		System.setProperty("app.base", BASE.getAbsolutePath());
+		SystemProperties.setProperty("app.base", BASE.normalizePath().getAbsolutePath().getFullName());
 		
 		BASE_BJECTS.mkdir();
 		clearRepository(BASE_BJECTS);
@@ -67,23 +70,23 @@ public class ObjectsManagerImpTest {
 	@Test
 	public void testRegisterDefault() {
 		objectsManager.registerObject("global/path/type/item1", null, "TESTE");
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
 	}
 
 	@Test
 	public void testRegisterDefaultAndpt_BR() {
 		objectsManager.registerObject("global/path/type/item1", null, "TESTE");
 		objectsManager.registerObject("global/path/type/item1", new Locale("pt", "BR"), "TESTE");
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_pt_BR.obj").exists());
 	}
 
 	@Test
 	public void testRegisterSpaceDefaultAndpt_BR() {
 		objectsManager.registerObject("global/path/type/item1_val", null, "TESTE");
 		objectsManager.registerObject("global/path/type/item1_val", new Locale("pt", "BR"), "TESTE");
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_val_json_default.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_val_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_val_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_val_json_pt_BR.obj").exists());
 	}
 
 	@Test
@@ -93,10 +96,10 @@ public class ObjectsManagerImpTest {
 		objectsManager.registerObject("global/path/type/item1_val", null, "VAL1_DEFAULT");
 		objectsManager.registerObject("global/path/type/item1_val", new Locale("pt", "BR"), "VAL1_PT_BR");
 		
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_pt_BR.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_val_json_default.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_val_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_val_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_val_json_pt_BR.obj").exists());
 		
 		objectsManager.flush();
 		
@@ -133,8 +136,8 @@ public class ObjectsManagerImpTest {
 		objectsManager.registerObject("global/path/type/item1", null, "TESTE");
 		objectsManager.registerObject("global/path/type/item1", new Locale("pt", "BR"), "PT_BR");
 		
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_pt_BR.obj").exists());
 		
 		objectsManager.flush();
 		
@@ -145,8 +148,8 @@ public class ObjectsManagerImpTest {
 		
 		objectsManager.unregisterObject("global/path/type/item1", new Locale("pt", "BR"));
 
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
-		assertFalse(new File(BASE_BJECTS, "/path/type/item1_json_pt_BR.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
+		assertFalse(BASE_BJECTS.getPath("/path/type/item1_json_pt_BR.obj").exists());
 		
 		
 	}
@@ -155,7 +158,7 @@ public class ObjectsManagerImpTest {
 	public void testUnregisterOne() throws IOException {
 		objectsManager.registerObject("global/path/type/item1", null, "TESTE");
 		
-		assertTrue(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
+		assertTrue(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
 		
 		objectsManager.flush();
 		
@@ -164,7 +167,7 @@ public class ObjectsManagerImpTest {
 		
 		objectsManager.unregisterObject("global/path/type/item1", null);
 
-		assertFalse(new File(BASE_BJECTS, "/path/type/item1_json_default.obj").exists());
+		assertFalse(BASE_BJECTS.getPath("/path/type/item1_json_default.obj").exists());
 		
 	}
 	

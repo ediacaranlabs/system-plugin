@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import br.com.uoutec.application.io.Path;
+import br.com.uoutec.application.io.Vfs;
+
 public abstract class AbstractFileManagerHandler implements FileManagerHandler {
 
 	private static final String PATH_FORMAT = "(\\/[a-z][a-z0-9]+(_[a-z0-9]+)*)+";
@@ -28,7 +31,7 @@ public abstract class AbstractFileManagerHandler implements FileManagerHandler {
 	private Pattern fileNamePattern = Pattern.compile(FILENAME_FORMAT);
 	
 	@Override
-	public FileMetadata toMetadata(File base, File file) {
+	public FileMetadata toMetadata(Path base, Path file) {
 		
 		String fileName = file.getName();
 		
@@ -44,8 +47,8 @@ public abstract class AbstractFileManagerHandler implements FileManagerHandler {
 			throw new IllegalStateException("id");
 		}
 		
-		String baseName = base.getAbsolutePath();
-		String pathName = file.getParentFile().getAbsolutePath();
+		String baseName = base.normalizePath().getAbsolutePath().getFullName();
+		String pathName = file.getParent().normalizePath().getAbsolutePath().getFullName();
 		
 		if(!pathName.startsWith(baseName)) {
 			throw new IllegalStateException("path");
@@ -67,12 +70,12 @@ public abstract class AbstractFileManagerHandler implements FileManagerHandler {
 	}
 
 	@Override
-	public FileMetadata toMetadata(File base, String path) {
-		return toMetadata(base, new File(path));
+	public FileMetadata toMetadata(Path base, String path) {
+		return toMetadata(base, Vfs.getPath(path));
 	}
 
 	@Override
-	public File toFile(File base, FileMetadata omd) {
+	public Path toFile(Path base, FileMetadata omd) {
 		
 		if(!idPattern.matcher(omd.getName()).matches()) {
 			throw new IllegalStateException("invalid id: " + omd.getName());
@@ -100,7 +103,7 @@ public abstract class AbstractFileManagerHandler implements FileManagerHandler {
 		
 		builder.append(".obj");
 		
-		return new File(base, builder.toString());
+		return base.getPath(builder.toString());
 	}
 
 }
