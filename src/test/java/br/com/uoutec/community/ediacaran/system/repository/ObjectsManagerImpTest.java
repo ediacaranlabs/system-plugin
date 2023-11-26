@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,6 +23,12 @@ import br.com.uoutec.application.SystemProperties;
 import br.com.uoutec.application.io.Path;
 import br.com.uoutec.application.io.Vfs;
 import br.com.uoutec.application.junit.JunitRunner;
+import br.com.uoutec.application.security.FileSecurityPermission;
+import br.com.uoutec.application.security.FileSecurityPermissionActions;
+import br.com.uoutec.application.security.PropertySecurityPermission;
+import br.com.uoutec.application.security.PropertySecurityPermissionActions;
+import br.com.uoutec.application.security.RuntimeSecurityPermission;
+import br.com.uoutec.application.security.SecurityPermission;
 
 @ExtendWith(JunitRunner.class)
 public class ObjectsManagerImpTest {
@@ -28,6 +36,43 @@ public class ObjectsManagerImpTest {
 	private static final Path BASE = Vfs.getPath(SystemProperties.getProperty("user.dir"));
 	
 	private static final Path BASE_BJECTS = BASE.getPath(ObjectsManagerImp.OBJECTS_REPOSITORY);
+
+	@SuppressWarnings({ "serial", "unused" })
+	private Set<SecurityPermission> securityPermissions = new HashSet<SecurityPermission>() {{
+
+		add(new FileSecurityPermission(
+				BASE.getAbsolutePath().getFullName(), 
+				FileSecurityPermissionActions.READ
+		));
+		
+		add(new FileSecurityPermission(
+				BASE_BJECTS.getAbsolutePath().getFullName() + "/-", 
+				FileSecurityPermissionActions.READ,
+				FileSecurityPermissionActions.WRITE,
+				FileSecurityPermissionActions.DELETE
+		));
+
+		add(new RuntimeSecurityPermission(
+				"app.objs.*"
+		));
+		
+		add(new PropertySecurityPermission(
+				"user.dir", 
+				PropertySecurityPermissionActions.READ
+		));
+		
+		add(new PropertySecurityPermission(
+				"file.separator", 
+				PropertySecurityPermissionActions.READ
+		));
+		
+		add(new PropertySecurityPermission(
+				"app.base", 
+				PropertySecurityPermissionActions.READ, 
+				PropertySecurityPermissionActions.WRITE
+		));
+		
+	}};
 	
 	private ObjectsManagerImp objectsManager;
 	
