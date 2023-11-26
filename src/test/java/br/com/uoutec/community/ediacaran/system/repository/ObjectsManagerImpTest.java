@@ -15,11 +15,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import br.com.uoutec.application.SystemProperties;
 import br.com.uoutec.application.io.Path;
 import br.com.uoutec.application.io.Vfs;
+import br.com.uoutec.application.junit.JunitRunner;
 
+@ExtendWith(JunitRunner.class)
 public class ObjectsManagerImpTest {
 
 	private static final Path BASE = Vfs.getPath(SystemProperties.getProperty("user.dir"));
