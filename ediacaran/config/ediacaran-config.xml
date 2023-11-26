@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_101" class="java.beans.XMLDecoder">
+
+	<object	class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatServerBootstrap">
+	
+		<void property="listenerManager">
+			<object class="br.com.uoutec.community.ediacaran.EdiacaranListenerManagerImp">
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.weld.tomcat.TomcatRegisterContainerEventListener"/>
+				</void>
+				
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatContextListener"/>
+				</void>
+
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.weld.context.ActiveRequestContextBridgeListener"/>
+				</void>
+
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.weld.context.ActiveSessionContextBridgeListener"/>
+				</void>
+			
+				<!--				
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+						<void method="setEventListerClass">
+							<string>br.com.uoutec.community.ediacaran.system.WebEdiacaranListener</string>
+						</void>
+					</object>
+				</void>
+
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+						<void method="setEventListerClass">
+							<string>br.com.uoutec.community.ediacaran.core.system.listener.EntityInheritanceListener</string>
+						</void>
+					</object>
+				</void>
+				
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+						<void method="setEventListerClass">
+							<string>br.com.uoutec.community.ediacaran.core.system.listener.LanguageListener</string>
+						</void>
+					</object>
+				</void>
+
+				<void method="addListener">
+					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+						<void method="setEventListerClass">
+							<string>br.com.uoutec.community.ediacaran.core.system.listener.FilterListener</string>
+						</void>
+					</object>
+				</void>
+				-->			
+			</object>
+		</void>
+
+		<void property="securityPolicyManager">
+			<object class="br.com.uoutec.community.ediacaran.SecurityPolicyManagerImp">
+			
+				<void property="policyFileWriter">
+					<object class="br.com.uoutec.community.ediacaran.web.WebPolicyFileWriterImp"/>
+				</void>
+				
+			</object>
+		</void>
+
+		<void property="pluginManager">
+			<object class="br.com.uoutec.community.ediacaran.PluginManagerImp"/>
+		</void>
+
+		<void property="pluginConfigurationFileReader">
+			<object class="br.com.uoutec.community.ediacaran.plugins.PluginConfigurationFileReaderImp"/>
+		</void>
+
+		<void property="pluginManagerData">
+			<object class="br.com.uoutec.community.ediacaran.PluginManagerDataImp"/>
+		</void>
+		
+		<void property="pluginConfigurationFileWriter">
+			<object class="br.com.uoutec.community.ediacaran.plugins.PluginConfigurationFileWriterImp"/>
+		</void>
+
+		<void property="exportImportPlugins">
+			<object class="br.com.uoutec.community.ediacaran.plugins.ExportImportPluginsImp"/>
+		</void>
+
+		<void property="pluginInitializer">
+			<object class="br.com.uoutec.community.ediacaran.weld.plugin.BuilderPluginInitializer">
+				<!--
+				<void method="addExtension">
+					<string>com.arjuna.ats.jta.cdi.TransactionExtension</string>
+				</void>
+				<void method="addExtension">
+					<string>br.com.uoutec.filter.invoker.cdi.InvokerFilterExtension</string>
+				</void>
+				-->
+			</object>
+		</void>
+
+		<void property="pluginsSuppliersFactory">
+			<object class="br.com.uoutec.community.ediacaran.plugins.PluginsSuppliersFactoryImp"/>
+		</void>
+	
+		<void property="pluginInstaller">
+			<object class="br.com.uoutec.community.ediacaran.plugins.PluginInstallerImp"/>
+		</void>
+
+		<void property="pluginClassLoaderFactory">
+			<object class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatBuilderClassLoaderFactory">
+				<!--
+				<void method="addIncludePluginClassPathMatch">
+					<string>.*persistence.*</string>
+				</void>
+				<void method="addIncludePluginClassPathMatch">
+					<string>.*plugin.*</string>
+				</void>
+				<void method="addIncludePluginClassPathMatch">
+					<string>.*filter.*</string>
+				</void>
+				-->
+				
+				<!--				
+				<void method="addIncludePluginClassPathMatch">
+					<string>front-security</string>
+					<string>.*front-security.*</string>
+				</void>
+				
+				<void method="addIncludePluginClassPathMatch">
+					<string>web</string>
+					<string>.*web-plugin.*</string>
+				</void>
+				
+				<void method="addIncludePluginClassPathMatch">
+					<string>security</string>
+					<string>.*security.*</string>
+				</void>
+				
+				<void method="addIncludePluginClassPathMatch">
+					<string>system</string>
+					<string>.*system-ediacaran.*</string>
+				</void>
+				
+				<void method="addIncludePluginClassPathMatch">
+					<string>front</string>
+					<string>.*front-ediacaran.*</string>
+				</void>
+				
+				<void method="addIncludePluginClassPathMatch">
+					<string>test</string>
+					<string>.*ediacaran-test.*</string>
+				</void>
+				-->
+			</object>
+		</void>
+		
+		<!--  
+		<void property="parentClassLoader">
+			<object class="java.net.URLClassLoader">
+				...
+			</object>
+		</void>
+		-->
+		
+		<void property="pluginsLoader">
+			<object class="br.com.uoutec.community.ediacaran.plugins.PluginsLoaderImp"/>
+		</void>
+
+		<void property="varParser">
+			<object class="br.com.uoutec.community.ediacaran.VarParserConfigurationImp">
+			
+				<void property="useDefaultVars">
+					<boolean>true</boolean>
+				</void>
+			
+				<!--
+				<void method="registerVarResolver">
+					<string>teste</string>
+					<object class="br.com.uoutec.community.ediacaran.weld.VarParserImp"/>
+				</void>
+				-->
+				
+			</object>
+		</void>
+
+		<void method="addPluginSearch">
+			<object class="br.com.uoutec.community.ediacaran.plugins.JarPluginsSearch">
+			
+				<void property="exportImportPlugins">
+					<object class="br.com.uoutec.community.ediacaran.plugins.ExportImportPluginsImp"/>
+				</void>
+			
+			</object>
+		</void>
+
+		<void method="addPluginSearch">
+			<object class="br.com.uoutec.community.ediacaran.plugins.FileSystemPluginsSearch"/>
+		</void>
+
+		<void method="addEntity">
+			<object class="br.com.uoutec.community.ediacaran.web.SecurityProviderImp"/>
+			<array class="java.lang.Class" length="0"/>
+		</void>
+		
+		<void method="setSystemProperty">
+			<string>java.security.auth.login.config</string>
+			<string>C:/develop/ediacaran/config/jaas.config</string>
+		</void>
+		
+		<void method="setSystemProperty">
+			<string>java.security.debug</string>
+			<string>all</string>
+		</void>
+		
+		<!-- 
+		<void method="setSystemProperty">
+			<string>java.util.logging.manager</string>
+			<string>org.apache.logging.log4j.jul.LogManager</string>
+		</void>
+		-->	
+	</object>
+</java>

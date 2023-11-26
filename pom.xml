@@ -83,6 +83,30 @@
 		</dependency>
 		<!--  Test -->
 		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>ediacaran-weld</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>ediacaran-junit</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.com.uoutec</groupId>
+			<artifactId>ediacaran-junit-mock</artifactId>
+			<version>1.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <version>5.4.0</version>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
 		    <version>5.8.2</version>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	metadata-complete="true" version="3.0">
+
+	<context-param>
+		<param-name>org.brandao.brutos.render_view</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.TemplateRenderView</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.brandao.brutos.view.prefix</param-name>
+		<param-value>/</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.brandao.brutos.manager.controller</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranControllerManager</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.brandao.brutos.controller.action_resolver</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebActionResolver</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.brandao.brutos.object_factory</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.WebPluginObjectFactory</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.brandao.brutos.invoker</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebInvoker</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>context_class</param-name>
+		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebApplicationContext</param-value>
+	</context-param>
+
+<!--
+	<listener>
+		<listener-class>br.com.uoutec.community.ediacaran.weld.ContextInitializer</listener-class>
+	</listener>
+-->
+	
+	<listener>
+	    <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>br.com.uoutec.community.ediacaran.web.ContextInitializer</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.brandao.brutos.web.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>brutos-filter</filter-name>
+		<filter-class>org.brandao.brutos.web.http.BrutosRequestFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>bridge-plugin-filter</filter-name>
+		<filter-class>br.com.uoutec.community.ediacaran.web.BridgePluginFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>brutos-filter</filter-name>
+		<url-pattern>*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>bridge-plugin-filter</filter-name>
+		<url-pattern>*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	    <cookie-config>
+	        <path>/</path>
+	    </cookie-config>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>index.htm</welcome-file>
+	</welcome-file-list>
+
+</web-app>

@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Properties;
@@ -18,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.application.io.Path;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
 import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
 import br.com.uoutec.community.ediacaran.plugins.Plugin;
@@ -44,14 +43,14 @@ public class LanguageListener implements EdiacaranEventListener{
 		if(event.getSource() instanceof PluginInitializer) {
 			
 			if("installing".equals(event.getType())){
-				AccessController.doPrivileged((PrivilegedAction<Object>)()->{
+				ContextSystemSecurityCheck.doPrivileged(()->{
 					startPlugin((PluginNode)event.getData());
 					return null;
 				});
 			}
 			else
 			if("destroying".equals(event.getType())){
-				AccessController.doPrivileged((PrivilegedAction<Object>)()->{
+				ContextSystemSecurityCheck.doPrivileged(()->{
 					stopPlugin((PluginNode)event.getData());
 					return null;
 				});
