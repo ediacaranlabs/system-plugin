@@ -89,6 +89,9 @@
 
 		<void property="pluginInitializer">
 			<object class="br.com.uoutec.community.ediacaran.weld.plugin.BuilderPluginInitializer">
+				<void method="addService">
+					<string>br.com.uoutec.community.ediacaran.weld.WeldEdiacaranThreadPoolExecutorServices</string>
+				</void>
 				<!--
 				<void method="addExtension">
 					<string>com.arjuna.ats.jta.cdi.TransactionExtension</string>
