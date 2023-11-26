@@ -163,7 +163,7 @@ public class FileManager {
 	
 	private void delete(Path base, Path file) throws IOException {
 		
-		if(file.equals(base)) {
+		if(file.normalizePath().getFullName().equals(base.normalizePath().getFullName())) {
 			return;
 		}
 		
