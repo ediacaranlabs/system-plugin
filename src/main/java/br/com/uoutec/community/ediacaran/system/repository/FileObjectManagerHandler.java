@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +14,7 @@ public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 	}
 
 	@Override
-	public void write(Path file, FileMetadata metadata, Object value) throws FileNotFoundException, IOException {
+	public void write(Path file, FileMetadata metadata, Object value) throws IOException {
 		
 		FileObject ig = (FileObject)value;
 		

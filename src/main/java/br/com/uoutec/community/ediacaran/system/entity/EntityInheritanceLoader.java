@@ -6,6 +6,8 @@ import java.util.List;
 
 import br.com.uoutec.application.scanner.DefaultScanner;
 import br.com.uoutec.application.scanner.filter.AnnotationTypeFilter;
+import br.com.uoutec.application.security.SecurityClassLoader;
+import br.com.uoutec.application.security.SecurityThread;
 
 public class EntityInheritanceLoader {
 
@@ -18,9 +20,10 @@ public class EntityInheritanceLoader {
 
 		DefaultScanner s = new DefaultScanner() {
 			
-			public ClassLoader getClassLoader() throws IOException {
-				return Thread.currentThread().getContextClassLoader();
+			public SecurityClassLoader getClassLoader() throws IOException {
+				return (SecurityClassLoader)((SecurityThread)Thread.currentThread()).getContextSecurityClassLoader();
 			}
+			
 		};
 		
 		s.setBasePackage(basePackage);

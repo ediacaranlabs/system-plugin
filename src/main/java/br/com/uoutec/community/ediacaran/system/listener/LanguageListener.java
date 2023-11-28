@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.listener;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessControlException;
@@ -77,7 +76,7 @@ public class LanguageListener implements EdiacaranEventListener{
 	
 	@SuppressWarnings("unchecked")
 	protected void loadLanguages(Plugin plugin
-			) throws FileNotFoundException, IOException {
+			) throws IOException {
 
 		PluginPath pp = plugin.getConfiguration()
 				.getMetadata().getPath();
@@ -103,7 +102,7 @@ public class LanguageListener implements EdiacaranEventListener{
 		
 	}
 
-	protected void loadLanguages(String packageID, Path path, LanguageRegistry languageRegistry) throws FileNotFoundException, IOException {
+	protected void loadLanguages(String packageID, Path path, LanguageRegistry languageRegistry) throws IOException {
 		
 		if(!path.exists() || !path.isDirectory()) {
 			return;

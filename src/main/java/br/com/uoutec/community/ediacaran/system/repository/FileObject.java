@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -26,12 +25,12 @@ public class FileObject {
 		
 	}
 	
-	public InputStream getInputStream() throws FileNotFoundException {
+	public InputStream getInputStream() {
 		//return new FileInputStream(file);
 		return file.openInputStream();
 	}
 	
-	public OutputStream getOutputStream() throws FileNotFoundException {
+	public OutputStream getOutputStream() {
 		//return new FileOutputStream(file);
 		return file.openOutputStream();
 	}

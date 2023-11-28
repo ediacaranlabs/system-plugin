@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.repository;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -35,13 +34,13 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 		
 	}
 
-	private Reader getReader(Path file) throws FileNotFoundException {
+	private Reader getReader(Path file) {
 		//return new InputStreamReader(new java.io.FileInputStream(file), StandardCharsets.UTF_8);
 		return new InputStreamReader(file.openInputStream(), StandardCharsets.UTF_8);
 	}
 	
 	@Override
-	public void write(Path file, FileMetadata metadata, Object value) throws FileNotFoundException, IOException {
+	public void write(Path file, FileMetadata metadata, Object value) throws IOException {
 		
 		try(Writer stream = getWriter(file)){
 			gson.toJson(value, Object.class, stream);
@@ -50,7 +49,7 @@ public class JsonFileManagerHandler extends AbstractFileManagerHandler{
 		
 	}
 
-	public Writer getWriter(Path file) throws FileNotFoundException {
+	public Writer getWriter(Path file) {
 		//return new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 		return new OutputStreamWriter(file.openOutputStream(), StandardCharsets.UTF_8);
 	}
