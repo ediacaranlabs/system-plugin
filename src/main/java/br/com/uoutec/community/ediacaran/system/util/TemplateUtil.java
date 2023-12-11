@@ -1,7 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
@@ -12,6 +11,7 @@ import org.brandao.brutos.io.Resource;
 import org.brandao.brutos.io.ResourceLoader;
 
 import br.com.uoutec.application.Configuration;
+import br.com.uoutec.application.io.Vfs;
 
 public class TemplateUtil {
 
@@ -73,7 +73,7 @@ public class TemplateUtil {
 		
 		if(!path.startsWith(ResourceLoader.CLASSPATH_URL_PREFIX)) {
 			if(!path.startsWith(ResourceLoader.FILE_URL_PREFIX)) {
-				path = ResourceLoader.FILE_URL_PREFIX.concat(new File(path).getAbsolutePath());
+				path = ResourceLoader.FILE_URL_PREFIX.concat(Vfs.getPath(path).getAbsolutePath().getFullName());
 			}
 		}
 		
@@ -94,7 +94,7 @@ public class TemplateUtil {
 		
 		if(!path.startsWith(ResourceLoader.CLASSPATH_URL_PREFIX)) {
 			if(!path.startsWith(ResourceLoader.FILE_URL_PREFIX)) {
-				path = ResourceLoader.FILE_URL_PREFIX.concat(new File(path).getAbsolutePath());
+				path = ResourceLoader.FILE_URL_PREFIX.concat(Vfs.getPath(path).getAbsolutePath().getFullName());
 			}
 		}
 		return this.loader.getResource(path);

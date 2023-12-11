@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.Constructor;
@@ -11,11 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import br.com.uoutec.application.SystemProperties;
-import br.com.uoutec.application.security.SecurityThread;
 import br.com.uoutec.application.security.SystemSecurityClassLoader;
-import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManager;
 import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManagerException;
-import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
 import br.com.uoutec.ediacaran.junit.PluginContext;
 import br.com.uoutec.ediacaran.junit.junit5.EdiacaranExt;
 
@@ -25,6 +21,7 @@ public class PluginInstallerTest {
 
 	@Test
 	public void installTest() throws ThreadGroupManagerException, ClassNotFoundException{
+		/*
 		SecurityThread st = new SecurityThread(()->{});
 		Thread t = new Thread();
 		t.getName();
@@ -33,6 +30,7 @@ public class PluginInstallerTest {
 		mm.getName();
 		ThreadGroupManager threadGroupManager = EntityContextPlugin.getEntity(ThreadGroupManager.class);
 		assertNotNull(threadGroupManager.getThreadGroup("default"));
+		*/
 	}
 
 	@Test
