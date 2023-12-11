@@ -2,7 +2,8 @@ package br.com.uoutec.community.ediacaran.system.task;
 
 import java.util.concurrent.TimeUnit;
 
-import br.com.uoutec.community.ediacaran.plugins.EntityContextPluginProvider;
+import br.com.uoutec.application.security.SecurityThread;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPluginProvider;
 
 public class TaskWrapper implements Runnable{
 
@@ -40,7 +41,7 @@ public class TaskWrapper implements Runnable{
 		
 		while(this.run){
 			try{
-				Thread.sleep(this.timeUnit.toMillis(this.time));
+				SecurityThread.sleep(this.timeUnit.toMillis(this.time));
 				Runnable task = ecp.getEntity(this.taskClass);
 				task.run();
 			}

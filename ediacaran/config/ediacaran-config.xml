@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_101" class="java.beans.XMLDecoder">
 
-	<object	class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatServerBootstrap">
+	<object	class="br.com.uoutec.ediacaran.web.tomcat.TomcatServerBootstrap">
 	
 		<void property="listenerManager">
-			<object class="br.com.uoutec.community.ediacaran.EdiacaranListenerManagerImp">
+			<object class="br.com.uoutec.ediacaran.core.EdiacaranListenerManagerImp">
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.weld.tomcat.TomcatRegisterContainerEventListener"/>
+					<object class="br.com.uoutec.ediacaran.weld.tomcat.TomcatRegisterContainerEventListener"/>
 				</void>
 				
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatContextListener"/>
+					<object class="br.com.uoutec.ediacaran.web.tomcat.TomcatContextListener"/>
 				</void>
 
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.weld.context.ActiveRequestContextBridgeListener"/>
+					<object class="br.com.uoutec.ediacaran.weld.context.ActiveRequestContextBridgeListener"/>
 				</void>
 
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.weld.context.ActiveSessionContextBridgeListener"/>
+					<object class="br.com.uoutec.ediacaran.weld.context.ActiveSessionContextBridgeListener"/>
 				</void>
 			
 				<!--				
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+					<object class="br.com.uoutec.ediacaran.ProxyEdiacaranEventListener">
 						<void method="setEventListerClass">
-							<string>br.com.uoutec.community.ediacaran.system.WebEdiacaranListener</string>
+							<string>br.com.uoutec.ediacaran.system.WebEdiacaranListener</string>
 						</void>
 					</object>
 				</void>
 
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+					<object class="br.com.uoutec.ediacaran.ProxyEdiacaranEventListener">
 						<void method="setEventListerClass">
-							<string>br.com.uoutec.community.ediacaran.core.system.listener.EntityInheritanceListener</string>
+							<string>br.com.uoutec.ediacaran.core.system.listener.EntityInheritanceListener</string>
 						</void>
 					</object>
 				</void>
 				
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+					<object class="br.com.uoutec.ediacaran.ProxyEdiacaranEventListener">
 						<void method="setEventListerClass">
-							<string>br.com.uoutec.community.ediacaran.core.system.listener.LanguageListener</string>
+							<string>br.com.uoutec.ediacaran.core.system.listener.LanguageListener</string>
 						</void>
 					</object>
 				</void>
 
 				<void method="addListener">
-					<object class="br.com.uoutec.community.ediacaran.ProxyEdiacaranEventListener">
+					<object class="br.com.uoutec.ediacaran.ProxyEdiacaranEventListener">
 						<void method="setEventListerClass">
-							<string>br.com.uoutec.community.ediacaran.core.system.listener.FilterListener</string>
+							<string>br.com.uoutec.ediacaran.core.system.listener.FilterListener</string>
 						</void>
 					</object>
 				</void>
@@ -58,40 +58,40 @@
 		</void>
 
 		<void property="securityPolicyManager">
-			<object class="br.com.uoutec.community.ediacaran.SecurityPolicyManagerImp">
+			<object class="br.com.uoutec.ediacaran.core.SecurityPolicyManagerImp">
 			
 				<void property="policyFileWriter">
-					<object class="br.com.uoutec.community.ediacaran.web.WebPolicyFileWriterImp"/>
+					<object class="br.com.uoutec.ediacaran.web.WebPolicyFileWriterImp"/>
 				</void>
 				
 			</object>
 		</void>
 
 		<void property="pluginManager">
-			<object class="br.com.uoutec.community.ediacaran.PluginManagerImp"/>
+			<object class="br.com.uoutec.ediacaran.core.PluginManagerImp"/>
 		</void>
 
 		<void property="pluginConfigurationFileReader">
-			<object class="br.com.uoutec.community.ediacaran.plugins.PluginConfigurationFileReaderImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.PluginConfigurationFileReaderImp"/>
 		</void>
 
 		<void property="pluginManagerData">
-			<object class="br.com.uoutec.community.ediacaran.PluginManagerDataImp"/>
+			<object class="br.com.uoutec.ediacaran.core.PluginManagerDataImp"/>
 		</void>
 		
 		<void property="pluginConfigurationFileWriter">
-			<object class="br.com.uoutec.community.ediacaran.plugins.PluginConfigurationFileWriterImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.PluginConfigurationFileWriterImp"/>
 		</void>
 
 		<void property="exportImportPlugins">
-			<object class="br.com.uoutec.community.ediacaran.plugins.ExportImportPluginsImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.ExportImportPluginsImp"/>
 		</void>
 
 		<void property="pluginInitializer">
-			<object class="br.com.uoutec.community.ediacaran.weld.plugin.BuilderPluginInitializer">
+			<object class="br.com.uoutec.ediacaran.weld.plugin.BuilderPluginInitializer">
 			    <!--
 				<void method="addService">
-					<string>br.com.uoutec.community.ediacaran.weld.WeldEdiacaranThreadPoolExecutorServices</string>
+					<string>br.com.uoutec.ediacaran.weld.WeldEdiacaranThreadPoolExecutorServices</string>
 				</void>
 				-->
 				<!--
@@ -106,15 +106,15 @@
 		</void>
 
 		<void property="pluginsSuppliersFactory">
-			<object class="br.com.uoutec.community.ediacaran.plugins.PluginsSuppliersFactoryImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.PluginsSuppliersFactoryImp"/>
 		</void>
 	
 		<void property="pluginInstaller">
-			<object class="br.com.uoutec.community.ediacaran.plugins.PluginInstallerImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.PluginInstallerImp"/>
 		</void>
 
 		<void property="pluginClassLoaderFactory">
-			<object class="br.com.uoutec.community.ediacaran.web.tomcat.TomcatBuilderClassLoaderFactory">
+			<object class="br.com.uoutec.ediacaran.web.tomcat.TomcatBuilderClassLoaderFactory">
 				<!--
 				<void method="addIncludePluginClassPathMatch">
 					<string>.*persistence.*</string>
@@ -170,11 +170,11 @@
 		-->
 		
 		<void property="pluginsLoader">
-			<object class="br.com.uoutec.community.ediacaran.plugins.PluginsLoaderImp"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.PluginsLoaderImp"/>
 		</void>
 
 		<void property="varParser">
-			<object class="br.com.uoutec.community.ediacaran.VarParserConfigurationImp">
+			<object class="br.com.uoutec.ediacaran.core.VarParserConfigurationImp">
 			
 				<void property="useDefaultVars">
 					<boolean>true</boolean>
@@ -183,7 +183,7 @@
 				<!--
 				<void method="registerVarResolver">
 					<string>teste</string>
-					<object class="br.com.uoutec.community.ediacaran.weld.VarParserImp"/>
+					<object class="br.com.uoutec.ediacaran.weld.VarParserImp"/>
 				</void>
 				-->
 				
@@ -191,21 +191,21 @@
 		</void>
 
 		<void method="addPluginSearch">
-			<object class="br.com.uoutec.community.ediacaran.plugins.JarPluginsSearch">
+			<object class="br.com.uoutec.ediacaran.core.plugins.JarPluginsSearch">
 			
 				<void property="exportImportPlugins">
-					<object class="br.com.uoutec.community.ediacaran.plugins.ExportImportPluginsImp"/>
+					<object class="br.com.uoutec.ediacaran.core.plugins.ExportImportPluginsImp"/>
 				</void>
 			
 			</object>
 		</void>
 
 		<void method="addPluginSearch">
-			<object class="br.com.uoutec.community.ediacaran.plugins.FileSystemPluginsSearch"/>
+			<object class="br.com.uoutec.ediacaran.core.plugins.FileSystemPluginsSearch"/>
 		</void>
 
 		<void method="addEntity">
-			<object class="br.com.uoutec.community.ediacaran.web.SecurityProviderImp"/>
+			<object class="br.com.uoutec.ediacaran.web.SecurityProviderImp"/>
 			<array class="java.lang.Class" length="0"/>
 		</void>
 		

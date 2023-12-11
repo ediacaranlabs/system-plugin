@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
 public class NamedLock implements PublicBean {

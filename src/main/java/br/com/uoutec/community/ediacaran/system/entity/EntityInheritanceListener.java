@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
-import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
-import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
-import br.com.uoutec.community.ediacaran.plugins.Plugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
-import br.com.uoutec.community.ediacaran.plugins.PluginNode;
+import br.com.uoutec.ediacaran.core.EdiacaranEventListener;
+import br.com.uoutec.ediacaran.core.EdiacaranEventObject;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
+import br.com.uoutec.ediacaran.core.plugins.Plugin;
+import br.com.uoutec.ediacaran.core.plugins.PluginInitializer;
+import br.com.uoutec.ediacaran.core.plugins.PluginNode;
 
 @Singleton
 public class EntityInheritanceListener implements EdiacaranEventListener {

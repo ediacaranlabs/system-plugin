@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
 import br.com.uoutec.i18n.MessageBundleThread;
 
 public class PluginLanguageUtils {

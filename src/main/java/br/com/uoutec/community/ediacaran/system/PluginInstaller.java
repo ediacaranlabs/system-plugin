@@ -1,14 +1,14 @@
 package br.com.uoutec.community.ediacaran.system;
 
-import br.com.uoutec.community.ediacaran.AbstractPlugin;
-import br.com.uoutec.community.ediacaran.EdiacaranListenerManager;
-import br.com.uoutec.community.ediacaran.plugins.EntityContextPlugin;
 import br.com.uoutec.community.ediacaran.system.concurrent.ListThreadPoolExecutor;
 import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManager;
 import br.com.uoutec.community.ediacaran.system.concurrent.ThreadGroupManagerException;
 import br.com.uoutec.community.ediacaran.system.entity.EntityInheritanceListener;
 import br.com.uoutec.community.ediacaran.system.listener.FilterListener;
 import br.com.uoutec.community.ediacaran.system.listener.LanguageListener;
+import br.com.uoutec.ediacaran.core.AbstractPlugin;
+import br.com.uoutec.ediacaran.core.EdiacaranListenerManager;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
 
 public class PluginInstaller extends AbstractPlugin{
 

@@ -14,24 +14,24 @@
 	</context-param>
 	<context-param>
 		<param-name>org.brandao.brutos.manager.controller</param-name>
-		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranControllerManager</param-value>
+		<param-value>br.com.uoutec.ediacaran.web.EdiacaranControllerManager</param-value>
 	</context-param>
 	<context-param>
 		<param-name>org.brandao.brutos.controller.action_resolver</param-name>
-		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebActionResolver</param-value>
+		<param-value>br.com.uoutec.ediacaran.web.EdiacaranWebActionResolver</param-value>
 	</context-param>
 	<context-param>
 		<param-name>org.brandao.brutos.object_factory</param-name>
-		<param-value>br.com.uoutec.community.ediacaran.web.WebPluginObjectFactory</param-value>
+		<param-value>br.com.uoutec.ediacaran.web.WebPluginObjectFactory</param-value>
 	</context-param>
 	<context-param>
 		<param-name>org.brandao.brutos.invoker</param-name>
-		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebInvoker</param-value>
+		<param-value>br.com.uoutec.ediacaran.web.EdiacaranWebInvoker</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>context_class</param-name>
-		<param-value>br.com.uoutec.community.ediacaran.web.EdiacaranWebApplicationContext</param-value>
+		<param-value>br.com.uoutec.ediacaran.web.EdiacaranWebApplicationContext</param-value>
 	</context-param>
 
 <!--
@@ -45,7 +45,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>br.com.uoutec.community.ediacaran.web.ContextInitializer</listener-class>
+		<listener-class>br.com.uoutec.ediacaran.web.ContextInitializer</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.brandao.brutos.web.ContextLoaderListener</listener-class>
@@ -58,7 +58,7 @@
 
 	<filter>
 		<filter-name>bridge-plugin-filter</filter-name>
-		<filter-class>br.com.uoutec.community.ediacaran.web.BridgePluginFilter</filter-class>
+		<filter-class>br.com.uoutec.ediacaran.web.BridgePluginFilter</filter-class>
 	</filter>
 
 	<filter-mapping>

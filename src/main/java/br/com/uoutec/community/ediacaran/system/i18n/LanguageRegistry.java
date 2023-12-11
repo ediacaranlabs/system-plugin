@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 public interface LanguageRegistry extends PublicBean{
 

@@ -11,9 +11,9 @@ import javax.interceptor.InvocationContext;
 import org.jboss.weld.context.RequestContext;
 import org.jboss.weld.context.unbound.Unbound;
 
-import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
-import br.com.uoutec.community.ediacaran.EdiacaranListenerManager;
 import br.com.uoutec.community.ediacaran.system.cdi.ActiveRequestContext;
+import br.com.uoutec.ediacaran.core.EdiacaranEventObject;
+import br.com.uoutec.ediacaran.core.EdiacaranListenerManager;
 
 @Interceptor
 @ActiveRequestContext

@@ -12,9 +12,9 @@ import javax.inject.Singleton;
 
 import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.application.security.RuntimeSecurityPermission;
-import br.com.uoutec.community.ediacaran.plugins.PluginProperty;
-import br.com.uoutec.community.ediacaran.plugins.PluginPropertyOption;
-import br.com.uoutec.community.ediacaran.plugins.PluginType;
+import br.com.uoutec.ediacaran.core.plugins.PluginProperty;
+import br.com.uoutec.ediacaran.core.plugins.PluginPropertyOption;
+import br.com.uoutec.ediacaran.core.plugins.PluginType;
 import br.com.uoutec.i18n.MessageBundleConfiguration;
 import br.com.uoutec.i18n.MessageBundleImp;
 

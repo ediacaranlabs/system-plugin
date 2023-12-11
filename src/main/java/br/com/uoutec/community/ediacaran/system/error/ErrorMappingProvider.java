@@ -3,8 +3,8 @@ package br.com.uoutec.community.ediacaran.system.error;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 import br.com.uoutec.community.ediacaran.system.error.ErrorMapping.ErrorResolver;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
 public class ErrorMappingProvider implements ErrorResolver, PublicBean{

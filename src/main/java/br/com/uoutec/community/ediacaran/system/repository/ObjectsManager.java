@@ -3,8 +3,8 @@ package br.com.uoutec.community.ediacaran.system.repository;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
 import br.com.uoutec.community.ediacaran.system.repository.ObjectsManagerDriver.ObjectsManagerDriverListener;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 public interface ObjectsManager extends PublicBean {
 

@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
 public class ExecutorServicesProducer implements PublicBean{

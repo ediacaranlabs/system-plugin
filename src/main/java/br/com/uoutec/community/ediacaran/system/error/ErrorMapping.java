@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 
 import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.application.security.RuntimeSecurityPermission;
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
 public class ErrorMapping implements PublicBean{

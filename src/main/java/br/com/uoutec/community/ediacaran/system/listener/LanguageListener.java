@@ -16,13 +16,13 @@ import org.slf4j.LoggerFactory;
 
 import br.com.uoutec.application.io.Path;
 import br.com.uoutec.application.security.ContextSystemSecurityCheck;
-import br.com.uoutec.community.ediacaran.EdiacaranEventListener;
-import br.com.uoutec.community.ediacaran.EdiacaranEventObject;
-import br.com.uoutec.community.ediacaran.plugins.Plugin;
-import br.com.uoutec.community.ediacaran.plugins.PluginInitializer;
-import br.com.uoutec.community.ediacaran.plugins.PluginNode;
-import br.com.uoutec.community.ediacaran.plugins.PluginPath;
 import br.com.uoutec.community.ediacaran.system.i18n.LanguageRegistry;
+import br.com.uoutec.ediacaran.core.EdiacaranEventListener;
+import br.com.uoutec.ediacaran.core.EdiacaranEventObject;
+import br.com.uoutec.ediacaran.core.plugins.Plugin;
+import br.com.uoutec.ediacaran.core.plugins.PluginInitializer;
+import br.com.uoutec.ediacaran.core.plugins.PluginNode;
+import br.com.uoutec.ediacaran.core.plugins.PluginPath;
 
 @Singleton
 public class LanguageListener implements EdiacaranEventListener{

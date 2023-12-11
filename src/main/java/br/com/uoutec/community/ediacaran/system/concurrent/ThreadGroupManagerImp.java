@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 
 import javax.inject.Singleton;
 
-import br.com.uoutec.community.ediacaran.plugins.PublicBean;
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
 public class ThreadGroupManagerImp 
