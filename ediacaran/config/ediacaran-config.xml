@@ -64,6 +64,288 @@
 					<object class="br.com.uoutec.ediacaran.web.WebPolicyFileWriterImp"/>
 				</void>
 				
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.System.arraycopy</string>
+					<string/>
+				</void>
+				
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.System.currentTimeMillis</string>
+					<string/>
+				</void>
+				
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.Thread.currentThread</string>
+					<string/>
+				</void>
+				
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.Thread.getId</string>
+					<string/>
+				</void>
+				
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.reflect.Type.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.reflect.InvocationTargetException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.lang.reflect.ReflectPermission.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.SocketPermission.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.InetAddress.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.Inet4Address.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.Inet6Address.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.URISyntaxException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.MalformedURLException.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.URI.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.net.URL.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.DataInputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.DataOutputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.FilePermission.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.BufferedWriter.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.BufferedReader.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.StringWriter.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.StringReader.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.BufferedInputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.BufferedOutputStream.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ByteArrayInputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ByteArrayOutputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.Serializable.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.IOException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.InputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.OutputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ObjectInputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ObjectOutputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.UnsupportedEncodingException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ObjectInputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.ObjectOutputStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.UnsupportedEncodingException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.InvalidObjectException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.Reader.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.Writer.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.PrintWriter.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.PrintStream.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.InputStreamReader.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.OutputStreamWriter.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.FileNotFoundException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.EOFException.*</string>
+					<string/>
+				</void>
+
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.Flushable.*</string>
+					<string/>
+				</void>
+		
+				<void method="addDefaultSecurityPermission">
+					<string>runtime</string>
+					<string>method.java.io.Closeable.*</string>
+					<string/>
+				</void>
+				
 			</object>
 		</void>
 
