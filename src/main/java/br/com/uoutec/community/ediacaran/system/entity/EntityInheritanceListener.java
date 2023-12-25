@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.ediacaran.core.EdiacaranEventListener;
 import br.com.uoutec.ediacaran.core.EdiacaranEventObject;
 import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
@@ -35,7 +36,9 @@ public class EntityInheritanceListener implements EdiacaranEventListener {
 
 	private void startPlugin(PluginNode node) {
 		try {
-			loadEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
+			ContextSystemSecurityCheck.doPrivileged(()->
+				loadEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN))
+			);
 		}
 		catch(Throwable ex) {
 			throw new RuntimeException(ex);
@@ -44,14 +47,16 @@ public class EntityInheritanceListener implements EdiacaranEventListener {
 	
 	private void stopPlugin(PluginNode node) {
 		try {
-			destroyEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN));
+			ContextSystemSecurityCheck.doPrivileged(()->
+				destroyEntityInheritance(node, (Plugin)node.getExtend().get(PluginInitializer.PLUGIN))
+			);
 		}
 		catch(Throwable ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
-	protected void loadEntityInheritance(PluginNode node, Plugin plugin) {
+	protected boolean loadEntityInheritance(PluginNode node, Plugin plugin) {
 		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
 		EntityInheritanceLoader loader = new EntityInheritanceLoader();
 		
@@ -59,10 +64,11 @@ public class EntityInheritanceListener implements EdiacaranEventListener {
 		node.setVar(LIST, list);
 		
 		eiu.loadEntities(loader.loadEntities(plugin.getPackagesNames()));
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void destroyEntityInheritance(PluginNode node, Plugin plugin) {
+	protected boolean destroyEntityInheritance(PluginNode node, Plugin plugin) {
 		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
 		
 		List<Class<?>> list = node.getVar(LIST, List.class);
@@ -72,6 +78,7 @@ public class EntityInheritanceListener implements EdiacaranEventListener {
 			node.setVar(LIST, null);
 		}
 		
+		return true;
 	}
 	
 }
