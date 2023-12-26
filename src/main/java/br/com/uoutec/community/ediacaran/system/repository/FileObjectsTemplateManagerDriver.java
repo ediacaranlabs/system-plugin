@@ -24,7 +24,7 @@ public abstract class FileObjectsTemplateManagerDriver
 	@Override
 	public void registerTemplate(ObjectTemplate template) {
 		
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + ".templates.register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "templates.register"));
 		
 		templates.put(template.getId(), template);
 	}
@@ -32,7 +32,7 @@ public abstract class FileObjectsTemplateManagerDriver
 	@Override
 	public void unregisterTemplate(String id) {
 		
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + ".templates.unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "templates.unregister"));
 		
 		templates.remove(id);
 		
