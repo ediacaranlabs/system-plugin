@@ -1,5 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
@@ -62,6 +65,13 @@ public class StringUtil {
 			.replaceAll("\\s+", "-");
 	}
 	
+	public static String toString(Throwable ex) {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		PrintWriter pw = new PrintWriter(bout, true, Charset.forName("UTF-8"));
+		ex.printStackTrace(pw);
+		return new String(bout.toByteArray());
+	}
+
 	public static String toString(Collection<?> l, String separator) {
 		StringBuilder b = new StringBuilder();
 		for(Object e: l ) {
