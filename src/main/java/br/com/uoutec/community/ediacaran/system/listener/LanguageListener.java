@@ -83,8 +83,13 @@ public class LanguageListener implements EdiacaranEventListener{
 		Path base = pp.getBase().getPath("i18n");
 		
 		if(base.exists() && base.isDirectory()) {
+			
 			Path packages = base.getPath("language.properties");
 			Properties p = new Properties();
+			
+			if(!packages.exists()) {
+				return;
+			}
 			
 			try (InputStream i = packages.openInputStream() /*new FileInputStream(packages)*/){
 				p.load(i);
