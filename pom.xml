@@ -36,26 +36,6 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${project.build.directory}/lib/</outputDirectory>
-							<!--
-							<excludeArtifactIds>
-								ediacaran-junit-mock,
-								slf4j-log4j12,
-								log4j,
-								application-se,
-								junit-platform-commons,
-								junit-platform-engine,
-								slf4j-api,
-								objenesis,
-								ediacaran-junit,
-								mockito-core,
-								opentest4j,
-								junit-jupiter-engine,
-								byte-buddy,
-								ediacaran-weld,
-								byte-buddy-agent,
-								junit-jupiter-api
-							</excludeArtifactIds>
-							-->
 							<excludeArtifactIds>
 								ediacaran-junit-mock,
 								application-se,
