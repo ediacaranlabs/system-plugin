@@ -69,14 +69,22 @@
 
 	<dependencies>
 		<!-- java -->
+		<!--
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>8.0</version>
 			<scope>provided</scope>
 		</dependency>
+		-->
 		<!-- plugin -->
 		<!-- dependencies -->
+		<dependency>
+		    <groupId>javax.transaction</groupId>
+		    <artifactId>javax.transaction-api</artifactId>
+		    <version>1.3</version>
+		    <scope>provided</scope>
+		</dependency>
 		<!-- dependencies -->
 		<!-- uoutec -->
  		<dependency>

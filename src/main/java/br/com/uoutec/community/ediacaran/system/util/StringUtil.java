@@ -1,7 +1,9 @@
 package br.com.uoutec.community.ediacaran.system.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
@@ -67,7 +69,8 @@ public class StringUtil {
 	
 	public static String toString(Throwable ex) {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		PrintWriter pw = new PrintWriter(bout, true, Charset.forName("UTF-8"));
+		Writer writer = new OutputStreamWriter(bout, Charset.forName("UTF-8"));
+		PrintWriter pw = new PrintWriter(writer, true);
 		ex.printStackTrace(pw);
 		return new String(bout.toByteArray());
 	}
