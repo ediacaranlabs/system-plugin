@@ -9,6 +9,7 @@ public class ServerBootstrapTestAction {
 
 	public static void main(String[] vars) throws IOException, URISyntaxException {
 		ApplicationStart.main(vars); 
+		//javax.xml.validation.SchemaFactory
 	}
 	
 }
