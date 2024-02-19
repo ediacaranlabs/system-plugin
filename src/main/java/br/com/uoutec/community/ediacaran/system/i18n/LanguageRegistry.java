@@ -8,7 +8,7 @@ import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 public interface LanguageRegistry extends PublicBean{
 
-	public static final String PERMISSION_PREFIX = "registry.lang.";
+	public static final String PERMISSION_PREFIX = "app.i18n.";
 	
 	public static final String ENTITIES_PACKAGE = "entities";
 	
