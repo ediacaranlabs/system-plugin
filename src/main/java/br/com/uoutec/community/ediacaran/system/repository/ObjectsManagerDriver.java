@@ -3,6 +3,8 @@ package br.com.uoutec.community.ediacaran.system.repository;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
+
 public interface ObjectsManagerDriver {
 
 	void registerObjectHandler(ObjectHandler handler);
@@ -31,7 +33,7 @@ public interface ObjectsManagerDriver {
 
 	void removeListener(ObjectsManagerDriverListener listener);
 	
-	public static interface ObjectsManagerDriverListener{
+	public static interface ObjectsManagerDriverListener extends PublicBean{
 		
 		default void beforeLoad(ObjectMetadata omd) {};
 		

@@ -164,7 +164,7 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 		return defaultObjectHandler;
 	}
 	
-	private static class ObjectsManagerDriverListenerWrapper implements ObjectsManagerDriverListener{
+	private static class ObjectsManagerDriverListenerWrapper {
 
 		private List<ObjectsManagerDriverListener> listeners;
 		
@@ -197,7 +197,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 		
-		@Override
 		public void beforeLoad(ObjectMetadata omd) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
@@ -211,7 +210,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 
-		@Override
 		public void afterLoad(ObjectMetadata omd, ObjectValue obj) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
@@ -225,7 +223,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 
-		@Override
 		public void beforePersist(String path, String name, Locale locale, Object obj) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
@@ -239,7 +236,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 
-		@Override
 		public void afterPersist(String path, String name, Locale locale, ObjectValue objValue) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
@@ -253,7 +249,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 
-		@Override
 		public void beforeDelete(ObjectMetadata omd) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
@@ -267,7 +262,6 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			}
 		}
 
-		@Override
 		public void afterDelete(ObjectMetadata omd) {
 			Lock lock = readWriteLock.readLock();
 			lock.lock();

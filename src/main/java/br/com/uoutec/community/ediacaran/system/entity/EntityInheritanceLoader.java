@@ -21,7 +21,7 @@ public class EntityInheritanceLoader {
 		DefaultScanner s = new DefaultScanner() {
 			
 			public SecurityClassLoader getClassLoader() throws IOException {
-				return (SecurityClassLoader)((SecurityThread)SecurityThread.currentThread()).getContextSecurityClassLoader();
+				return (SecurityClassLoader)((SecurityThread)SecurityThread.currentThread()).getSecurityContextClassLoader();
 			}
 			
 		};
