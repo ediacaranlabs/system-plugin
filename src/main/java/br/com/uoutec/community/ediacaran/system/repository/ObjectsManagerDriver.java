@@ -33,7 +33,9 @@ public interface ObjectsManagerDriver {
 
 	void removeListener(ObjectsManagerDriverListener listener);
 	
-	public static interface ObjectsManagerDriverListener extends PublicBean{
+	public static interface ObjectsManagerDriverListener extends PublicBean {
+		
+		default Object getID() {return getClass();};
 		
 		default void beforeLoad(ObjectMetadata omd) {};
 		

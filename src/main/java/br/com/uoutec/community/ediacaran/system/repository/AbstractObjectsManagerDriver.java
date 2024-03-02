@@ -164,14 +164,52 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 		return defaultObjectHandler;
 	}
 	
+	private static class ObjectsManagerDriverListenerKey {
+	
+		public ObjectsManagerDriverListener listener;
+		
+		private Object id;
+
+		public ObjectsManagerDriverListenerKey(ObjectsManagerDriverListener listener) {
+			this.listener = listener;
+			this.id = listener.getID();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((id == null) ? 0 : id.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			ObjectsManagerDriverListenerKey other = (ObjectsManagerDriverListenerKey) obj;
+			if (id == null) {
+				if (other.id != null)
+					return false;
+			} else if (!id.equals(other.id))
+				return false;
+			return true;
+		}
+		
+	}
+	
 	private static class ObjectsManagerDriverListenerWrapper {
 
-		private List<ObjectsManagerDriverListener> listeners;
+		private List<ObjectsManagerDriverListenerKey> listeners;
 		
 		private ReadWriteLock readWriteLock;
 		
 		public ObjectsManagerDriverListenerWrapper() {
-			this.listeners = new LinkedList<ObjectsManagerDriverListener>();
+			this.listeners = new LinkedList<ObjectsManagerDriverListenerKey>();
 			this.readWriteLock = new ReentrantReadWriteLock();
 		}
 		
@@ -179,7 +217,15 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.writeLock();
 			lock.lock();
 			try {
-				listeners.add(listener);
+				
+				ObjectsManagerDriverListenerKey key = 
+						new ObjectsManagerDriverListenerKey(listener);
+				
+				if(listeners.contains(key)) {
+					throw new IllegalArgumentException("listener: " + listener);
+				}
+				
+				listeners.add(key);
 			}
 			finally {
 				lock.unlock();
@@ -190,7 +236,7 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.writeLock();
 			lock.lock();
 			try {
-				listeners.remove(listener);
+				listeners.remove(new ObjectsManagerDriverListenerKey(listener));
 			}
 			finally {
 				lock.unlock();
@@ -201,8 +247,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.beforeLoad(omd);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.beforeLoad(omd);
 				}
 			}
 			finally {
@@ -214,8 +260,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.afterLoad(omd, obj);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.afterLoad(omd, obj);
 				}
 			}
 			finally {
@@ -227,8 +273,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.beforePersist(path, name, locale, obj);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.beforePersist(path, name, locale, obj);
 				}
 			}
 			finally {
@@ -240,8 +286,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.afterPersist(path, name, locale, objValue);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.afterPersist(path, name, locale, objValue);
 				}
 			}
 			finally {
@@ -253,8 +299,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.beforeDelete(omd);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.beforeDelete(omd);
 				}
 			}
 			finally {
@@ -266,8 +312,8 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			Lock lock = readWriteLock.readLock();
 			lock.lock();
 			try {
-				for(ObjectsManagerDriverListener l: listeners) {
-					l.afterDelete(omd);
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.afterDelete(omd);
 				}
 			}
 			finally {
