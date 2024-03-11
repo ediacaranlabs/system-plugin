@@ -1,6 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.cdi.weld;
 
-import java.awt.EventQueue;
 import java.io.Serializable;
 
 import javax.annotation.Priority;
@@ -8,6 +7,8 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.com.uoutec.application.ApplicationThread;
+import br.com.uoutec.application.ApplicationThreadException;
 import br.com.uoutec.community.ediacaran.system.cdi.Parallel;
 
 @Interceptor
@@ -21,41 +22,26 @@ public class ParallelThreadContextInterceptor implements Serializable {
 	}
 	
     @AroundInvoke
-    public Object activateRequestContext(final InvocationContext p_invocationContext) throws Exception {
+    public Object activateRequestContext(final InvocationContext p_invocationContext) throws Throwable {
     	
-    	final InvokerResult invokerResult = new InvokerResult();
+    	Object[] result = new Object[1];
     	
-    	EventQueue.invokeAndWait(new Runnable(){
-
-			@Override
-			public void run() {
-				try{
-					invokerResult.result = p_invocationContext.proceed();
-				}
-				catch(Exception e){
-					invokerResult.throwable = e;
-				}
-			}
-    		
+    	ApplicationThread appThread = new ApplicationThread(()->{
+    		try {
+    			result[0] =  p_invocationContext.proceed();
+    		}
+    		catch(Throwable ex) {
+    			throw new ApplicationThreadException(ex);
+    		}
     	});
     	
-    	if(invokerResult.throwable != null){
-    		throw invokerResult.throwable;
+    	appThread.start(true);
+    	
+    	if(appThread.getException() != null){
+    		throw appThread.getException();
     	}
     	
-    	return invokerResult.result;
+    	return result[0];
     }
     
-    private static class InvokerResult{
-    	
-    	public Object result;
-    	
-    	public Exception throwable;
-    	
-    	public InvokerResult(){
-    		this.result = null;
-    		this.throwable = null;
-    	}
-    	
-    }
 }
