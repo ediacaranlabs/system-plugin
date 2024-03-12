@@ -27,7 +27,7 @@ public class PluginInstallerTest {
 	@ActiveRequestContext
 	public void installTest() throws ThreadGroupManagerException, ClassNotFoundException{
 		PluginType pluginType = EntityContextPlugin.getEntity(PluginType.class);
-		assertEquals("security", pluginType.getConfiguration().getMetadata().getCode());
+		assertEquals("system", pluginType.getConfiguration().getMetadata().getCode());
 	}
 	
 }
