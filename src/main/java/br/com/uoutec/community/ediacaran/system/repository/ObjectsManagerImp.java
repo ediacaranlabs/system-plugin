@@ -270,7 +270,9 @@ public class ObjectsManagerImp
 	@Override
 	public void registerDriver(ObjectsManagerDriver driver) throws ObjectsManagerDriverException {
 
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver.register"));
+		String driverName = driver.getName().toLowerCase();
+		
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver." + driverName + ".register"));
 		
 		if(drivers.putIfAbsent(driver.getName().toLowerCase(), driver) != null) {
 			throw new ObjectsManagerDriverException("driver exists: " + driver.getName());
@@ -281,7 +283,9 @@ public class ObjectsManagerImp
 	@Override
 	public void unregisterDriver(ObjectsManagerDriver driver) {
 		
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver.unregister"));
+		String driverName = driver.getName().toLowerCase();
+		
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver." + driverName + ".unregister"));
 		
 		drivers.remove(driver.getName().toLowerCase(), driver);
 	}
@@ -289,7 +293,7 @@ public class ObjectsManagerImp
 	@Override
 	public ObjectsManagerDriver getDriver(String driverName) {
 
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver.get"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver." + driverName + ".get"));
 		
 		return drivers.get(driverName);
 	}
