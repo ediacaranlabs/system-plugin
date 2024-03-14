@@ -37,6 +37,10 @@ public interface ObjectsManagerDriver {
 		
 		default Object getID() {return getClass();};
 		
+		default void beforeList(String path, String name, Locale locale, boolean recursive, Filter filter){};
+
+		default void afterList(String path, String name, Locale locale, boolean recursive, Filter filter, List<ObjectMetadata> result) {};
+
 		default void beforeLoad(ObjectMetadata omd) {};
 		
 		default void afterLoad(ObjectMetadata omd, ObjectValue obj) {};

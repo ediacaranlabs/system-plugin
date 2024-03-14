@@ -100,6 +100,26 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 		this.defaultObjectHandler = defaultObjectHandler;
 	}
 
+	public ObjectMetadata unique(String path, String name, Locale locale, boolean recursive, Filter type) {
+		
+		List<ObjectMetadata> list = list(path, name, locale, recursive, type);
+		if(list.size() > 1) {
+			throw new IllegalStateException("size > 1");
+		}
+		
+		return list.isEmpty()? null : list.get(0);
+		
+	}
+	
+	public List<ObjectMetadata> list(String path, String name, Locale locale, boolean recursive, Filter filter){
+		listeners.beforeList(path, name, locale, recursive, filter);
+		List<ObjectMetadata> list = listAction(path, name, locale, recursive, filter);
+		listeners.afterList(path, name, locale, recursive, filter, list);
+		return list;
+	}
+
+	protected abstract List<ObjectMetadata> listAction(String path, String name, Locale locale, boolean recursive, Filter filter);
+	
 	public ObjectValue get(ObjectMetadata omd) {
 		listeners.beforeLoad(omd);
 		ObjectValue o = getAction(omd);
@@ -237,6 +257,32 @@ public abstract class AbstractObjectsManagerDriver implements ObjectsManagerDriv
 			lock.lock();
 			try {
 				listeners.remove(new ObjectsManagerDriverListenerKey(listener));
+			}
+			finally {
+				lock.unlock();
+			}
+		}
+		
+		public void beforeList(String path, String name, Locale locale, boolean recursive, Filter filter){
+			Lock lock = readWriteLock.readLock();
+			lock.lock();
+			try {
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.beforeList(path, name, locale, recursive, filter);
+				}
+			}
+			finally {
+				lock.unlock();
+			}
+		}
+
+		public void afterList(String path, String name, Locale locale, boolean recursive, Filter filter, List<ObjectMetadata> result){
+			Lock lock = readWriteLock.readLock();
+			lock.lock();
+			try {
+				for(ObjectsManagerDriverListenerKey l: listeners) {
+					l.listener.afterList(path, name, locale, recursive, filter, result);
+				}
 			}
 			finally {
 				lock.unlock();
