@@ -12,6 +12,7 @@ import org.brandao.brutos.io.ResourceLoader;
 
 import br.com.uoutec.application.Configuration;
 import br.com.uoutec.application.io.Vfs;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 
 public class TemplateUtil {
 
@@ -22,7 +23,7 @@ public class TemplateUtil {
 	private ResourceLoader loader;
 
 	public TemplateUtil() {
-		this.loader = new DefaultResourceLoader();
+		this.loader = ContextSystemSecurityCheck.doPrivileged(()->new DefaultResourceLoader());
 	}
 	
 	public String parser(String path, Configuration config, String encoding) throws IOException {

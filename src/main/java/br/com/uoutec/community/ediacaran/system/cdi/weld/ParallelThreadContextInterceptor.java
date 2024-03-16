@@ -9,6 +9,7 @@ import javax.interceptor.InvocationContext;
 
 import br.com.uoutec.application.ApplicationThread;
 import br.com.uoutec.application.ApplicationThreadException;
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.community.ediacaran.system.cdi.Parallel;
 
 @Interceptor
@@ -26,14 +27,17 @@ public class ParallelThreadContextInterceptor implements Serializable {
     	
     	Object[] result = new Object[1];
     	
-    	ApplicationThread appThread = new ApplicationThread(()->{
+    	Runnable task = ()->{
     		try {
     			result[0] =  p_invocationContext.proceed();
     		}
     		catch(Throwable ex) {
     			throw new ApplicationThreadException(ex);
     		}
-    	});
+    	};
+    	
+    	ApplicationThread appThread = 
+    			ContextSystemSecurityCheck.doPrivileged(()->new ApplicationThread(task));
     	
     	appThread.start(true);
     	
