@@ -26,7 +26,7 @@ public class SecretUtil {
 	
 	public static String toPassword(String value, String id){
 		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA3-256");
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
 			byte[] hashbytes = digest.digest((value + ":" + id).getBytes(StandardCharsets.UTF_8));
 			return toString(hashbytes);
 		}
