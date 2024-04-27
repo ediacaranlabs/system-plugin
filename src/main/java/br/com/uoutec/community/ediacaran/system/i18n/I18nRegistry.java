@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
-public interface LanguageRegistry extends PublicBean{
+public interface I18nRegistry extends PublicBean{
 
 	public static final String PERMISSION_PREFIX = "app.i18n.";
 	

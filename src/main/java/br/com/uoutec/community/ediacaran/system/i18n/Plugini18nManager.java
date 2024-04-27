@@ -17,7 +17,7 @@ public class Plugini18nManager {
 	@SuppressWarnings("unchecked")
 	public void registerLanguages() throws IOException {
 		
-		LanguageRegistry languageRegistry = EntityContextPlugin.getEntity(LanguageRegistry.class);
+		I18nRegistry languageRegistry = EntityContextPlugin.getEntity(I18nRegistry.class);
 		PluginType pluginType = EntityContextPlugin.getEntity(PluginType.class);
 		
 		PluginPath pp = pluginType
@@ -51,7 +51,7 @@ public class Plugini18nManager {
 		
 	}
 
-	protected void loadLanguages(String packageID, Path path, LanguageRegistry languageRegistry) throws IOException {
+	protected void loadLanguages(String packageID, Path path, I18nRegistry languageRegistry) throws IOException {
 		
 		if(!path.exists() || !path.isDirectory()) {
 			return;

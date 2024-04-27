@@ -41,8 +41,8 @@ public class PluginLanguageUtils {
 		return new Locale(lang, country);
     }
     
-    private static final LanguageRegistry getMessageBundle() {
-    	return EntityContextPlugin.getEntity(LanguageRegistry.class);
+    private static final I18nRegistry getMessageBundle() {
+    	return EntityContextPlugin.getEntity(I18nRegistry.class);
     }
 
     public static Locale getLocale() {

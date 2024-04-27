@@ -19,7 +19,7 @@ import br.com.uoutec.i18n.MessageBundleConfiguration;
 import br.com.uoutec.i18n.MessageBundleImp;
 
 @Singleton
-public class LanguageRegistryImp implements LanguageRegistry{
+public class LanguageRegistryImp implements I18nRegistry{
 
 	private MessageBundleConfiguration languageManagerConfiguration;
 	
