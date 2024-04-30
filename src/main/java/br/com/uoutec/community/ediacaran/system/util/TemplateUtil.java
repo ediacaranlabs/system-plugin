@@ -81,7 +81,7 @@ public class TemplateUtil {
 		Resource resource = this.loader.getResource(path);
 		
 		if(resource == null || !resource.exists()) {
-			return null;
+			throw new IOException("not found: " + path);
 		}
 		
 		return resource.getInputStream();
