@@ -20,6 +20,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SecretUtil {
 
+	private static final String SECRET = IDGenerator.getUniqueOrderID('S', 0);
+	
 	//private static final Decoder base64Decoder = Base64.getDecoder();
 
 	//private static final Encoder base64Encoder = Base64.getEncoder();
@@ -123,6 +125,19 @@ public class SecretUtil {
 	
 	public static boolean isEquals(String a, String b) {
 		return a == null || b == null? false : a.equals(b); 
+	}
+
+	public static String toProtectedID(String id) {
+		return SecretUtil.encode(String.valueOf(id), SECRET);
+	}
+
+	public static String toID(String protectedID) {
+		try {
+			return SecretUtil.decode(protectedID, SECRET);
+		}
+		catch(Throwable ex){
+			return null;
+		}
 	}
 	
 }
