@@ -23,7 +23,7 @@ public enum SearchType implements Filter {
 			}
 			
 			if(locale != null) {
-				if(!omd.getLocale().equals(locale)) {
+				if(!locale.equals(omd.getLocale())) {
 					return false;
 				}
 			}
