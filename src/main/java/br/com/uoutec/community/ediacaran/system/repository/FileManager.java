@@ -78,10 +78,10 @@ public class FileManager {
 			}
 			
 			path = fileManagerHandler.toFilePath(path);
-			base = basePath.getPath(path);
+			base = getBasePath().getPath(path);
 		}
 		else {
-			base = basePath;
+			base = getBasePath();
 		}
 		
 		List<FileMetadata> list = new LinkedList<FileMetadata>();
@@ -103,7 +103,7 @@ public class FileManager {
 			}
 			else
 			if(f.isFile()) {
-				FileMetadata omd = fileManagerHandler.toMetadata(this.basePath, f);
+				FileMetadata omd = fileManagerHandler.toMetadata(getBasePath(), f);
 				if(omd != null && (filter == null || filter.accept(omd))) {
 					result.add(omd);
 				}
@@ -115,9 +115,9 @@ public class FileManager {
 
 	public FileValue get(FileMetadata fmd) throws IOException {
 		
-		Path file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(getBasePath(), fmd);
 
-		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(getBasePath().normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
@@ -135,9 +135,9 @@ public class FileManager {
 	
 	public Path persist(FileMetadata fmd, Object object) throws IOException {
 		
-		Path file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(getBasePath(), fmd);
 		
-		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(getBasePath().normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
@@ -150,15 +150,15 @@ public class FileManager {
 	
 	public void delete(FileMetadata fmd) throws IOException {
 		
-		Path file = fileManagerHandler.toFile(basePath, fmd);
+		Path file = fileManagerHandler.toFile(getBasePath(), fmd);
 		
-		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(basePath.normalizePath().getAbsolutePath().getFullName())){
+		if(!file.normalizePath().getAbsolutePath().getFullName().startsWith(getBasePath().normalizePath().getAbsolutePath().getFullName())){
 			throw new IOException("invalid path: " + fmd);
 		}
 		
 		fileManagerHandler.delete(file, fmd);
 		
-		delete(basePath, file.getParent());
+		delete(getBasePath(), file.getParent());
 	}
 	
 	private void delete(Path base, Path file) throws IOException {
@@ -176,6 +176,10 @@ public class FileManager {
 			delete(base, parent);
 		}
 		
+	}
+	
+	protected Path getBasePath() {
+		return this.basePath;
 	}
 	
 	@FunctionalInterface
