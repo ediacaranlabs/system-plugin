@@ -269,24 +269,15 @@ public class ObjectsManagerImp
 
 	@Override
 	public void registerDriver(ObjectsManagerDriver driver) throws ObjectsManagerDriverException {
-
 		String driverName = driver.getName().toLowerCase();
-		
 		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver." + driverName + ".register"));
-		
-		if(drivers.putIfAbsent(driver.getName().toLowerCase(), driver) != null) {
-			throw new ObjectsManagerDriverException("driver exists: " + driver.getName());
-		}
-		
+		drivers.put(driver.getName().toLowerCase(), driver);
 	}
 
 	@Override
 	public void unregisterDriver(ObjectsManagerDriver driver) {
-		
 		String driverName = driver.getName().toLowerCase();
-		
 		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(basePermission + "driver." + driverName + ".unregister"));
-		
 		drivers.remove(driver.getName().toLowerCase(), driver);
 	}
 
