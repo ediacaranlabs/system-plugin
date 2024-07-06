@@ -10,15 +10,15 @@ public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 
 	@Override
 	public Object read(Path file, FileMetadata metadata) throws IOException {
-		return new FileObject(file, false);
+		return file;
 	}
 
 	@Override
 	public void write(Path file, FileMetadata metadata, Object value) throws IOException {
 		
-		FileObject ig = (FileObject)value;
+		Path valuePath = (Path)value;
 		
-		if(!ig.isTransient()) {
+		if(!file.equals(valuePath)) {
 			return;
 		}
 		
@@ -26,8 +26,8 @@ public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 		OutputStream out = null;
 		
 		try {
-			in  = ig.getInputStream();
-			out = file.openOutputStream();//  new FileOutputStream(file);
+			in  = valuePath.openInputStream();
+			out = file.openOutputStream();
 			
 			byte[] b = new byte[2048];
 			int l = -1;
