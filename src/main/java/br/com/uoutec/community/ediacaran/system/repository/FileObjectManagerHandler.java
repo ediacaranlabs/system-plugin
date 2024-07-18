@@ -18,7 +18,7 @@ public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 		
 		Path valuePath = (Path)value;
 		
-		if(!file.equals(valuePath)) {
+		if(file.equals(valuePath)) {
 			return;
 		}
 		
