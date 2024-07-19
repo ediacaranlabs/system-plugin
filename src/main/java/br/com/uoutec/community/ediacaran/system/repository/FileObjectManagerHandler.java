@@ -10,6 +10,12 @@ import br.com.uoutec.application.io.Path;
 
 public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 
+	private String ext;
+	
+	public FileObjectManagerHandler(String ext) {
+		this.ext = ext;
+	}
+	
 	@Override
 	public FileMetadata toMetadata(Path base, Path file) {
 		String baseName = base.normalizePath().getAbsolutePath().getFullName();
@@ -32,7 +38,7 @@ public class FileObjectManagerHandler extends AbstractFileManagerHandler{
 	@Override
 	public Path toFile(Path base, FileMetadata omd) {
 		String path = toFilePath(omd.getPath() + "/" + omd.getName());
-		return base.getPath(path + ".png");
+		return base.getPath(path + "." + ext);
 	}
 	
 	@Override
