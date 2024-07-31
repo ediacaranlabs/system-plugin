@@ -45,7 +45,7 @@ public class LanguageRegistryImp implements I18nRegistry{
 	public void registerResourceBundle(ResourceBundle resourceBundle, Locale e, String id) {
 		
 		String packID = id.replaceAll("\\/", ".");
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".register"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + (e == null? "" : "." + e.toString()) + ".register"));
 		
 		languageManagerConfiguration.installI18nResource(resourceBundle, e, id);
 	}
@@ -54,7 +54,7 @@ public class LanguageRegistryImp implements I18nRegistry{
 	public void unregisterResourceBundle(Locale e, String id) {
 		
 		String packID = id.replaceAll("\\/", ".");
-		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + "." + e.toString() + ".unregister"));
+		ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + packID + (e == null? "" : "." + e.toString()) + ".unregister"));
 
 		languageManagerConfiguration.uninstallI18nResource(e, id);
 	}

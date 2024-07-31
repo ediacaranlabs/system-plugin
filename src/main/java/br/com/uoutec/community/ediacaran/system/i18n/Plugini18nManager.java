@@ -77,7 +77,8 @@ public class Plugini18nManager {
 				else
 				if(name.matches("^([a-z0-9]+([_-][a-z0-9]+)*)\\.properties$")) {
 					id = name.substring(0, name.length() - 11);
-					lang = languageRegistry.getDefaultLocale();
+					//lang = languageRegistry.getDefaultLocale();
+					lang = null;
 				}
 				else {
 					continue;
