@@ -18,6 +18,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import br.com.uoutec.ediacaran.core.VarParser;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
+
 public class SecretUtil {
 
 	private static final String SECRET = IDGenerator.getUniqueOrderID('S', 0);
@@ -128,16 +131,22 @@ public class SecretUtil {
 	}
 
 	public static String toProtectedID(String id) {
-		return SecretUtil.encode(String.valueOf(id), SECRET);
+		return SecretUtil.encode(String.valueOf(id), getSecret());
 	}
 
 	public static String toID(String protectedID) {
 		try {
-			return SecretUtil.decode(protectedID, SECRET);
+			return SecretUtil.decode(protectedID, getSecret());
 		}
 		catch(Throwable ex){
 			return null;
 		}
+	}
+	
+	private static String getSecret() {
+		VarParser varParser = EntityContextPlugin.getEntity(VarParser.class);
+		String secret = varParser.getValue("${plugins.ediacaran.system.secret}");
+		return secret == null || secret.isEmpty()? SECRET : secret;
 	}
 	
 }
