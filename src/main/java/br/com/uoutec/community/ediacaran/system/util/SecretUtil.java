@@ -18,6 +18,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import br.com.uoutec.application.security.ContextSystemSecurityCheck;
 import br.com.uoutec.ediacaran.core.VarParser;
 import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
 
@@ -131,12 +132,16 @@ public class SecretUtil {
 	}
 
 	public static String toProtectedID(String id) {
-		return SecretUtil.encode(String.valueOf(id), getSecret());
+		return ContextSystemSecurityCheck.doPrivileged(()->{
+			return SecretUtil.encode(String.valueOf(id), getSecret());
+		});
 	}
 
 	public static String toID(String protectedID) {
 		try {
-			return SecretUtil.decode(protectedID, getSecret());
+			return ContextSystemSecurityCheck.doPrivileged(()->{
+				return SecretUtil.decode(protectedID, getSecret());
+			});
 		}
 		catch(Throwable ex){
 			return null;
