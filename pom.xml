@@ -96,12 +96,6 @@
 			<artifactId>named-lock</artifactId>
 			<version>1.0-b2</version>
 		</dependency>
-		<!-- filters -->
-        <dependency>
-        	<groupId>br.com.uoutec</groupId>
-        	<artifactId>invoker-filter</artifactId>
-        	<version>1.0.0</version>
-        </dependency>
 		<dependency>
 			<groupId>br.com.uoutec</groupId>
 			<artifactId>persistence</artifactId>
