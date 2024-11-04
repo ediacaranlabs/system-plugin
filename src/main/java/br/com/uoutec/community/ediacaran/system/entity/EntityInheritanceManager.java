@@ -1,7 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.entity;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -28,6 +27,32 @@ public class EntityInheritanceManager implements PublicBean {
 		this.clazz = new ConcurrentHashMap<Class<?>, ConcurrentMap<String,Class<?>>>();
 	}
 	
+	public <T> void register(Class<? extends T> type, String name, Class<T> base) {
+
+		ContextSystemSecurityCheck.checkPermission(
+				new RuntimeSecurityPermission(PERMISSION_PREFIX + base.getSimpleName() + ".register")
+		);
+		
+		ConcurrentMap<String,Class<?>> map = this.clazz.get(base);
+		
+		if(map == null){
+			map = new ConcurrentHashMap<String, Class<?>>();
+			this.clazz.put(base, map);
+		}
+		
+		if(map.putIfAbsent(name, type) != null){
+			if(logger.isWarnEnabled()) {
+				logger.warn("entity has been added: {} {}", name, type);
+			}
+		}
+		else 
+		if(logger.isTraceEnabled()){
+			logger.trace("added entitie: {} {}", name, type);
+		}
+		
+	}
+	
+	/*
 	public void loadEntities(List<Class<?>> clazzList) {
 		
 		for (Class<?> clazz : clazzList) {
@@ -60,7 +85,36 @@ public class EntityInheritanceManager implements PublicBean {
 		}
 		
 	}
-
+    */
+	
+	public void remove(String name, Class<?> base) {
+		
+		ContextSystemSecurityCheck.checkPermission(
+				new RuntimeSecurityPermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister")
+		);
+		
+		ConcurrentMap<String,Class<?>> map = this.clazz.get(base);
+		
+		if(map != null){
+			
+			ContextSystemSecurityCheck.checkPermission(new RuntimeSecurityPermission(PERMISSION_PREFIX + base.getSimpleName() + ".unregister"));
+			
+			map.remove(name, clazz);
+			
+			logger.trace("removed entitie: {} {}", name, clazz);
+			
+			if(map.isEmpty()) {
+				this.clazz.remove(base);
+				if(logger.isTraceEnabled()) {
+					logger.trace("removed: {} {}", name, clazz);
+				}
+			}
+			
+		}
+		
+	}
+	
+	/*
 	public void removeEntities(List<Class<?>> clazzList) {
 		
 		for (Class<?> clazz : clazzList) {
@@ -92,6 +146,7 @@ public class EntityInheritanceManager implements PublicBean {
 		}		
 		
 	}
+	*/
 	
 	public Class<?> getType(Class<?> base, String name) {
 		

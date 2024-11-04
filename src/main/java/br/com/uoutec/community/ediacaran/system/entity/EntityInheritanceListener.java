@@ -1,7 +1,5 @@
 package br.com.uoutec.community.ediacaran.system.entity;
 
-import java.util.List;
-
 import javax.inject.Singleton;
 
 import br.com.uoutec.application.security.ContextSystemSecurityCheck;
@@ -15,7 +13,7 @@ import br.com.uoutec.ediacaran.core.plugins.PluginNode;
 @Singleton
 public class EntityInheritanceListener implements EdiacaranEventListener {
 
-	private static final String LIST = EntityInheritanceListener.class.getName() + ".List";
+	//private static final String LIST = EntityInheritanceListener.class.getName() + ".List";
 	
 	@Override
 	public void onEvent(EdiacaranEventObject event) {
@@ -57,27 +55,14 @@ public class EntityInheritanceListener implements EdiacaranEventListener {
 	}
 
 	protected boolean loadEntityInheritance(PluginNode node, Plugin plugin) {
-		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
-		EntityInheritanceLoader loader = new EntityInheritanceLoader();
-		
-		List<Class<?>> list = loader.loadEntities(plugin.getPackagesNames());
-		node.setVar(LIST, list);
-		
-		eiu.loadEntities(loader.loadEntities(plugin.getPackagesNames()));
+		EntityInheritanceLoader loader = EntityContextPlugin.getEntity(EntityInheritanceLoader.class);
+		loader.loadEntities(plugin.getPackagesNames());
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected boolean destroyEntityInheritance(PluginNode node, Plugin plugin) {
-		EntityInheritanceManager eiu = EntityContextPlugin.getEntity(EntityInheritanceManager.class);
-		
-		List<Class<?>> list = node.getVar(LIST, List.class);
-		
-		if(list!= null) {
-			eiu.removeEntities(list);
-			node.setVar(LIST, null);
-		}
-		
+		EntityInheritanceLoader loader = EntityContextPlugin.getEntity(EntityInheritanceLoader.class);
+		loader.removeEntities(plugin.getPackagesNames());
 		return true;
 	}
 	
