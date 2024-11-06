@@ -13,7 +13,7 @@ import br.com.uoutec.application.security.RuntimeSecurityPermission;
 import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
 @Singleton
-public class ErrorMapping implements PublicBean{
+public class ErrorMapping implements PublicBean {
 
 	public static final String PERMISSION_PREFIX = "app.error.";
 	
