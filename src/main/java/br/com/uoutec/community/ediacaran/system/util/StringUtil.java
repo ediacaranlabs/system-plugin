@@ -66,6 +66,15 @@ public class StringUtil {
 			.toLowerCase()
 			.replaceAll("\\s+", "-");
 	}
+
+	public static String normalize(String name, String separator) {
+		return 
+			Normalizer.normalize(name, Form.NFD)
+			.replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+			.replaceAll("[^a-zA-Z0-9\\s]", " ")
+			.toLowerCase()
+			.replaceAll("\\s+", separator);
+	}
 	
 	public static String toString(Throwable ex) {
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
