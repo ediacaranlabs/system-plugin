@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -74,6 +75,13 @@ public class StringUtil {
 			.replaceAll("[^a-zA-Z0-9\\s]", " ")
 			.toLowerCase()
 			.replaceAll("\\s+", separator);
+	}
+
+	public static String toSearch(String value) {
+		value = normalize(value, " ");
+		String[] split = value.split("\\s+");
+		Arrays.sort(split, (a,b)->a.compareTo(b));
+		return String.join(" ", split);
 	}
 	
 	public static String toString(Throwable ex) {
