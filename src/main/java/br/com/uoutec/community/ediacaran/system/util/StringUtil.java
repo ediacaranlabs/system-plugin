@@ -78,9 +78,15 @@ public class StringUtil {
 	}
 
 	public static String toSearch(String value) {
+		
+		if(value == null) {
+			return null;
+		}
+		
 		value = normalize(value, " ");
 		String[] split = value.split("\\s+");
 		Arrays.sort(split, (a,b)->a.compareTo(b));
+		
 		return String.join(" ", split);
 	}
 	
