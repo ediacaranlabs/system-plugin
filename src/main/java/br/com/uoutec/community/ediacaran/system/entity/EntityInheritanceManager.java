@@ -166,10 +166,15 @@ public class EntityInheritanceManager implements PublicBean {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T getInstance(Class<T> base, String name) 
+	public <T> T getInstance(Class<T> base, String name, Object ... params) 
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Class<?> type = this.getType(base, name);
-		return (T)ClassUtil.getInstance(type == null? base : type);
+		
+		Class<?>[] types = new Class<?>[params.length];
+		for(int i=0;i<params.length;i++) {
+			types[i] = params[i].getClass();
+		}
+		return (T)ClassUtil.getInstance(type == null? base : type, types, params);
 	}
 	
 	public ConcurrentMap<String, Class<?>> getMap(Class<?> base){
