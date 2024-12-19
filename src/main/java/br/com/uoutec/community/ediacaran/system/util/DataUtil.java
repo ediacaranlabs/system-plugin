@@ -3,6 +3,7 @@ package br.com.uoutec.community.ediacaran.system.util;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,6 +80,7 @@ public class DataUtil {
 		
 		try{
 			BeanInstance i = new BeanInstance(o);
+			Set<String> remove = new HashSet<>();
 			
 			for(String name: v.keySet()){
 				
@@ -91,9 +93,14 @@ public class DataUtil {
 					continue;
 				}
 				
-				String val = v.get(name);
+				remove.add(name);
+				String val = v.get(name);//v.get(name);
 				Object vObject = gson.fromJson(val, (Type)p.getDeclaredGenericType());
 				p.set(o, vObject);
+			}
+			
+			for(String k: remove) {
+				v.remove(k);
 			}
 			
 			return o;
