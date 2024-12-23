@@ -58,7 +58,10 @@ public class DataUtil {
 					continue;
 				}
 				
-				data.put(p.getName(), gson.toJson(p.get(o)));
+				Object value = p.get(o);
+				if(value != null) {
+					data.put(p.getName(), gson.toJson(value));
+				}
 			}
 			
 			return data;
