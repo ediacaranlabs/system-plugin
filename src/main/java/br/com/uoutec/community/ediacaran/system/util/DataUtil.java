@@ -8,10 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.brandao.brutos.BrutosException;
-import org.brandao.brutos.bean.BeanInstance;
-import org.brandao.brutos.bean.BeanProperty;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -22,6 +18,11 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+
+import br.com.uoutec.application.bean.Bean;
+import br.com.uoutec.application.bean.BeanException;
+import br.com.uoutec.application.bean.BeanProperty;
+import br.com.uoutec.application.bean.BeanPropertyAnnotation;
 
 public class DataUtil {
 
@@ -48,13 +49,13 @@ public class DataUtil {
 		
 		try{
 			Map<String,String> data = new HashMap<String, String>();
-			BeanInstance i = new BeanInstance(o);
+			Bean i = new Bean(o);
 			
-			List<BeanProperty> props = i.getProperties();
+			List<BeanPropertyAnnotation> props = i.getProperties();
 			
 			for(BeanProperty p: props){
 				
-				if(excludeFields.contains(p.getName())){
+				if(p.isTransient() || excludeFields.contains(p.getName())){
 					continue;
 				}
 				
@@ -82,7 +83,7 @@ public class DataUtil {
 	public static Object decode(Map<String,String> v, Object o) {
 		
 		try{
-			BeanInstance i = new BeanInstance(o);
+			Bean i = new Bean(o);
 			Set<String> remove = new HashSet<>();
 			
 			for(String name: v.keySet()){
@@ -91,7 +92,7 @@ public class DataUtil {
 				try{
 					p = i.getProperty(name);
 				}
-				catch(BrutosException ex){
+				catch(BeanException ex){
 					//o objeto não tem mais a propriedade <name>
 					continue;
 				}
