@@ -171,16 +171,6 @@ public class ActionRegistryImp implements ActionRegistry{
 			List<ActionExecutorRequestEntry> list = actionsRepository.getNext(id, 1);
 			
 			for(ActionExecutorRequestEntry e: list) {
-				ActionExecutorRequestEntry newE = 
-						new ActionExecutorRequestEntry(
-								e.getId(), 
-								e.getRequest(), 
-								e.getStatus(), 
-								LocalDateTime.now().plus(30, ChronoUnit.SECONDS),
-								e.getAttempts()
-						);
-				actionsRepository.register(id, newE);
-				
 				Thread th = new SecurityThread(new ActionTask(e, actionFlow, actionsRepository, id));
 				th.setName("Executor-(" + id.toLowerCase() + ")-thread");
 				th.start();

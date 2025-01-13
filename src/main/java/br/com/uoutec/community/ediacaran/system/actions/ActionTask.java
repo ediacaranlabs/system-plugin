@@ -16,7 +16,6 @@ public class ActionTask implements Runnable{
 	
 	public ActionTask(ActionExecutorRequestEntry request, Map<String, ActionExecutorEntry> actionFlow,
 			ActionsRepository actionsRepository, String id) {
-		super();
 		this.request = request;
 		this.actionFlow = actionFlow;
 		this.actionsRepository = actionsRepository;
@@ -26,7 +25,7 @@ public class ActionTask implements Runnable{
 	@Override
 	public void run() {
 		
-		if(!request.getDateSchedule().isAfter(LocalDateTime.now())) {
+		if(request.getDateSchedule().isAfter(LocalDateTime.now())) {
 			return;
 		}
 		
@@ -44,8 +43,8 @@ public class ActionTask implements Runnable{
 			
 			String nextAction = response.getNextAction();
 			
-			if(nextAction == null) {
-				nextAction = ex.getDefaultNextAction();
+			if(nextAction == null && !ex.getNextActions().isEmpty()) {
+				nextAction = ex.getNextActions().get(0);
 			}
 			
 			if(nextAction == null) {

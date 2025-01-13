@@ -1,5 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ActionExecutorResponseImp implements ActionExecutorResponse{
@@ -7,6 +8,10 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 	private Map<String,String> params;
 	
 	private String nextAction;
+	
+	public ActionExecutorResponseImp() {
+		this.params = new HashMap<>();
+	}
 	
 	@Override
 	public void setParameter(String name, String value) {
