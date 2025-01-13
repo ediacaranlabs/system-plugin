@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import javax.inject.Singleton;
 
+import br.com.uoutec.application.security.SecurityThread;
+
 @Singleton
 public class ActionRegistryImp implements ActionRegistry{
 
@@ -23,8 +25,12 @@ public class ActionRegistryImp implements ActionRegistry{
 	public ActionRegistryImp() {
 		this.id = UUID.randomUUID().toString();
 		this.actionFlow = new HashMap<>();
+		this.actionsRepository = new MemoryActionsRepository();
+		this.actionsRepository.setSecurityKey(id);
 		this.executionTask = new ExecutionTask(actionFlow, actionsRepository, id);
-		new Thread(executionTask).start();
+		SecurityThread th = new SecurityThread(executionTask);
+		th.setName("Action registry Thread");
+		th.start();
 	}
 	
 	@Override
@@ -48,6 +54,11 @@ public class ActionRegistryImp implements ActionRegistry{
 		actionFlow.put(actionID, actionExecutorEntry);
 	}
 
+	@Override
+	public void removeAction(String actionID) {
+		actionFlow.remove(actionID);
+	}
+	
 	@Override
 	public void addNextAction(String actionID, String nextAction) {
 		
@@ -137,7 +148,12 @@ public class ActionRegistryImp implements ActionRegistry{
 		public void run() {
 			while(alive) {
 				
-				execute();
+				try {
+					execute();
+				}
+				catch(Throwable ex) {
+					ex.printStackTrace();
+				}
 				
 				try {
 					Thread.sleep(10000);
@@ -155,7 +171,18 @@ public class ActionRegistryImp implements ActionRegistry{
 			List<ActionExecutorRequestEntry> list = actionsRepository.getNext(id, 1);
 			
 			for(ActionExecutorRequestEntry e: list) {
-				Thread th = new Thread(new ActionTask(e, actionFlow, actionsRepository, id));
+				ActionExecutorRequestEntry newE = 
+						new ActionExecutorRequestEntry(
+								e.getId(), 
+								e.getRequest(), 
+								e.getStatus(), 
+								LocalDateTime.now().plus(30, ChronoUnit.SECONDS),
+								e.getAttempts()
+						);
+				actionsRepository.register(id, newE);
+				
+				Thread th = new SecurityThread(new ActionTask(e, actionFlow, actionsRepository, id));
+				th.setName("Executor-(" + id.toLowerCase() + ")-thread");
 				th.start();
 			}
 			

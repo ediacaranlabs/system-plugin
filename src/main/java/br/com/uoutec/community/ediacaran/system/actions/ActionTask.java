@@ -71,7 +71,7 @@ public class ActionTask implements Runnable{
 				ActionExecutorRequestEntry newE = 
 						new ActionExecutorRequestEntry(
 								request.getId(), 
-								new HashMapActionExecutorRequest(response.getParams()), 
+								request.getRequest(), 
 								nextAction, 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
 								0
@@ -83,7 +83,7 @@ public class ActionTask implements Runnable{
 				ActionExecutorRequestEntry newE = 
 						new ActionExecutorRequestEntry(
 								request.getId(), 
-								new HashMapActionExecutorRequest(response.getParams()), 
+								request.getRequest(), 
 								request.getStatus(), 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
 								0

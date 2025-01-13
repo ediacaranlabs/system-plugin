@@ -7,6 +7,8 @@ import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 public interface ActionRegistry extends PublicBean{
 
 	void registerAction(String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain, ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor);
+
+	void removeAction(String actionID);
 	
 	void setActionsRepository(ActionsRepository actionsRepository);
 	
