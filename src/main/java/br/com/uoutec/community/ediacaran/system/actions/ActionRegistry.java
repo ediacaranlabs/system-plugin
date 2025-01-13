@@ -14,4 +14,5 @@ public interface ActionRegistry {
 	
 	void removeExceptionAction(String actionID, Class<? extends Throwable> exceptionType);
 	
+	void executeAction(String actionID, ActionExecutorRequest request);
 }

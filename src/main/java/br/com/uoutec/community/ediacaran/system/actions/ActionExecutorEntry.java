@@ -1,6 +1,9 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ActionExecutorEntry {
@@ -9,17 +12,47 @@ public class ActionExecutorEntry {
 	
 	private String defaultNextAction;
 
-	private Map<String,String> nextActions;
+	private List<String> nextActions;
 	
 	private ActionExecutor executor;
 	
 	private Map<Class<?>,String> exceptionAction;
 
+	private int attemptsBeforeFailure;
+	
+	private long timeBeforeTryAgain;
+	
+	private ChronoUnit unitTtimeBeforeTryAgain;
+	
 	public ActionExecutorEntry() {
-		this.nextActions = new HashMap<>();
+		this.nextActions = new ArrayList<>();
 		this.exceptionAction = new HashMap<>();
 	}
 	
+	public int getAttemptsBeforeFailure() {
+		return attemptsBeforeFailure;
+	}
+
+	public void setAttemptsBeforeFailure(int attemptsBeforeFailure) {
+		this.attemptsBeforeFailure = attemptsBeforeFailure;
+	}
+
+	public long getTimeBeforeTryAgain() {
+		return timeBeforeTryAgain;
+	}
+
+	public void setTimeBeforeTryAgain(long timeBeforeTryAgain) {
+		this.timeBeforeTryAgain = timeBeforeTryAgain;
+	}
+
+	public ChronoUnit getUnitTtimeBeforeTryAgain() {
+		return unitTtimeBeforeTryAgain;
+	}
+
+	public void setUnitTtimeBeforeTryAgain(ChronoUnit unitTtimeBeforeTryAgain) {
+		this.unitTtimeBeforeTryAgain = unitTtimeBeforeTryAgain;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -36,11 +69,11 @@ public class ActionExecutorEntry {
 		this.defaultNextAction = defaultNextAction;
 	}
 
-	public Map<String, String> getNextActions() {
+	public List<String> getNextActions() {
 		return nextActions;
 	}
 
-	public void setNextActions(Map<String, String> nextActions) {
+	public void setNextActions(List<String> nextActions) {
 		this.nextActions = nextActions;
 	}
 
