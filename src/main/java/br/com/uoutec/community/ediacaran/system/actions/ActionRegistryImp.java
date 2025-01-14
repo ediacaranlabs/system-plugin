@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -20,23 +24,37 @@ public class ActionRegistryImp implements ActionRegistry{
 	
 	private Map<String, ActionExecutorEntry> actionFlow;
 	
-	private ExecutionTask executionTask;
+	private volatile ExecutionTask executionTask;
+	
+	private ExecutorService executorService;
 	
 	public ActionRegistryImp() {
 		this.id = UUID.randomUUID().toString();
 		this.actionFlow = new HashMap<>();
-		this.actionsRepository = new MemoryActionsRepository();
-		this.actionsRepository.setSecurityKey(id);
-		this.executionTask = new ExecutionTask(actionFlow, actionsRepository, id);
-		SecurityThread th = new SecurityThread(executionTask);
-		th.setName("Action registry Thread");
-		th.start();
+		this.executionTask = null;
+		this.executorService = null;
 	}
 	
 	@Override
-	public void setActionsRepository(ActionsRepository actionsRepository) {
+	public synchronized void setActionsRepository(ActionsRepository actionsRepository) {
+		
 		this.actionsRepository = actionsRepository;
 		this.actionsRepository.setSecurityKey(id);
+		
+		if(executionTask != null) {
+			executionTask.setActionsRepository(actionsRepository);
+		}
+		
+	}
+	
+	public synchronized void setExecutorService(ExecutorService value) {
+		
+		this.executorService = value;
+		
+		if(executionTask != null) {
+			executionTask.setExecutorService(value);
+		}
+		
 	}
 	
 	@Override
@@ -64,7 +82,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
-		if(actionFlow == null) {
+		if(actionExecutorEntry == null) {
 			throw new NullPointerException(actionID);
 		}
 		
@@ -78,7 +96,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
-		if(actionFlow == null) {
+		if(actionExecutorEntry == null) {
 			return;
 		}
 		
@@ -92,7 +110,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
-		if(actionFlow == null) {
+		if(actionExecutorEntry == null) {
 			throw new NullPointerException(actionID);
 		}
 		
@@ -106,7 +124,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
-		if(actionFlow == null) {
+		if(actionExecutorEntry == null) {
 			return;
 		}
 		
@@ -117,14 +135,69 @@ public class ActionRegistryImp implements ActionRegistry{
 
 	@Override
 	public void executeAction(String actionID, ActionExecutorRequest request) {
+		
+		if(executionTask == null) {
+			configureService();
+		}
+		
 		ActionExecutorRequestEntry entry = 
-				new ActionExecutorRequestEntry(UUID.randomUUID().toString(), request, actionID, LocalDateTime.now(), 0);
+				new ActionExecutorRequestEntry(
+						UUID.randomUUID().toString(), 
+						request, 
+						actionID, 
+						LocalDateTime.now(), 
+						0
+				);
+		
 		actionsRepository.register(id, entry);
 	}
 
 	protected void finalize() throws Throwable {
-		executionTask.alive = false;
-		super.finalize();
+		try {
+			if(executionTask != null) {
+				executionTask.setAlive(false);
+			}
+		}
+		finally {
+			super.finalize();
+		}
+	}
+
+	private synchronized void configureService() {
+		
+		if(executionTask != null) {
+			return;
+		}
+
+		if(actionsRepository == null) {
+			actionsRepository = new MemoryActionsRepository();
+			actionsRepository.setSecurityKey(id);
+		}
+		
+		if(executorService == null) {
+			ThreadPoolExecutor threadPoolExecutor = 
+					new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors()*4, 0L, 
+							TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(1));
+			
+			threadPoolExecutor.setThreadFactory((r)->{
+				Thread thread = new SecurityThread(r);
+				thread.setName("Executor-(" + id.toLowerCase() + ")-thread");
+				return thread;
+			});
+			
+			executorService = threadPoolExecutor;
+		}
+		
+		executionTask = new ExecutionTask();
+		executionTask.setAlive(true);
+		executionTask.setActionFlow(actionFlow);
+		executionTask.setActionsRepository(actionsRepository);
+		executionTask.setId(id);
+		executionTask.setExecutorService(executorService);
+		
+		SecurityThread actionRegistryThread = new SecurityThread(executionTask);
+		actionRegistryThread.setName("Action registry Thread");
+		actionRegistryThread.start();
 	}
 	
 	private static class ExecutionTask implements Runnable{
@@ -135,13 +208,28 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		private String id;
 		
-		private boolean alive = true;
+		private boolean alive;
 
-		public ExecutionTask(Map<String, ActionExecutorEntry> actionFlow, 
-				ActionsRepository actionsRepository, String id) {
+		private ExecutorService executorService;
+		
+		public void setActionFlow(Map<String, ActionExecutorEntry> actionFlow) {
 			this.actionFlow = actionFlow;
+		}
+
+		public void setActionsRepository(ActionsRepository actionsRepository) {
 			this.actionsRepository = actionsRepository;
+		}
+
+		public void setId(String id) {
 			this.id = id;
+		}
+
+		public void setAlive(boolean alive) {
+			this.alive = alive;
+		}
+
+		public void setExecutorService(ExecutorService executorService) {
+			this.executorService = executorService;
 		}
 
 		@Override
@@ -168,12 +256,27 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		public void execute() {
 
-			List<ActionExecutorRequestEntry> list = actionsRepository.getNext(id, 1);
+			List<ActionExecutorRequestEntry> list = actionsRepository.getNext(id, 10);
 			
-			for(ActionExecutorRequestEntry e: list) {
-				Thread th = new SecurityThread(new ActionTask(e, actionFlow, actionsRepository, id));
-				th.setName("Executor-(" + id.toLowerCase() + ")-thread");
-				th.start();
+			for(ActionExecutorRequestEntry request: list) {
+				
+				if(request.getDateSchedule().isAfter(LocalDateTime.now())) {
+					continue;
+				}
+				
+				ActionExecutorRequestEntry newE = 
+						new ActionExecutorRequestEntry(
+								request.getId(), 
+								request.getRequest(), 
+								request.getStatus(), 
+								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
+								request.getAttempts()
+						);
+				
+				actionsRepository.register(id, newE);
+				
+				Runnable task = new ActionTask(request, actionFlow, actionsRepository, id);
+				executorService.execute(task);
 			}
 			
 		}

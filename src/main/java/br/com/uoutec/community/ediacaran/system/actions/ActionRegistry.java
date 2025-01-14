@@ -1,6 +1,7 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.ExecutorService;
 
 import br.com.uoutec.ediacaran.core.plugins.PublicBean;
 
@@ -11,6 +12,8 @@ public interface ActionRegistry extends PublicBean{
 	void removeAction(String actionID);
 	
 	void setActionsRepository(ActionsRepository actionsRepository);
+	
+	void setExecutorService(ExecutorService value);
 	
 	void addNextAction(String actionID, String nextAction);
 
