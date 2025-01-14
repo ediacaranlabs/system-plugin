@@ -300,7 +300,7 @@ public class ActionRegistryImp implements ActionRegistry{
 			return actionsRepository.getNext(id, 10);
 		}
 		private boolean isActiveRequest(ActionExecutorRequestEntry request) {
-			return request.getDateSchedule().isAfter(LocalDateTime.now());
+			return LocalDateTime.now().isAfter(request.getDateSchedule());
 		}
 	}
 	
