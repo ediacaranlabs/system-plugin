@@ -235,52 +235,73 @@ public class ActionRegistryImp implements ActionRegistry{
 		@Override
 		public void run() {
 			while(alive) {
-				
-				try {
-					execute();
-				}
-				catch(Throwable ex) {
-					ex.printStackTrace();
-				}
-				
-				try {
-					Thread.sleep(10000);
-				}
-				catch(Throwable ex) {
-					alive = false;
-				}
-				
+				execute();
+				sleep();
 			}
-			
 		}
 		
 		public void execute() {
-
-			List<ActionExecutorRequestEntry> list = actionsRepository.getNext(id, 10);
+			try {
+				for(ActionExecutorRequestEntry request: getNextActionsToProcess()) {
+					tryActiveAction(request);
+				}
+			}
+			catch(Throwable ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		private void sleep() {
+			try {
+				Thread.sleep(10000);
+			}
+			catch(Throwable ex) {
+				alive = false;
+			}
+		}
+		
+		private void tryActiveAction(ActionExecutorRequestEntry request) {
 			
-			for(ActionExecutorRequestEntry request: list) {
-				
-				if(request.getDateSchedule().isAfter(LocalDateTime.now())) {
-					continue;
+			try {
+				if(!isActiveRequest(request)) {
+					throw new IllegalStateException("not active");
 				}
 				
-				ActionExecutorRequestEntry newE = 
-						new ActionExecutorRequestEntry(
-								request.getId(), 
-								request.getRequest(), 
-								request.getStatus(), 
-								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								request.getAttempts()
-						);
-				
-				actionsRepository.register(id, newE);
-				
-				Runnable task = new ActionTask(request, actionFlow, actionsRepository, id);
-				executorService.execute(task);
+				scheduleAgain(request);
+				executeAction(request);
+			}
+			catch(IllegalStateException ex) {
+				if(!"not active".equals(ex.getMessage())){
+					throw ex;
+				}
 			}
 			
 		}
 		
+		private void executeAction(ActionExecutorRequestEntry request) {
+			Runnable task = new ActionTask(request, actionFlow, actionsRepository, id);
+			executorService.execute(task);
+		}
+		
+		private void scheduleAgain(ActionExecutorRequestEntry request) {
+			ActionExecutorRequestEntry newE = 
+					new ActionExecutorRequestEntry(
+							request.getId(), 
+							request.getRequest(), 
+							request.getStatus(), 
+							LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
+							request.getAttempts()
+					);
+			
+			actionsRepository.register(id, newE);
+		}
+		
+		private List<ActionExecutorRequestEntry> getNextActionsToProcess(){
+			return actionsRepository.getNext(id, 10);
+		}
+		private boolean isActiveRequest(ActionExecutorRequestEntry request) {
+			return request.getDateSchedule().isAfter(LocalDateTime.now());
+		}
 	}
 	
 }

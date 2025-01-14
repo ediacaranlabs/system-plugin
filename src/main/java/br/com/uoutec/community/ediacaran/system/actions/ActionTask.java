@@ -25,10 +25,6 @@ public class ActionTask implements Runnable{
 	@Override
 	public void run() {
 		
-		if(request.getDateSchedule().isAfter(LocalDateTime.now())) {
-			return;
-		}
-		
 		ActionExecutorEntry ex = actionFlow.get(request.getStatus());
 		
 		if(ex == null) {
