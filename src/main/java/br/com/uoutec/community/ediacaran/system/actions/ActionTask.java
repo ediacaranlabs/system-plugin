@@ -69,7 +69,7 @@ public class ActionTask implements Runnable{
 								request.getRequest(), 
 								nextAction, 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								0
+								request.getAttempts() + 1
 						);
 				actionsRepository.register(id, newE);
 			}
@@ -81,7 +81,7 @@ public class ActionTask implements Runnable{
 								request.getRequest(), 
 								request.getStatus(), 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								0
+								request.getAttempts() + 1
 						);
 				actionsRepository.register(id, newE);
 			}
