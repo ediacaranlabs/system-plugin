@@ -60,18 +60,24 @@ public class ActionTask implements Runnable{
 			
 		}
 		catch(Throwable e) {
-			String nextAction = ex.getExceptionAction().get(e.getClass());
 			
-			if(nextAction != null) {
-				ActionExecutorRequestEntry newE = 
-						new ActionExecutorRequestEntry(
-								request.getId(), 
-								request.getRequest(), 
-								nextAction, 
-								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								request.getAttempts() + 1
-						);
-				actionsRepository.register(id, newE);
+			if(ex.getExceptionAction().containsKey(e.getClass())) {
+				String nextAction = ex.getExceptionAction().get(e.getClass());
+				
+				if(nextAction == null) {
+					ActionExecutorRequestEntry newE = 
+							new ActionExecutorRequestEntry(
+									request.getId(), 
+									request.getRequest(), 
+									nextAction, 
+									LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
+									request.getAttempts() + 1
+							);
+					actionsRepository.register(id, newE);
+				}
+				else {
+					actionsRepository.remove(id, request);
+				}
 			}
 			else
 			if(request.getAttempts() < ex.getAttemptsBeforeFailure()){
