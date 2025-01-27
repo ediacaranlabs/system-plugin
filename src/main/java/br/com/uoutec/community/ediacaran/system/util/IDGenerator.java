@@ -44,12 +44,12 @@ public class IDGenerator {
 		StringBuilder idBuilder = new StringBuilder();
 		idBuilder
 			.append("U")
-			.append(Long.toString(startTime, Character.MAX_RADIX))
-			.append(Long.toString(group, Character.MAX_RADIX))
+			.append(Long.toString(Math.abs(startTime), Character.MAX_RADIX))
+			.append(Long.toString(Math.abs(group), Character.MAX_RADIX))
 			.append(prefix)
 			.append(CHARP.charAt(subGroup))
-			.append(Long.toString(time, Character.MAX_RADIX))
-			.append(Long.toString(index, Character.MAX_RADIX));
+			.append(Long.toString(Math.abs(time), Character.MAX_RADIX))
+			.append(Long.toString(Math.abs(index), Character.MAX_RADIX));
 		
 		return idBuilder.toString().toUpperCase();
 	}

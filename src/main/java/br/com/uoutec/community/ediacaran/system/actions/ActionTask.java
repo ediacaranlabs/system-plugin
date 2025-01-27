@@ -39,18 +39,23 @@ public class ActionTask implements Runnable{
 			
 			String nextAction = response.getNextAction();
 			
+			if(nextAction == null) {
+				nextAction = request.getNextAction();
+			}
+			
 			if(nextAction == null && !ex.getNextActions().isEmpty()) {
-				nextAction = ex.getNextActions().get(0);
+				nextAction = ex.getNextActions().iterator().next();
 			}
 			
 			if(nextAction == null) {
 				actionsRepository.remove(id, request);
 			}
 			else {
+				
 				ActionExecutorRequestEntry newE = 
 						new ActionExecutorRequestEntry(
 								request.getId(), 
-								new HashMapActionExecutorRequest(response.getParams()), 
+								new HashMapActionExecutorRequest(response.getParams(), response.getRedirectAfterNextAction()), 
 								nextAction, 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
 								0

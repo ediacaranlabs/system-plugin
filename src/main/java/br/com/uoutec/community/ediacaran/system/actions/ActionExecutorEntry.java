@@ -1,10 +1,10 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ActionExecutorEntry {
 
@@ -12,7 +12,7 @@ public class ActionExecutorEntry {
 	
 	private String defaultNextAction;
 
-	private List<String> nextActions;
+	private Set<String> nextActions;
 	
 	private ActionExecutor executor;
 	
@@ -25,7 +25,7 @@ public class ActionExecutorEntry {
 	private ChronoUnit unitTtimeBeforeTryAgain;
 	
 	public ActionExecutorEntry() {
-		this.nextActions = new ArrayList<>();
+		this.nextActions = new HashSet<>();
 		this.exceptionAction = new HashMap<>();
 	}
 	
@@ -69,11 +69,11 @@ public class ActionExecutorEntry {
 		this.defaultNextAction = defaultNextAction;
 	}
 
-	public List<String> getNextActions() {
+	public Set<String> getNextActions() {
 		return nextActions;
 	}
 
-	public void setNextActions(List<String> nextActions) {
+	public void setNextActions(Set<String> nextActions) {
 		this.nextActions = nextActions;
 	}
 

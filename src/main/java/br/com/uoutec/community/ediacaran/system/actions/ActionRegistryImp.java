@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -61,6 +62,8 @@ public class ActionRegistryImp implements ActionRegistry{
 	public void registerAction(String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain,
 			ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor) {
 		
+		actionID = actionID.toLowerCase();
+		
 		ActionExecutorEntry actionExecutorEntry = new ActionExecutorEntry();
 		actionExecutorEntry.setAttemptsBeforeFailure(attemptsBeforeFailure);
 		actionExecutorEntry.setDefaultNextAction(null);
@@ -74,11 +77,15 @@ public class ActionRegistryImp implements ActionRegistry{
 
 	@Override
 	public void removeAction(String actionID) {
+		actionID = actionID.toLowerCase();
 		actionFlow.remove(actionID);
 	}
 	
 	@Override
 	public void addNextAction(String actionID, String nextAction) {
+		
+		actionID = actionID.toLowerCase();
+		nextAction = nextAction.toLowerCase();
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
@@ -86,13 +93,15 @@ public class ActionRegistryImp implements ActionRegistry{
 			throw new NullPointerException(actionID);
 		}
 		
-		List<String> nextActions = actionExecutorEntry.getNextActions();
-		nextActions.remove(nextAction);
+		Set<String> nextActions = actionExecutorEntry.getNextActions();
 		nextActions.add(nextAction);
 	}
 
 	@Override
 	public void removeNextAction(String actionID, String nextAction) {
+		
+		actionID = actionID.toLowerCase();
+		nextAction = nextAction.toLowerCase();
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
@@ -100,13 +109,16 @@ public class ActionRegistryImp implements ActionRegistry{
 			return;
 		}
 		
-		List<String> nextActions = actionExecutorEntry.getNextActions();
+		Set<String> nextActions = actionExecutorEntry.getNextActions();
 		nextActions.remove(nextAction);
 		
 	}
 
 	@Override
 	public void addExceptionAction(String actionID, Class<? extends Throwable> exceptionType, String nextAction) {
+		
+		actionID = actionID.toLowerCase();
+		nextAction = nextAction == null? null : nextAction.toLowerCase();
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
@@ -122,6 +134,8 @@ public class ActionRegistryImp implements ActionRegistry{
 	@Override
 	public void removeExceptionAction(String actionID, Class<? extends Throwable> exceptionType) {
 		
+		actionID = actionID.toLowerCase();
+		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
 		if(actionExecutorEntry == null) {
@@ -135,6 +149,8 @@ public class ActionRegistryImp implements ActionRegistry{
 
 	@Override
 	public void executeAction(String actionID, ActionExecutorRequest request) {
+		
+		actionID = actionID.toLowerCase();
 		
 		if(executionTask == null) {
 			configureService();

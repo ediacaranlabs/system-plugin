@@ -24,6 +24,7 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 		this.attempts = attempts;
 	}
 
+
 	public String getId() {
 		return id;
 	}
@@ -36,6 +37,11 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 		return dateSchedule;
 	}
 
+	@Override
+	public String getNextAction() {
+		return request.getNextAction();
+	}
+	
 	@Override
 	public String getParameter(String name) {
 		return request.getParameter(name);
@@ -65,5 +71,5 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 		ActionExecutorRequestEntry other = (ActionExecutorRequestEntry) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

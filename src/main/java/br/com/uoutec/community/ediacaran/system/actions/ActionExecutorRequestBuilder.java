@@ -5,10 +5,17 @@ import java.util.Map;
 
 public class ActionExecutorRequestBuilder {
 
-	Map<String,String> data = new HashMap<>();
+	private Map<String,String> data = new HashMap<>();
 	
-	public ActionExecutorRequestBuilder addParameter(String name, String value) {
+	private String nextAction;
+	
+	public ActionExecutorRequestBuilder withParameter(String name, String value) {
 		data.put(name, value);
+		return this;
+	}
+
+	public ActionExecutorRequestBuilder withNextAction(String value) {
+		this.nextAction = value;
 		return this;
 	}
 	
@@ -17,7 +24,7 @@ public class ActionExecutorRequestBuilder {
 	}
 	
 	public ActionExecutorRequest build() {
-		return new HashMapActionExecutorRequest(data);
+		return new HashMapActionExecutorRequest(data, nextAction);
 	}
 	
 }
