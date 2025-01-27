@@ -7,10 +7,6 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
 	private Map<String,String> params;
 	
-	private String nextAction;
-
-	private String redirectAfterNextAction;
-	
 	public ActionExecutorResponseImp() {
 		this.params = new HashMap<>();
 	}
@@ -25,25 +21,8 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 		return params.get(name);
 	}
 
-	@Override
-	public void setNexAction(String value) {
-		this.nextAction = value;
-	}
-
-	Map<String, String> getParams() {
+	public Map<String, String> getParams() {
 		return params;
-	}
-
-	String getNextAction() {
-		return nextAction;
-	}
-
-	public String getRedirectAfterNextAction() {
-		return redirectAfterNextAction;
-	}
-
-	public void setRedirectAfterNextAction(String redirectAfterNextAction) {
-		this.redirectAfterNextAction = redirectAfterNextAction;
 	}
 
 }

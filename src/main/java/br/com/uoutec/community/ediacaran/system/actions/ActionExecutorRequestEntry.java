@@ -38,11 +38,6 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 	}
 
 	@Override
-	public String getNextAction() {
-		return request.getNextAction();
-	}
-	
-	@Override
 	public String getParameter(String name) {
 		return request.getParameter(name);
 	}

@@ -3,9 +3,15 @@ package br.com.uoutec.community.ediacaran.system.actions;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActionTask implements Runnable{
 
+	private final Logger logger = LoggerFactory.getLogger(ActionTask.class);
+	
 	private ActionExecutorRequestEntry request;
 
 	private Map<String, ActionExecutorEntry> actionFlow;
@@ -28,7 +34,12 @@ public class ActionTask implements Runnable{
 		ActionExecutorEntry ex = actionFlow.get(request.getStatus());
 		
 		if(ex == null) {
-			actionsRepository.register(id, request);
+			
+			if(logger.isWarnEnabled()) {
+				logger.warn("action {} not found", request.getStatus());
+			}
+			
+			actionsRepository.remove(id, request);
 			return;
 		}
 		
@@ -37,25 +48,17 @@ public class ActionTask implements Runnable{
 		try {
 			ex.getExecutor().execute(request, response);
 			
-			String nextAction = response.getNextAction();
-			
-			if(nextAction == null) {
-				nextAction = request.getNextAction();
+			if(logger.isTraceEnabled()) {
+				logger.trace("action executed {}", request.getStatus());
 			}
 			
-			if(nextAction == null && !ex.getNextActions().isEmpty()) {
-				nextAction = ex.getNextActions().iterator().next();
-			}
+			actionsRepository.remove(id, request);
 			
-			if(nextAction == null) {
-				actionsRepository.remove(id, request);
-			}
-			else {
-				
+			for(String nextAction: ex.getNextActions()) {
 				ActionExecutorRequestEntry newE = 
 						new ActionExecutorRequestEntry(
-								request.getId(), 
-								new HashMapActionExecutorRequest(response.getParams(), response.getRedirectAfterNextAction()), 
+								UUID.randomUUID().toString(), 
+								new HashMapActionExecutorRequest(response.getParams()), 
 								nextAction, 
 								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
 								0
@@ -65,7 +68,6 @@ public class ActionTask implements Runnable{
 			
 		}
 		catch(Throwable e) {
-			
 			if(ex.getExceptionAction().containsKey(e.getClass())) {
 				String nextAction = ex.getExceptionAction().get(e.getClass());
 				

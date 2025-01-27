@@ -6,6 +6,4 @@ public interface ActionExecutorResponse {
 	
 	String getParameter(String name);
 	
-	void setNexAction(String value);
-	
 }
