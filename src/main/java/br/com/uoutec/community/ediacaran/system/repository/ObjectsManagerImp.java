@@ -26,7 +26,7 @@ import br.com.uoutec.community.ediacaran.system.repository.ObjectsManagerDriver.
 public class ObjectsManagerImp 
 	implements ObjectsManager {
 
-	private static final String PATH_FORMAT = "(\\/+[a-z0-9][a-z0-9]+([_-][a-z0-9]+)*)+";
+	private static final String PATH_FORMAT = "(\\/+[a-z0-9]+([_-][a-z0-9]+)*)+";
 	
 	private static final String ID_FORMAT = "[a-z0-9]+([_-][a-z0-9]+)*";
 
