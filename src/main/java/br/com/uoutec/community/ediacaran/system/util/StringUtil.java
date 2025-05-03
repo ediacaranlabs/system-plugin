@@ -10,10 +10,12 @@ import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class StringUtil {
 
@@ -78,6 +80,10 @@ public class StringUtil {
 	}
 
 	public static String toSearch(String value) {
+		return toSearch(value, " ");
+	}
+
+	public static String toSearch(String value, String separator) {
 		
 		if(value == null) {
 			return null;
@@ -85,9 +91,10 @@ public class StringUtil {
 		
 		value = normalize(value, " ");
 		String[] split = value.split("\\s+");
-		Arrays.sort(split, (a,b)->a.compareTo(b));
-		
-		return String.join(" ", split);
+		Set<String> set = Arrays.asList(split).stream().collect(Collectors.toSet());
+		List<String> list = set.stream().collect(Collectors.toList());
+		Collections.sort(list, (a,b)->a.compareTo(b));
+		return String.join(separator, list);
 	}
 	
 	public static String toString(Throwable ex) {
