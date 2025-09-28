@@ -9,7 +9,7 @@ import br.com.uoutec.application.io.Path;
 
 public class FileManager {
 
-	private static final String PATH_FORMAT = "(\\/[a-z][a-z0-9]+([_-][a-z0-9]+)*)+";
+	private static final String PATH_FORMAT = "(\\/[a-z0-9]+([_-][a-z0-9]+)*)+";
 	
 	public static final String BASE_PATH = "/";
 	
