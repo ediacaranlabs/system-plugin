@@ -7,8 +7,11 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
 	private Map<String,String> params;
 	
+	private boolean finished;
+	
 	public ActionExecutorResponseImp() {
 		this.params = new HashMap<>();
+		this.finished = false;
 	}
 	
 	@Override
@@ -23,6 +26,14 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
 	public Map<String, String> getParams() {
 		return params;
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 
 }

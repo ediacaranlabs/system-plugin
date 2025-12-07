@@ -54,16 +54,18 @@ public class ActionTask implements Runnable{
 			
 			actionsRepository.remove(id, request);
 			
-			for(String nextAction: ex.getNextActions()) {
-				ActionExecutorRequestEntry newE = 
-						new ActionExecutorRequestEntry(
-								UUID.randomUUID().toString(), 
-								new HashMapActionExecutorRequest(response.getParams()), 
-								nextAction, 
-								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								0
-						);
-				actionsRepository.register(id, newE);
+			if(!response.isFinished()) {
+				ex.getNextActions().stream().forEach((e)->{
+					ActionExecutorRequestEntry newE = 
+							new ActionExecutorRequestEntry(
+									UUID.randomUUID().toString(), 
+									new HashMapActionExecutorRequest(response.getParams()), 
+									e, 
+									LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
+									0
+							);
+					actionsRepository.register(id, newE);
+				});
 			}
 			
 		}

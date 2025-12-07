@@ -6,4 +6,8 @@ public interface ActionExecutorResponse {
 	
 	String getParameter(String name);
 	
+	boolean isFinished();
+	
+	void setFinished(boolean value);
+	
 }
