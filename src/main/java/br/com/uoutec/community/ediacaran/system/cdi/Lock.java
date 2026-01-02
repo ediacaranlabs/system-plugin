@@ -7,9 +7,14 @@ import java.lang.annotation.Target;
 
 import javax.interceptor.InterceptorBinding;
 
+import org.jboss.weld.context.unbound.Unbound;
+
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
-public @interface NamedLock{
+public @interface Lock{
 
+	@Unbound
+	String value();
+	
 }

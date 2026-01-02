@@ -8,6 +8,6 @@ public interface LockManager {
 
 	void tryLock(String name, long time, TimeUnit timeUnit);
 
-	void unlock(String name, boolean active);
+	void unlock(String name);
 	
 }

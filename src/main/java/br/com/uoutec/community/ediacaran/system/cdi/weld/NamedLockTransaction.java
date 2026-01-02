@@ -7,11 +7,12 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
-import br.com.uoutec.community.ediacaran.system.cdi.NamedLock;
-import br.com.uoutec.community.ediacaran.system.lock.NamedLockThreadContext;
+import br.com.uoutec.community.ediacaran.system.cdi.Lock;
+import br.com.uoutec.community.ediacaran.system.lock.LockManager;
+import br.com.uoutec.ediacaran.core.plugins.EntityContextPlugin;
 
 @Interceptor
-@NamedLock
+@Lock("")
 @Priority(Interceptor.Priority.PLATFORM_BEFORE + 10)
 public class NamedLockTransaction implements Serializable{ 
 	
@@ -23,14 +24,15 @@ public class NamedLockTransaction implements Serializable{
     @AroundInvoke
     public Object activateRequestContext(final InvocationContext p_invocationContext) throws Exception {
 
-    	NamedLockThreadContext namedLockThreadContext = new NamedLockThreadContext();
-    	
+    	LockManager lockManager = EntityContextPlugin.getEntity(LockManager.class);
+    	Lock lock = p_invocationContext.getMethod().getAnnotation(Lock.class);
+    	lockManager.lock(lock.value());
         try {
-        	namedLockThreadContext.activate();
+
             return p_invocationContext.proceed();
         }
         finally{
-        	namedLockThreadContext.deactivate();
+        	lockManager.unlock(lock.value());
         }
     }
 
