@@ -6,7 +6,7 @@ public interface LockManager {
 
 	void lock(String name);
 
-	void tryLock(String name, long time, TimeUnit timeUnit);
+	boolean tryLock(String name, long time, TimeUnit timeUnit) throws InterruptedException;
 
 	void unlock(String name);
 	
