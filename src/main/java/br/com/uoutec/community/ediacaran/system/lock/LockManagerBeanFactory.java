@@ -10,15 +10,21 @@ public class LockManagerBeanFactory implements BeanFactory{
 
 	private EntityContextPluginProvider entityContextPluginProvider;
 	
-	private LockManagerProvider lockManagerProvider;
+	private volatile LockManagerProvider lockManagerProvider;
 	
 	public LockManagerBeanFactory(BeanManager beanManager){
 		this.entityContextPluginProvider = new EntityContextPluginProviderImp(beanManager);
-		this.lockManagerProvider = entityContextPluginProvider.getEntity(LockManagerProvider.class);
 	}
 	
 	@Override
 	public Object getInstance() {
+		
+		if(lockManagerProvider == null) {
+			synchronized (this) {
+				this.lockManagerProvider = entityContextPluginProvider.getEntity(LockManagerProvider.class);
+			}
+		}
+		
 		return lockManagerProvider.getLockManager();
 	}
 
