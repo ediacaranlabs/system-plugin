@@ -54,7 +54,7 @@ public class SimpleLockManager implements LockManager {
 
 	private Lock createLock(String name) {
 		
-		Object crtlock = ctrlLocks[name.hashCode() % ctrlLocks.length];
+		Object crtlock = ctrlLocks[Math.abs(name.hashCode() % ctrlLocks.length)];
 		LockEntry lock = null;
 		
 		synchronized (crtlock) {
@@ -74,7 +74,7 @@ public class SimpleLockManager implements LockManager {
 
 	private Lock destroyLock(String name) {
 		
-		Object crtlock = ctrlLocks[name.hashCode() % ctrlLocks.length];
+		Object crtlock = ctrlLocks[Math.abs(name.hashCode() % ctrlLocks.length)];
 		LockEntry lock = null;
 		
 		synchronized (crtlock) {
