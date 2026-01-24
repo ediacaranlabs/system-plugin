@@ -7,6 +7,8 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
 	private Map<String,String> params;
 	
+	private String nextAction;
+	
 	private boolean finished;
 	
 	public ActionExecutorResponseImp() {
@@ -26,6 +28,14 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
 	public Map<String, String> getParams() {
 		return params;
+	}
+
+	public String getNextAction() {
+		return nextAction;
+	}
+
+	public void setNextAction(String nextAction) {
+		this.nextAction = nextAction;
 	}
 
 	public boolean isFinished() {

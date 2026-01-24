@@ -9,32 +9,22 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 	
 	private ActionExecutorRequest request;
 	
-	private String status;
+	private ActionExecutorRequestStatus status;
+	
+	private String nexAction;
 	
 	private LocalDateTime dateSchedule;
 	
 	private int attempts;
 	
-	public ActionExecutorRequestEntry(String id, ActionExecutorRequest request, String status,
+	public ActionExecutorRequestEntry(String id, ActionExecutorRequest request, ActionExecutorRequestStatus status, String nexAction,
 			LocalDateTime dateSchedule, int attempts) {
 		this.id = id;
 		this.request = request;
 		this.status = status;
 		this.dateSchedule = dateSchedule;
 		this.attempts = attempts;
-	}
-
-
-	public String getId() {
-		return id;
-	}
-	
-	public ActionExecutorRequest getRequest() {
-		return request;
-	}
-
-	public LocalDateTime getDateSchedule() {
-		return dateSchedule;
+		this.nexAction = nexAction;
 	}
 
 	@Override
@@ -42,14 +32,55 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 		return request.getParameter(name);
 	}
 
-	public String getStatus() {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public ActionExecutorRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(ActionExecutorRequest request) {
+		this.request = request;
+	}
+
+	public ActionExecutorRequestStatus getStatus() {
 		return status;
+	}
+
+	public void setStatus(ActionExecutorRequestStatus status) {
+		this.status = status;
+	}
+
+	public String getNexAction() {
+		return nexAction;
+	}
+
+	public void setNexAction(String nexAction) {
+		this.nexAction = nexAction;
+	}
+
+	public LocalDateTime getDateSchedule() {
+		return dateSchedule;
+	}
+
+	public void setDateSchedule(LocalDateTime dateSchedule) {
+		this.dateSchedule = dateSchedule;
 	}
 
 	public int getAttempts() {
 		return attempts;
 	}
 
+	public void setAttempts(int attempts) {
+		this.attempts = attempts;
+	}
+
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

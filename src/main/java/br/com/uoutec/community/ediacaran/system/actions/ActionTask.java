@@ -3,7 +3,6 @@ package br.com.uoutec.community.ediacaran.system.actions;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +30,12 @@ public class ActionTask implements Runnable{
 	@Override
 	public void run() {
 		
-		ActionExecutorEntry ex = actionFlow.get(request.getStatus());
+		ActionExecutorEntry ex = actionFlow.get(request.getNexAction());
 		
 		if(ex == null) {
 			
 			if(logger.isWarnEnabled()) {
-				logger.warn("action {} not found", request.getStatus());
+				logger.warn("action {} dont have next action", request.getId(), String.valueOf(request.getNexAction()));
 			}
 			
 			actionsRepository.remove(id, request);
@@ -45,6 +44,10 @@ public class ActionTask implements Runnable{
 		
 		ActionExecutorResponseImp response = new ActionExecutorResponseImp();
 
+		
+		request.setStatus(ActionExecutorRequestStatus.ACTIVE);
+		actionsRepository.register(id, request);
+		
 		try {
 			ex.getExecutor().execute(request, response);
 			
@@ -52,59 +55,67 @@ public class ActionTask implements Runnable{
 				logger.trace("action executed {}", request.getStatus());
 			}
 			
-			actionsRepository.remove(id, request);
-			
 			if(!response.isFinished()) {
-				ex.getNextActions().stream().forEach((e)->{
-					ActionExecutorRequestEntry newE = 
-							new ActionExecutorRequestEntry(
-									UUID.randomUUID().toString(), 
-									new HashMapActionExecutorRequest(response.getParams()), 
-									e, 
-									LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-									0
-							);
-					actionsRepository.register(id, newE);
-				});
+				
+				
+				if(!ex.getNextActions().isEmpty()) {
+					
+					request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+					request.setStatus(ActionExecutorRequestStatus.ONHOLD);
+					request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
+					
+					String nextAction = response.getNextAction();
+					
+					if(nextAction != null) {
+						if(!ex.getNextActions().contains(nextAction)) {
+							throw new IllegalStateException("next action not found: " + nextAction);
+						}
+						
+					}
+					else {
+						nextAction = ex.getNextActions().iterator().next();
+					}
+					
+					request.setNexAction(nextAction);
+				}
+				
 			}
-			
+			else {
+				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
+			}
+
+			actionsRepository.register(id, request);
 		}
 		catch(Throwable e) {
+			
+			request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+			request.setStatus(ActionExecutorRequestStatus.ONHOLD);
+			
 			if(ex.getExceptionAction().containsKey(e.getClass())) {
+				
 				String nextAction = ex.getExceptionAction().get(e.getClass());
 				
-				if(nextAction == null) {
-					ActionExecutorRequestEntry newE = 
-							new ActionExecutorRequestEntry(
-									request.getId(), 
-									request.getRequest(), 
-									nextAction, 
-									LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-									request.getAttempts() + 1
-							);
-					actionsRepository.register(id, newE);
+				if(nextAction != null) {
+					request.setNexAction(nextAction);
 				}
 				else {
-					actionsRepository.remove(id, request);
+					request.setAttempts(request.getAttempts() + 1);
 				}
+				
 			}
 			else
 			if(request.getAttempts() < ex.getAttemptsBeforeFailure()){
-				ActionExecutorRequestEntry newE = 
-						new ActionExecutorRequestEntry(
-								request.getId(), 
-								request.getRequest(), 
-								request.getStatus(), 
-								LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-								request.getAttempts() + 1
-						);
-				actionsRepository.register(id, newE);
+				request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+				request.setAttempts(request.getAttempts() + 1);
 			}
 			else {
-				actionsRepository.remove(id, request);
+				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
 			}
+
+			actionsRepository.register(id, request);
 			
 		}
+		
 	}
 	
 }

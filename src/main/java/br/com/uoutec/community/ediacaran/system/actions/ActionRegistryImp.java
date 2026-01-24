@@ -158,14 +158,15 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		ActionExecutorRequestEntry entry = 
 				new ActionExecutorRequestEntry(
-						UUID.randomUUID().toString(), 
+						request.getId(), 
 						request, 
+						ActionExecutorRequestStatus.ONHOLD,
 						actionID, 
 						LocalDateTime.now(), 
 						0
 				);
 		
-		actionsRepository.register(id, entry);
+		actionsRepository.registerIfNotExist(id, entry);
 	}
 
 	protected void finalize() throws Throwable {
@@ -300,21 +301,14 @@ public class ActionRegistryImp implements ActionRegistry{
 		}
 		
 		private void scheduleAgain(ActionExecutorRequestEntry request) {
-			ActionExecutorRequestEntry newE = 
-					new ActionExecutorRequestEntry(
-							request.getId(), 
-							request.getRequest(), 
-							request.getStatus(), 
-							LocalDateTime.now().plus(10, ChronoUnit.SECONDS),
-							request.getAttempts()
-					);
-			
-			actionsRepository.register(id, newE);
+			request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+			actionsRepository.register(id, request);
 		}
 		
 		private List<ActionExecutorRequestEntry> getNextActionsToProcess(){
 			return actionsRepository.getNext(id, 10);
 		}
+		
 		private boolean isActiveRequest(ActionExecutorRequestEntry request) {
 			return LocalDateTime.now().isAfter(request.getDateSchedule());
 		}

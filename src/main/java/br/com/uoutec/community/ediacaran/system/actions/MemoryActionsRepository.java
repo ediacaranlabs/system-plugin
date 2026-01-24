@@ -23,19 +23,49 @@ public class MemoryActionsRepository implements ActionsRepository {
 	}
 
 	@Override
+	public synchronized boolean registerIfNotExist(String securityKey, ActionExecutorRequestEntry request) {
+		
+		int i;
+		while((i = list.indexOf(request)) != -1){
+			
+			if(i != -1) {
+				ActionExecutorRequestEntry actual = list.get(i);
+				if(actual.getStatus() != ActionExecutorRequestStatus.FINALIZED) {
+					return false;
+				}
+				
+				list.remove(actual);
+			}
+			
+		}
+		
+		
+		register(securityKey, request);
+		
+		return true;
+	}
+	
+	@Override
 	public synchronized void register(String securityKey, ActionExecutorRequestEntry request) {
 		
 		if(!this.securityKey.equals(securityKey)) {
 			throw new IllegalStateException("securityKey");
 		}
-		
-		int indexOf = list.indexOf(request);
-		
-		if(indexOf != -1) {
-			list.remove(request);
+
+		int i;
+		while((i = list.indexOf(request)) != -1){
+			
+			if(i != -1) {
+				ActionExecutorRequestEntry actual = list.get(i);
+				list.remove(actual);
+			}
+			
+		}
+
+		if(request.getStatus() != ActionExecutorRequestStatus.FINALIZED) {
+			list.addLast(request);
 		}
 		
-		list.addLast(request);
 	}
 
 	@Override
@@ -47,15 +77,31 @@ public class MemoryActionsRepository implements ActionsRepository {
 		
 		List<ActionExecutorRequestEntry> result = new ArrayList<>();
 		
+		if(list.isEmpty()) {
+			return result;
+		}
+		
 		if(quantity > list.size()) {
 			quantity = list.size();
 		}
 		
+		ActionExecutorRequestEntry first = list.getFirst();
+		
 		while(quantity > 0) {
-			ActionExecutorRequestEntry e = list.getFirst();
-			result.add(e);
-			list.addLast(list.removeFirst());
-			quantity--;
+			
+			ActionExecutorRequestEntry e = list.removeFirst();
+			
+			if(e.getStatus() != ActionExecutorRequestStatus.FINALIZED) {
+				result.add(e);
+				quantity--;
+			}
+			
+			list.addLast(e);
+			
+			if(list.getFirst().equals(first)) {
+				break;
+			}
+			
 		}
 		
 		return result;

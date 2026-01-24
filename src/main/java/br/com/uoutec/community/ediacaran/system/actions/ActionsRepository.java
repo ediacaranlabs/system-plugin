@@ -6,6 +6,8 @@ public interface ActionsRepository {
 
 	void setSecurityKey(String value);
 	
+	boolean registerIfNotExist(String securityKey, ActionExecutorRequestEntry request);
+	
 	void register(String securityKey, ActionExecutorRequestEntry request);
 
 	void remove(String securityKey, ActionExecutorRequestEntry request);
