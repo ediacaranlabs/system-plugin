@@ -84,6 +84,12 @@ public class ActionTask implements Runnable{
 				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
 			}
 
+			request.setAttempts(request.getAttempts() + 1);
+			
+			if(request.getAttempts() >= ex.getAttemptsBeforeFailure()){
+				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
+			}
+			
 			actionsRepository.register(id, request);
 		}
 		catch(Throwable e) {
