@@ -24,35 +24,35 @@ public class EventRegistryImp implements EventRegistry{
 	@Inject
 	private SystemEventRegistry systemEventRegistry;
 
-	@Transactional
+	@Transactional(rollbackOn = Throwable.class)
 	@Parallel
 	@ActiveRequestContext
 	public void info(String group, String subgroup, String message) {
 		this.registry(SystemEventType.INFO, group, subgroup, message, null);
 	}
 	
-	@Transactional
+	@Transactional(rollbackOn = Throwable.class)
 	@Parallel
 	@ActiveRequestContext
 	public void warn(String group, String subgroup, String message, Throwable ex) {
 		this.registry(SystemEventType.WARNING, group, subgroup, message, ex);
 	}
 
-	@Transactional
+	@Transactional(rollbackOn = Throwable.class)
 	@Parallel
 	@ActiveRequestContext
 	public void warn(String group, String subgroup, String message) {
 		this.registry(SystemEventType.WARNING, group, subgroup, message, null);
 	}
 	
-	@Transactional
+	@Transactional(rollbackOn = Throwable.class)
 	@Parallel
 	@ActiveRequestContext
 	public void error(String group, String subgroup, String message) {
 		this.registry(SystemEventType.ERROR, group, subgroup, message, null);
 	}
 	
-	@Transactional
+	@Transactional(rollbackOn = Throwable.class)
 	@Parallel
 	@ActiveRequestContext
 	public void error(String group, String subgroup, String message, Throwable ex) {
