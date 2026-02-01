@@ -156,6 +156,10 @@ public class EntityInheritanceManager implements PublicBean {
 			return null;
 		}
 		
+		if(map == null) {
+			throw new IllegalStateException("name not found [" + base.getName() + "]: " + name);
+		}
+		
 		Class<?> c = map.get(name);
 		
 		if(c == null){
