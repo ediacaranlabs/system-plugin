@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import javax.enterprise.context.control.ActivateRequestContext;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -31,6 +32,7 @@ public class ScheduleRegistryImp implements ScheduleRegistry {
 	}
 	
 	@Override
+	@ActivateRequestContext
 	public void schedule(String code, Runnable command, long delay, TimeUnit unit) {
 		
 		lockManager.lock(LOCK + code.toLowerCase());
@@ -63,6 +65,7 @@ public class ScheduleRegistryImp implements ScheduleRegistry {
 	}
 
 	@Override
+	@ActivateRequestContext
 	public <V> void schedule(String code, Callable<V> callable, long delay, TimeUnit unit) {
 
 		lockManager.lock(LOCK + code.toLowerCase());
@@ -95,6 +98,7 @@ public class ScheduleRegistryImp implements ScheduleRegistry {
 	}
 
 	@Override
+	@ActivateRequestContext
 	public void scheduleAtFixedRate(String code, Runnable command, long initialDelay, long period, TimeUnit unit) {
 
 		lockManager.lock(LOCK + code.toLowerCase());
@@ -127,6 +131,7 @@ public class ScheduleRegistryImp implements ScheduleRegistry {
 	}
 
 	@Override
+	@ActivateRequestContext
 	public void scheduleWithFixedDelay(String code, Runnable command, long initialDelay, long delay, TimeUnit unit) {
 
 		lockManager.lock(LOCK + code.toLowerCase());
