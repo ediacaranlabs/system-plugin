@@ -12,6 +12,7 @@ import javax.enterprise.context.control.ActivateRequestContext;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import br.com.uoutec.application.security.SecurityThread;
 import br.com.uoutec.community.ediacaran.system.lock.LockManager;
 
 @Singleton
@@ -27,7 +28,7 @@ public class ScheduleRegistryImp implements ScheduleRegistry {
 	private LockManager lockManager;
 
 	public ScheduleRegistryImp() {
-		this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()*8);
+		this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()*8, (r)->new SecurityThread(r));
 		this.map = new ConcurrentHashMap<>();
 	}
 	
