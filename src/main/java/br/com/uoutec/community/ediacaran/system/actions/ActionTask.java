@@ -54,41 +54,37 @@ public class ActionTask implements Runnable{
 			if(logger.isTraceEnabled()) {
 				logger.trace("action executed {}", request.getStatus());
 			}
+
+			if(response.isFinished()) {
+				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
+				actionsRepository.register(id, request);
+				return;
+			}
 			
-			if(!response.isFinished()) {
-				
-				
-				if(!ex.getNextActions().isEmpty()) {
-					
-					request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
-					request.setStatus(ActionExecutorRequestStatus.ONHOLD);
-					request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
-					
-					String nextAction = response.getNextAction();
-					
-					if(nextAction != null) {
-						if(!ex.getNextActions().contains(nextAction)) {
-							throw new IllegalStateException("next action not found: " + nextAction);
-						}
-						
-					}
-					else {
-						nextAction = ex.getNextActions().iterator().next();
-					}
-					
-					request.setNexAction(nextAction);
+			if(ex.getNextActions().isEmpty()) {
+				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
+				actionsRepository.register(id, request);
+				return;
+			}
+			
+			request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+			request.setStatus(ActionExecutorRequestStatus.ONHOLD);
+			request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
+			
+			String nextAction = response.getNextAction();
+			
+			if(nextAction != null) {
+				if(!ex.getNextActions().contains(nextAction)) {
+					throw new IllegalStateException("next action not found: " + nextAction);
 				}
 				
 			}
 			else {
-				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
+				nextAction = ex.getNextActions().iterator().next();
 			}
-
-			request.setAttempts(request.getAttempts() + 1);
 			
-			if(request.getAttempts() >= ex.getAttemptsBeforeFailure()){
-				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
-			}
+			request.setNexAction(nextAction);
+			request.setAttempts(0);
 			
 			actionsRepository.register(id, request);
 		}
