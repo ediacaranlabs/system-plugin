@@ -4,7 +4,9 @@ public interface ActionExecutorResponse {
 
 	void setParameter(String name, String value);
 	
-	String getParameter(String name);
+	Object getParameter(String name);
+
+	<T> T getParameter(String name, Class<T> type);
 	
 	String getNextAction();
 	

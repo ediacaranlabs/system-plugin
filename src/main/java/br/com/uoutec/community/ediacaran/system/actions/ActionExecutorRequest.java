@@ -4,6 +4,8 @@ public interface ActionExecutorRequest {
 
 	String getId();
 	
-	String getParameter(String name);
+	Object getParameter(String name);
+
+	<T> T getParameter(String name, Class<T> type);
 	
 }

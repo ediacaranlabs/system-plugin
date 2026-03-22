@@ -28,10 +28,15 @@ public class ActionExecutorRequestEntry implements ActionExecutorRequest{
 	}
 
 	@Override
-	public String getParameter(String name) {
+	public Object getParameter(String name) {
 		return request.getParameter(name);
 	}
 
+	@Override
+	public <T> T getParameter(String name, Class<T> type) {
+		return request.getParameter(name, type);
+	}
+	
 	public String getId() {
 		return id;
 	}

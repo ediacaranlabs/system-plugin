@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ActionExecutorResponseImp implements ActionExecutorResponse{
 
-	private Map<String,String> params;
+	private Map<String,Object> params;
 	
 	private String nextAction;
 	
@@ -22,11 +22,17 @@ public class ActionExecutorResponseImp implements ActionExecutorResponse{
 	}
 
 	@Override
-	public String getParameter(String name) {
+	public Object getParameter(String name) {
 		return params.get(name);
 	}
 
-	public Map<String, String> getParams() {
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T getParameter(String name, Class<T> type) {
+		return (T)params.get(name);
+	}
+	
+	public Map<String, Object> getParams() {
 		return params;
 	}
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class ActionExecutorRequestBuilder {
 
-	private Map<String,String> data = new HashMap<>();
+	private Map<String,Object> data = new HashMap<>();
 
 	private String id;
 	
@@ -15,7 +15,7 @@ public class ActionExecutorRequestBuilder {
 		return this;
 	}
 	
-	public ActionExecutorRequestBuilder withParameter(String name, String value) {
+	public ActionExecutorRequestBuilder withParameter(String name, Object value) {
 		data.put(name, value);
 		return this;
 	}
