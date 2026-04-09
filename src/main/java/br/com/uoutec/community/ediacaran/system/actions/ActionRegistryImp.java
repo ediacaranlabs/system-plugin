@@ -5,7 +5,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -82,9 +81,9 @@ public class ActionRegistryImp implements ActionRegistry{
 	}
 	
 	@Override
-	public void addNextAction(String actionID, String nextAction) {
+	public void executeAfter(String actionID, String nextAction) {
 		
-		actionID = actionID.toLowerCase();
+		actionID   = actionID.toLowerCase();
 		nextAction = nextAction.toLowerCase();
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
@@ -93,15 +92,20 @@ public class ActionRegistryImp implements ActionRegistry{
 			throw new NullPointerException(actionID);
 		}
 		
-		Set<String> nextActions = actionExecutorEntry.getNextActions();
-		nextActions.add(nextAction);
+		String actualNextAction = actionExecutorEntry.getNextActions();
+		
+		actionExecutorEntry.setNextActions(nextAction);
+		
+		if(actualNextAction != null) {
+			executeAfter(nextAction, actualNextAction);
+		}
+		
 	}
 
 	@Override
-	public void removeNextAction(String actionID, String nextAction) {
+	public void destroyExecuteAfter(String actionID) {
 		
 		actionID = actionID.toLowerCase();
-		nextAction = nextAction.toLowerCase();
 		
 		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
 		
@@ -109,8 +113,16 @@ public class ActionRegistryImp implements ActionRegistry{
 			return;
 		}
 		
-		Set<String> nextActions = actionExecutorEntry.getNextActions();
-		nextActions.remove(nextAction);
+		String actualNextAction = actionExecutorEntry.getNextActions();
+		
+		if(actualNextAction != null) {
+			ActionExecutorEntry actualNextActionEntry = actionFlow.get(actionID);
+			actionExecutorEntry.setNextActions(actualNextActionEntry != null? actualNextActionEntry.getNextActions() : null);
+		}
+		else {
+			actionExecutorEntry.setNextActions(null);
+		}
+		
 		
 	}
 

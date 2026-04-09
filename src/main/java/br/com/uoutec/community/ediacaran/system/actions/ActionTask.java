@@ -67,9 +67,6 @@ public class ActionTask implements Runnable{
 				return;
 			}
 			
-			request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
-			request.setStatus(ActionExecutorRequestStatus.ONHOLD);
-			request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
 			
 			String nextAction = response.getNextAction();
 			
@@ -77,16 +74,19 @@ public class ActionTask implements Runnable{
 				if(!ex.getNextActions().contains(nextAction)) {
 					throw new IllegalStateException("next action not found: " + nextAction);
 				}
+
+				request.setDateSchedule(LocalDateTime.now().plus(10, ChronoUnit.SECONDS));
+				request.setStatus(ActionExecutorRequestStatus.ONHOLD);
+				request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
+				request.setNexAction(nextAction);
+				request.setAttempts(0);
+				actionsRepository.register(id, request);
 				
 			}
 			else {
-				nextAction = ex.getNextActions().iterator().next();
+				nextAction = ex.getNextActions();
 			}
 			
-			request.setNexAction(nextAction);
-			request.setAttempts(0);
-			
-			actionsRepository.register(id, request);
 		}
 		catch(Throwable e) {
 			

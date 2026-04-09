@@ -15,13 +15,13 @@ public class ActionFlowBuilder {
 		this.parent = null;
 	}
 
-	public ActionFlowBuilder addNextAction(String actionID, ActionExecutor executor) {
+	public ActionFlowBuilder executeAfter(String actionID, ActionExecutor executor) {
 		ActionFlowBuilder next = new ActionFlowBuilder();
 		next.parent = this;
 		next.entry.setId(actionID);
 		next.entry.setExecutor(executor);
 		
-		entry.getNextActions().add(actionID);
+		entry.setNextActions(actionID);
 		
 		return next;
 	}
@@ -33,7 +33,7 @@ public class ActionFlowBuilder {
 
 	public ActionFlowBuilder setExceptionAction(Class<? extends Throwable> type, ActionExecutor executor) {
 		String actionID = UUID.randomUUID().toString();
-		ActionFlowBuilder builder = addNextAction(actionID, executor);
+		ActionFlowBuilder builder = executeAfter(actionID, executor);
 		entry.getExceptionAction().put(type, actionID);
 		return builder;
 	}

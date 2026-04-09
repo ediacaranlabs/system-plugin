@@ -15,9 +15,9 @@ public interface ActionRegistry extends PublicBean {
 	
 	void setExecutorService(ExecutorService value);
 	
-	void addNextAction(String actionID, String nextAction);
+	void executeAfter(String actionID, String nextAction);
 
-	void removeNextAction(String actionID, String nextAction);
+	void destroyExecuteAfter(String actionID);
 
 	void addExceptionAction(String actionID, Class<? extends Throwable> exceptionType, String nextAction);
 	
