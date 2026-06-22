@@ -98,8 +98,16 @@ public class DataUtil {
 				}
 				
 				remove.add(name);
-				String val = v.get(name);//v.get(name);
-				Object vObject = gson.fromJson(val, (Type)p.getDeclaredGenericType());
+				
+				Object vObject;
+				try {
+					String val = v.get(name);//v.get(name);
+					vObject = gson.fromJson(val, (Type)p.getDeclaredGenericType());
+				}
+				catch(BeanException ex){
+					continue;
+				}
+				
 				p.set(o, vObject);
 			}
 			
