@@ -11,7 +11,11 @@ public class ListThreadPoolExecutor extends ThreadPoolExecutor{
 	public ListThreadPoolExecutor(
 			int size, int workQueueSize) {
 		super(size, size, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(workQueueSize), (e)->new SecurityThread(e));
+                new LinkedBlockingQueue<Runnable>(workQueueSize), (e)->{
+					Thread th = new SecurityThread(e);
+					th.setName("Thread-" + ThreadPoolExecutor.class.getSimpleName());
+					return th;
+                });
 		
 		this.setRejectedExecutionHandler(
 				new ThreadPoolExecutor.CallerRunsPolicy());
