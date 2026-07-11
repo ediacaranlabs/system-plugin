@@ -13,7 +13,9 @@ public class PluginThreadPoolExecutor extends ThreadPoolExecutor{
 
 	public PluginThreadPoolExecutor() {
 		super(Runtime.getRuntime().availableProcessors()*8, Runtime.getRuntime().availableProcessors()*8, 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors()*16), (e)->new SecurityThread(e));
+                new LinkedBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors()*16), (e)->{
+                	return new SecurityThread(e);
+                });
 		
 		this.setRejectedExecutionHandler(
 				new ThreadPoolExecutor.CallerRunsPolicy());
