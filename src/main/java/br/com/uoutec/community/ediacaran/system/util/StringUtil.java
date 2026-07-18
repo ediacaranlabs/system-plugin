@@ -62,6 +62,11 @@ public class StringUtil {
 	}
 
 	public static String normalize(String name) {
+		
+		if(name == null) {
+			return null;
+		}
+		
 		return 
 			Normalizer.normalize(name, Form.NFD)
 			.replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
@@ -71,6 +76,11 @@ public class StringUtil {
 	}
 
 	public static String normalize(String name, String separator) {
+		
+		if(name == null) {
+			return null;
+		}
+		
 		return 
 			Normalizer.normalize(name, Form.NFD)
 			.replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
