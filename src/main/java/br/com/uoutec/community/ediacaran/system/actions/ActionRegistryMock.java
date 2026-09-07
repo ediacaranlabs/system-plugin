@@ -1,7 +1,6 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,31 +39,6 @@ public class ActionRegistryMock extends ActionRegistryImp {
 		actionsRepository.registerIfNotExist(entry);
 
 	}
-
-	@Override
-	public void registerAction(String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain,
-			ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor) {
-		super.registerAction(actionID, attemptsBeforeFailure, timeBeforeTryAgain, unitTtimeBeforeTryAgain, executor);
-		
-		actionID = actionID.toLowerCase();
-		
-		ActionExecutorEntry actionExecutorEntry = new ActionExecutorEntry();
-		actionExecutorEntry.setAttemptsBeforeFailure(attemptsBeforeFailure);
-		actionExecutorEntry.setDefaultNextAction(null);
-		actionExecutorEntry.setExecutor(executor);
-		actionExecutorEntry.setId(actionID);
-		actionExecutorEntry.setTimeBeforeTryAgain(timeBeforeTryAgain);
-		actionExecutorEntry.setUnitTtimeBeforeTryAgain(unitTtimeBeforeTryAgain);
-		
-		actionFlow.put(actionID, actionExecutorEntry);
-	}
-	
-	@Override
-	public void removeAction(String actionID) {
-		super.removeAction(actionID);
-		actionID = actionID.toLowerCase();
-		actionFlow.remove(actionID);
-	}
 	
 	public void executeAll() throws Throwable {
 
@@ -77,42 +51,8 @@ public class ActionRegistryMock extends ActionRegistryImp {
 			}
 			
 			for(ActionExecutorRequestEntry request: itens) {
-				
-				ActionExecutorEntry ex = actionFlow.get(request.getNexAction());
-				
-				if(ex == null) {
-					throw new IllegalStateException("action: " + request.getNexAction());
-				}
-				
-				ActionExecutorResponseImp response = new ActionExecutorResponseImp();
-
-				ex.getExecutor().execute(request, response);
-				
-				if(response.isFinished() || (ex.getNextActions() == null || ex.getNextActions().isEmpty())) {
-					request.setStatus(ActionExecutorRequestStatus.FINALIZED);
-					actionsRepository.register(request);
-				}
-				else {
-					
-					String nextAction = response.getNextAction() == null? ex.getNextActions() : response.getNextAction();
-					
-					if(nextAction != null) {
-						
-						if(!ex.getNextActions().contains(nextAction)) {
-							throw new IllegalStateException("next action not found: " + nextAction);
-						}
-	
-						request.setDateSchedule(LocalDateTime.now());
-						request.setStatus(ActionExecutorRequestStatus.ONHOLD);
-						request.setRequest(new HashMapActionExecutorRequest(request.getId(), response.getParams()));
-						request.setNexAction(nextAction);
-						request.setAttempts(0);
-						actionsRepository.register(request);
-						
-					}
-					
-				}
-				
+				ActionTask task = new ActionTask(request, actionFlow, actionsRepository, actionsRepository.securityKey);
+				task.run();
 			}
 			
 		}
@@ -142,7 +82,7 @@ public class ActionRegistryMock extends ActionRegistryImp {
 		
 		@Override
 		public boolean registerIfNotExist(String securityKey, ActionExecutorRequestEntry request) {
-			return actionsRepository.registerIfNotExist(securityKey, request);
+			return actionsRepository.registerIfNotExist(this.securityKey, request);
 		}
 
 		public void register(ActionExecutorRequestEntry request) {
@@ -151,7 +91,7 @@ public class ActionRegistryMock extends ActionRegistryImp {
 		
 		@Override
 		public void register(String securityKey, ActionExecutorRequestEntry request) {
-			actionsRepository.register(securityKey, request);
+			actionsRepository.register(this.securityKey, request);
 		}
 
 		public void remove(ActionExecutorRequestEntry request) {
@@ -160,12 +100,12 @@ public class ActionRegistryMock extends ActionRegistryImp {
 		
 		@Override
 		public void remove(String securityKey, ActionExecutorRequestEntry request) {
-			actionsRepository.remove(securityKey, request);
+			actionsRepository.remove(this.securityKey, request);
 		}
 
 		@Override
 		public List<ActionExecutorRequestEntry> getNext(String securityKey, int quantity) {
-			return actionsRepository.getNext(securityKey, quantity);
+			return actionsRepository.getNext(this.securityKey, quantity);
 		}
 
 		public List<ActionExecutorRequestEntry> getNext(int quantity) {
