@@ -71,13 +71,13 @@ public class ActionRegistryImp implements ActionRegistry{
 		actionExecutorEntry.setTimeBeforeTryAgain(timeBeforeTryAgain);
 		actionExecutorEntry.setUnitTtimeBeforeTryAgain(unitTtimeBeforeTryAgain);
 		
-		actionFlow.put(actionID, actionExecutorEntry);
+		registerActionFlow(actionID, actionExecutorEntry);
 	}
 
 	@Override
 	public void removeAction(String actionID) {
 		actionID = actionID.toLowerCase();
-		actionFlow.remove(actionID);
+		removeActionFlow(actionID);
 	}
 	
 	@Override
@@ -86,7 +86,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		actionID   = actionID.toLowerCase();
 		nextAction = nextAction.toLowerCase();
 		
-		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
+		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
 		
 		if(actionExecutorEntry == null) {
 			throw new NullPointerException(actionID);
@@ -107,7 +107,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		actionID = actionID.toLowerCase();
 		
-		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
+		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
 		
 		if(actionExecutorEntry == null) {
 			return;
@@ -116,7 +116,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		String actualNextAction = actionExecutorEntry.getNextActions();
 		
 		if(actualNextAction != null) {
-			ActionExecutorEntry actualNextActionEntry = actionFlow.get(actionID);
+			ActionExecutorEntry actualNextActionEntry = getActionFlow(actionID);
 			actionExecutorEntry.setNextActions(actualNextActionEntry != null? actualNextActionEntry.getNextActions() : null);
 		}
 		else {
@@ -132,7 +132,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		actionID = actionID.toLowerCase();
 		nextAction = nextAction == null? null : nextAction.toLowerCase();
 		
-		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
+		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
 		
 		if(actionExecutorEntry == null) {
 			throw new NullPointerException(actionID);
@@ -148,7 +148,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		actionID = actionID.toLowerCase();
 		
-		ActionExecutorEntry actionExecutorEntry = actionFlow.get(actionID);
+		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
 		
 		if(actionExecutorEntry == null) {
 			return;
@@ -192,6 +192,18 @@ public class ActionRegistryImp implements ActionRegistry{
 		}
 	}
 
+	protected void registerActionFlow(String actionID, ActionExecutorEntry actionExecutorEntry) {
+		actionFlow.put(actionID, actionExecutorEntry);
+	}
+
+	protected void removeActionFlow(String actionID) {
+		actionFlow.remove(actionID);
+	}
+
+	protected ActionExecutorEntry getActionFlow(String actionID) {
+		return actionFlow.get(actionID);
+	}
+	
 	private synchronized void configureService() {
 		
 		if(executionTask != null) {

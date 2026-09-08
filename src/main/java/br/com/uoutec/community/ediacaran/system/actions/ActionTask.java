@@ -68,7 +68,7 @@ public class ActionTask implements Runnable{
 			}
 			
 			
-			String nextAction = response.getNextAction();
+			String nextAction = response.getNextAction() == null? ex.getNextActions() : response.getNextAction();
 			
 			if(nextAction != null) {
 				if(!ex.getNextActions().contains(nextAction)) {
@@ -82,9 +82,6 @@ public class ActionTask implements Runnable{
 				request.setAttempts(0);
 				actionsRepository.register(id, request);
 				
-			}
-			else {
-				nextAction = ex.getNextActions();
 			}
 			
 		}

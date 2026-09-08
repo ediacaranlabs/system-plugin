@@ -40,6 +40,20 @@ public class ActionRegistryMock extends ActionRegistryImp {
 
 	}
 	
+	protected void registerActionFlow(String actionID, ActionExecutorEntry actionExecutorEntry) {
+		super.registerActionFlow(actionID, actionExecutorEntry);
+		actionFlow.put(actionID, actionExecutorEntry);
+	}
+
+	protected void removeActionFlow(String actionID) {
+		super.removeActionFlow(actionID);
+		actionFlow.remove(actionID);
+	}
+
+	protected ActionExecutorEntry getActionFlow(String actionID) {
+		return actionFlow.get(actionID);
+	}
+	
 	public void executeAll() throws Throwable {
 
 		while(true) {
