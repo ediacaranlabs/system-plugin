@@ -61,7 +61,7 @@ public class ActionTask implements Runnable{
 				return;
 			}
 			
-			if(ex.getNextActions().isEmpty()) {
+			if(ex.getNextActions() == null || ex.getNextActions().isEmpty()) {
 				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
 				actionsRepository.register(id, request);
 				return;
