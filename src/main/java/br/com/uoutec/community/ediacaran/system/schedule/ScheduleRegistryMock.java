@@ -1,5 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.schedule;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -47,6 +50,27 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 		
 	}
 
+	public Map<Object, Object> executeAll() throws Exception {
+		
+		Map<Object, Object> r = new HashMap<>();
+		
+		for(Entry<String,ScheduleRegister<?>> x: map.entrySet()) {
+			
+			if(x.getValue().getCallable() != null) {
+				Object result = x.getValue().getCallable().call();
+				r.put(x.getValue().getCallable(), result);
+			}
+			else
+			if(x.getValue().getRunnable() != null) {
+				x.getValue().getRunnable().run();
+				r.put(x.getValue().getCallable(), null);
+			}
+			
+		}
+		
+		return r;
+	}
+	
 	public Object execute(String code) throws Exception {
 		
 		ScheduleRegister<?> v = map.get(code);

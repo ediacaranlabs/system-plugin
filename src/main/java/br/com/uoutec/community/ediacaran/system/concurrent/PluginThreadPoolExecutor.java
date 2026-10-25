@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 import br.com.uoutec.application.security.SecurityThread;
 
 @Singleton
-public class PluginThreadPoolExecutor extends ThreadPoolExecutor{
+public class PluginThreadPoolExecutor extends ThreadPoolExecutor {
 
 	public PluginThreadPoolExecutor() {
 		super(Runtime.getRuntime().availableProcessors()*8, Runtime.getRuntime().availableProcessors()*8, 0L, TimeUnit.MILLISECONDS,
