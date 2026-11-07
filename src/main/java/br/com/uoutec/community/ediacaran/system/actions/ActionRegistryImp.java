@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -217,8 +218,25 @@ public class ActionRegistryImp implements ActionRegistry{
 		
 		if(executorService == null) {
 			ThreadPoolExecutor threadPoolExecutor = 
-					new ThreadPoolExecutor(1, Runtime.getRuntime().availableProcessors()*4, 0L, 
-							TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(1));
+					new ThreadPoolExecutor(
+							Runtime.getRuntime().availableProcessors(), 
+							Runtime.getRuntime().availableProcessors()*4, 
+							0L, 
+							TimeUnit.MILLISECONDS, 
+							new LinkedBlockingQueue<Runnable>(Runtime.getRuntime().availableProcessors()*2),
+							(task, pool) -> {
+						        if (!pool.isShutdown()) {
+						            try {
+						                pool.getQueue().put(task);
+						            } catch (InterruptedException e) {
+						                Thread.currentThread().interrupt();
+						                throw new RejectedExecutionException(e);
+						            }
+						        } else {
+						            throw new RejectedExecutionException("Executor is shutdown");
+						        }
+						    }							
+					);
 			
 			threadPoolExecutor.setThreadFactory((r)->{
 				Thread thread = new SecurityThread(r);
