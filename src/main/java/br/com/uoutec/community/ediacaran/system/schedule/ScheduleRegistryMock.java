@@ -6,8 +6,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.control.ActivateRequestContext;
@@ -61,8 +59,8 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 			if(x.getValue().getCallable() != null) {
 				Object[] result = new Object[1];
 				Exception[] ex = new Exception[1];
-				ExecutorService executorService = Executors.newSingleThreadExecutor();
-				executorService.execute(()->{
+
+				Thread thread = new Thread(()->{
 					try {
 						result[0] = x.getValue().getCallable().call();
 					}
@@ -71,7 +69,8 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 					}
 				});
 				
-				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				thread.start();
+				thread.join();
 				
 				if(ex[0] != null) {
 					throw ex[0];
@@ -81,9 +80,9 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 			}
 			else
 			if(x.getValue().getRunnable() != null) {
-				ExecutorService executorService = Executors.newSingleThreadExecutor();
-				executorService.execute(x.getValue().getRunnable());
-				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				Thread thread = new Thread(x.getValue().getRunnable());
+				thread.start();
+				thread.join();
 				r.put(x.getValue().getCallable(), null);
 			}
 			
@@ -100,9 +99,7 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 			if(v.getCallable() != null) {
 				Object[] result = new Object[1];
 				Exception[] ex = new Exception[1];
-				ExecutorService executorService = Executors.newSingleThreadExecutor();
-				
-				executorService.execute(()->{
+				Thread thread = new Thread(()->{
 					try {
 						result[0] = v.getCallable().call();
 					}
@@ -111,7 +108,8 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 					}
 				});
 				
-				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				thread.start();
+				thread.join();
 				
 				if(ex[0] != null) {
 					throw ex[0];
@@ -121,9 +119,9 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 			}
 			else
 			if(v.getRunnable() != null) {
-				ExecutorService executorService = Executors.newSingleThreadExecutor();
-				executorService.execute(v.getRunnable());
-				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				Thread thread = new Thread(v.getRunnable());
+				thread.start();
+				thread.join();
 			}
 		}
 		
