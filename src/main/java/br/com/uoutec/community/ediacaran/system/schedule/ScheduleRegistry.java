@@ -3,7 +3,9 @@ package br.com.uoutec.community.ediacaran.system.schedule;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-public interface ScheduleRegistry {
+import br.com.uoutec.ediacaran.core.plugins.PublicBean;
+
+public interface ScheduleRegistry extends PublicBean {
 
     void schedule(String code, Runnable command, long delay, TimeUnit unit);
     

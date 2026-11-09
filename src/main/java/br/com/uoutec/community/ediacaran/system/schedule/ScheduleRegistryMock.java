@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.enterprise.context.control.ActivateRequestContext;
@@ -57,12 +59,31 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 		for(Entry<String,ScheduleRegister<?>> x: map.entrySet()) {
 			
 			if(x.getValue().getCallable() != null) {
-				Object result = x.getValue().getCallable().call();
-				r.put(x.getValue().getCallable(), result);
+				Object[] result = new Object[1];
+				Exception[] ex = new Exception[1];
+				ExecutorService executorService = Executors.newSingleThreadExecutor();
+				executorService.execute(()->{
+					try {
+						result[0] = x.getValue().getCallable().call();
+					}
+					catch(Exception e) {
+						ex[0] = e;
+					}
+				});
+				
+				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				
+				if(ex[0] != null) {
+					throw ex[0];
+				}
+				
+				r.put(x.getValue().getCallable(), result[0]);
 			}
 			else
 			if(x.getValue().getRunnable() != null) {
-				x.getValue().getRunnable().run();
+				ExecutorService executorService = Executors.newSingleThreadExecutor();
+				executorService.execute(x.getValue().getRunnable());
+				executorService.awaitTermination(60, TimeUnit.SECONDS);
 				r.put(x.getValue().getCallable(), null);
 			}
 			
@@ -77,11 +98,32 @@ public class ScheduleRegistryMock implements ScheduleRegistry {
 		
 		if(v != null) {
 			if(v.getCallable() != null) {
-				return v.getCallable().call();
+				Object[] result = new Object[1];
+				Exception[] ex = new Exception[1];
+				ExecutorService executorService = Executors.newSingleThreadExecutor();
+				
+				executorService.execute(()->{
+					try {
+						result[0] = v.getCallable().call();
+					}
+					catch(Exception e) {
+						ex[0] = e;
+					}
+				});
+				
+				executorService.awaitTermination(60, TimeUnit.SECONDS);
+				
+				if(ex[0] != null) {
+					throw ex[0];
+				}
+				
+				return result[0];
 			}
 			else
 			if(v.getRunnable() != null) {
-				v.getRunnable().run();
+				ExecutorService executorService = Executors.newSingleThreadExecutor();
+				executorService.execute(v.getRunnable());
+				executorService.awaitTermination(60, TimeUnit.SECONDS);
 			}
 		}
 		
