@@ -61,70 +61,67 @@ public class ActionRegistryImp implements ActionRegistry{
 	@Override
 	public void registerAction(String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain,
 			ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor) {
-		
-		actionID = actionID.toLowerCase();
-		
-		ActionExecutorEntry actionExecutorEntry = new ActionExecutorEntry();
-		actionExecutorEntry.setAttemptsBeforeFailure(attemptsBeforeFailure);
-		actionExecutorEntry.setDefaultNextAction(null);
-		actionExecutorEntry.setExecutor(executor);
-		actionExecutorEntry.setId(actionID);
-		actionExecutorEntry.setTimeBeforeTryAgain(timeBeforeTryAgain);
-		actionExecutorEntry.setUnitTtimeBeforeTryAgain(unitTtimeBeforeTryAgain);
-		
-		registerActionFlow(actionID, actionExecutorEntry);
+		registerAction(actionID, null, attemptsBeforeFailure, timeBeforeTryAgain, unitTtimeBeforeTryAgain, executor);
 	}
 
 	@Override
-	public void removeAction(String actionID) {
-		actionID = actionID.toLowerCase();
-		removeActionFlow(actionID);
+	public void registerAction(String newActionID, String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain,
+			ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor) {
+		
+		newActionID = newActionID.toLowerCase();
+		
+		ActionExecutorEntry newAction = new ActionExecutorEntry();
+		newAction.setAttemptsBeforeFailure(attemptsBeforeFailure);
+		newAction.setDefaultNextAction(null);
+		newAction.setExecutor(executor);
+		newAction.setId(newActionID);
+		newAction.setTimeBeforeTryAgain(timeBeforeTryAgain);
+		newAction.setUnitTtimeBeforeTryAgain(unitTtimeBeforeTryAgain);
+		
+		if(actionID != null) {
+			actionID = actionID.toLowerCase();
+			
+			ActionExecutorEntry action = getActionFlow(actionID);
+			
+			if(action == null) {
+				throw new NullPointerException(actionID);
+			}
+			
+			newAction.setPreviousAction(actionID);
+			newAction.setNextAction(action.getNextAction());
+			action.setNextAction(newActionID);
+		}
+		
+		registerActionFlow(newActionID, newAction);
 	}
 	
 	@Override
-	public void executeAfter(String actionID, String nextAction) {
-		
-		actionID   = actionID.toLowerCase();
-		nextAction = nextAction.toLowerCase();
-		
-		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
-		
-		if(actionExecutorEntry == null) {
-			throw new NullPointerException(actionID);
-		}
-		
-		String actualNextAction = actionExecutorEntry.getNextActions();
-		
-		actionExecutorEntry.setNextActions(nextAction);
-		
-		if(actualNextAction != null) {
-			executeAfter(nextAction, actualNextAction);
-		}
-		
-	}
-
-	@Override
-	public void destroyExecuteAfter(String actionID) {
-		
+	public void removeAction(String actionID) {
 		actionID = actionID.toLowerCase();
 		
-		ActionExecutorEntry actionExecutorEntry = getActionFlow(actionID);
+		ActionExecutorEntry action = getActionFlow(actionID);
 		
-		if(actionExecutorEntry == null) {
-			return;
+		if(action.getPreviousAction() != null) {
+			ActionExecutorEntry previous = getActionFlow(action.getPreviousAction());
+			
+			if(previous == null) {
+				throw new NullPointerException(action.getPreviousAction());
+			}
+			
+			previous.setNextAction(action.getNextAction());
+		}
+
+		if(action.getNextAction() != null) {
+			ActionExecutorEntry next = getActionFlow(action.getNextAction());
+			
+			if(next == null) {
+				throw new NullPointerException(action.getNextAction());
+			}
+			
+			next.setPreviousAction(action.getPreviousAction());
 		}
 		
-		String actualNextAction = actionExecutorEntry.getNextActions();
-		
-		if(actualNextAction != null) {
-			ActionExecutorEntry actualNextActionEntry = getActionFlow(actionID);
-			actionExecutorEntry.setNextActions(actualNextActionEntry != null? actualNextActionEntry.getNextActions() : null);
-		}
-		else {
-			actionExecutorEntry.setNextActions(null);
-		}
-		
-		
+		removeActionFlow(actionID);
 	}
 
 	@Override
@@ -354,6 +351,7 @@ public class ActionRegistryImp implements ActionRegistry{
 		private boolean isActiveRequest(ActionExecutorRequestEntry request) {
 			return LocalDateTime.now().isAfter(request.getDateSchedule());
 		}
+		
 	}
 	
 }

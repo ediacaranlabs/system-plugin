@@ -1,10 +1,8 @@
 package br.com.uoutec.community.ediacaran.system.actions;
 
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
-
+@Deprecated
 public class ActionFlowBuilder {
-
+/*
 	private ActionExecutorEntry entry;
 	
 	private ActionFlowBuilder parent;
@@ -52,5 +50,5 @@ public class ActionFlowBuilder {
 		entry.setUnitTtimeBeforeTryAgain(unitTtimeBeforeTryAgain);
 		return this;
 	}
-
+*/
 }

@@ -10,7 +10,9 @@ public class ActionExecutorEntry {
 	
 	private String defaultNextAction;
 
-	private volatile String nextActions;
+	private volatile String nextAction;
+
+	private volatile String previousAction;
 	
 	private ActionExecutor executor;
 	
@@ -23,7 +25,8 @@ public class ActionExecutorEntry {
 	private ChronoUnit unitTtimeBeforeTryAgain;
 	
 	public ActionExecutorEntry() {
-		this.nextActions = null;
+		this.nextAction = null;
+		this.previousAction = null;
 		this.exceptionAction = new HashMap<>();
 	}
 	
@@ -67,12 +70,21 @@ public class ActionExecutorEntry {
 		this.defaultNextAction = defaultNextAction;
 	}
 
-	public String getNextActions() {
-		return nextActions;
+
+	public String getNextAction() {
+		return nextAction;
 	}
 
-	public void setNextActions(String nextActions) {
-		this.nextActions = nextActions;
+	public void setNextAction(String nextAction) {
+		this.nextAction = nextAction;
+	}
+
+	public String getPreviousAction() {
+		return previousAction;
+	}
+
+	public void setPreviousAction(String previousAction) {
+		this.previousAction = previousAction;
 	}
 
 	public ActionExecutor getExecutor() {

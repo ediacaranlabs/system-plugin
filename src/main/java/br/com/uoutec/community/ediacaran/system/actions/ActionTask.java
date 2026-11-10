@@ -61,17 +61,17 @@ public class ActionTask implements Runnable{
 				return;
 			}
 			
-			if(ex.getNextActions() == null || ex.getNextActions().isEmpty()) {
+			if(ex.getNextAction() == null || ex.getNextAction().isEmpty()) {
 				request.setStatus(ActionExecutorRequestStatus.FINALIZED);
 				actionsRepository.register(id, request);
 				return;
 			}
 			
 			
-			String nextAction = response.getNextAction() == null? ex.getNextActions() : response.getNextAction();
+			String nextAction = response.getNextAction() == null? ex.getNextAction() : response.getNextAction();
 			
 			if(nextAction != null) {
-				if(!ex.getNextActions().contains(nextAction)) {
+				if(!ex.getNextAction().equals(nextAction)) {
 					throw new IllegalStateException("next action not found: " + nextAction);
 				}
 

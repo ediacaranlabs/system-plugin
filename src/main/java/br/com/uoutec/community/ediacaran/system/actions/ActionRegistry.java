@@ -9,16 +9,15 @@ public interface ActionRegistry extends PublicBean {
 
 	void registerAction(String actionID, int attemptsBeforeFailure, long timeBeforeTryAgain, ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor);
 
+	public void registerAction(String actionID, String after, int attemptsBeforeFailure, long timeBeforeTryAgain,
+			ChronoUnit unitTtimeBeforeTryAgain, ActionExecutor executor);
+	
 	void removeAction(String actionID);
 	
 	void setActionsRepository(ActionsRepository actionsRepository);
 	
 	void setExecutorService(ExecutorService value);
 	
-	void executeAfter(String actionID, String nextAction);
-
-	void destroyExecuteAfter(String actionID);
-
 	void addExceptionAction(String actionID, Class<? extends Throwable> exceptionType, String nextAction);
 	
 	void removeExceptionAction(String actionID, Class<? extends Throwable> exceptionType);
